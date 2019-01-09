@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
-import { Layout } from 'nuggets';
+import { Layout, List } from 'nuggets';
+
+const people = [{ name: 'me' }, { name: 'you' }];
 
 export default class App extends Component {
   public render() {
@@ -10,8 +12,7 @@ export default class App extends Component {
           alignItems: 'center',
         }}
       >
-        <span>Hello 1!</span>
-        <span>Hello 2!</span>
+        <List items={people}>{({ name }: any) => <span>{name}</span>}</List>
       </Layout>
     );
   }
