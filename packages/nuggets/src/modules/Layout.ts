@@ -26,20 +26,22 @@ export const Layout: FunctionComponent<ILayoutProps> = ({
   return createStyledComponent(layoutStyle, {
     children,
     overrides,
-    direction: digestDirection(options),
+    direction: digests.direction(options),
   });
 };
 
-const digestDirection = ({ direction }: ILayoutProps) => {
-  switch (direction) {
-    default:
-    case 'right':
-      return 'row';
-    case 'left':
-      return 'row-reverse';
-    case 'down':
-      return 'column';
-    case 'up':
-      return 'column-reverse';
-  }
+const digests = {
+  direction({ direction }: ILayoutProps) {
+    switch (direction) {
+      default:
+      case 'right':
+        return 'row';
+      case 'left':
+        return 'row-reverse';
+      case 'down':
+        return 'column';
+      case 'up':
+        return 'column-reverse';
+    }
+  },
 };
