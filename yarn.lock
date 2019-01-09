@@ -1538,11 +1538,6 @@
   resolved "https://registry.yarnpkg.com/@types/code/-/code-4.0.5.tgz#e7c051d01bbbc5d33642c2ec3aa3b2722901740b"
   integrity sha512-k7gk4Bcu9YCvPD8pjqlY5wUulr12iFZYCtc8+Vh6mjkDgaoZ4i/IWVknDP74a8gkJR2r/wIA9iAX02b22L1ynQ==
 
-"@types/jest@^23.3.11":
-  version "23.3.12"
-  resolved "https://registry.yarnpkg.com/@types/jest/-/jest-23.3.12.tgz#7e0ced251fa94c3bc2d1023d4b84b2992fa06376"
-  integrity sha512-/kQvbVzdEpOq4tEWT79yAHSM4nH4xMlhJv2GrLVQt4Qmo8yYsPdioBM1QpN/2GX1wkfMnyXvdoftvLUr0LBj7Q==
-
 "@types/mocha@^5.2.5":
   version "5.2.5"
   resolved "https://registry.yarnpkg.com/@types/mocha/-/mocha-5.2.5.tgz#8a4accfc403c124a0bafe8a9fc61a05ec1032073"
