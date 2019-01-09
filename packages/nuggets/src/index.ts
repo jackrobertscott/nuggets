@@ -1,1 +1,1 @@
-export { default as Layout } from './modules/Layout';
+export * from './modules/Layout';
