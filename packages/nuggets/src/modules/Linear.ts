@@ -2,28 +2,28 @@ import { FunctionComponent } from 'react';
 import { createStyledComponent } from '../utils/styles';
 import { CSSObject, css } from 'styled-components';
 
-export interface ILayoutCSSProps {
+export interface ILinearCSSProps {
   direction: string;
   overrides?: CSSObject;
 }
 
-const layoutStyle = ({ overrides, direction }: ILayoutCSSProps) => `
+const style = ({ overrides, direction }: ILinearCSSProps) => `
   display: flex;
   flex-direction: ${direction};
   ${overrides && css(overrides)}
 `;
 
-export interface ILayoutProps {
+export interface ILinearProps {
   direction?: 'right' | 'left' | 'up' | 'down';
   overrides?: CSSObject;
 }
 
-export const Layout: FunctionComponent<ILayoutProps> = ({
+export const Linear: FunctionComponent<ILinearProps> = ({
   children,
   overrides,
   ...options
 }) => {
-  return createStyledComponent(layoutStyle, {
+  return createStyledComponent(style, {
     children,
     overrides,
     direction: digests.direction(options),
@@ -31,7 +31,7 @@ export const Layout: FunctionComponent<ILayoutProps> = ({
 };
 
 const digests = {
-  direction({ direction }: ILayoutProps) {
+  direction({ direction }: ILinearProps) {
     switch (direction) {
       default:
       case 'right':
