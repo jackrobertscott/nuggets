@@ -1,17 +1,6 @@
 import { FunctionComponent } from 'react';
-import { createStyledComponent } from '../utils/styles';
-import { CSSObject, css } from 'styled-components';
-
-export interface ILinearCSSProps {
-  direction: string;
-  overrides?: CSSObject;
-}
-
-const style = ({ overrides, direction }: ILinearCSSProps) => `
-  display: flex;
-  flex-direction: ${direction};
-  ${overrides && css(overrides)}
-`;
+import { createStyledPiece } from '../utils/styles';
+import { CSSObject } from 'styled-components';
 
 export interface ILinearProps {
   direction?: 'right' | 'left' | 'up' | 'down';
@@ -23,25 +12,31 @@ export const Linear: FunctionComponent<ILinearProps> = ({
   overrides,
   ...options
 }) => {
-  return createStyledComponent(style, {
+  return createStyledPiece({
     children,
     overrides,
-    direction: digests.direction(options),
+    digests: [`display: flex;`, digests.direction(options)],
   });
 };
 
 const digests = {
   direction({ direction }: ILinearProps) {
+    let value = 'down';
     switch (direction) {
       default:
       case 'right':
-        return 'row';
+        value = 'row';
+        break;
       case 'left':
-        return 'row-reverse';
+        value = 'row-reverse';
+        break;
       case 'down':
-        return 'column';
+        value = 'column';
+        break;
       case 'up':
-        return 'column-reverse';
+        value = 'column-reverse';
+        break;
     }
+    return `flex-direction: ${value};`;
   },
 };

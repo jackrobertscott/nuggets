@@ -1,16 +1,6 @@
 import { FunctionComponent, ReactElement } from 'react';
-import { createStyledComponent } from '../utils/styles';
-import { CSSObject, css } from 'styled-components';
-
-export interface ISquareCSSProps {
-  color?: string;
-  overrides?: CSSObject;
-}
-
-const style = ({ overrides, color }: ISquareCSSProps) => `
-  background-color: ${color};
-  ${overrides && css(overrides)}
-`;
+import { createStyledPiece } from '../utils/styles';
+import { CSSObject } from 'styled-components';
 
 export interface ISquareProps {
   color?: string;
@@ -23,15 +13,15 @@ export const Square: FunctionComponent<ISquareProps> = ({
   overrides,
   ...options
 }) => {
-  return createStyledComponent(style, {
+  return createStyledPiece({
     children,
     overrides,
-    color: digests.color(options),
+    digests: [digests.color(options)],
   });
 };
 
 const digests = {
   color({ color }: ISquareProps) {
-    return color;
+    return color && `background-color: ${color};`;
   },
 };

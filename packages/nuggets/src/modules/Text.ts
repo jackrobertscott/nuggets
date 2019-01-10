@@ -1,18 +1,6 @@
-import { FunctionComponent, ReactElement } from 'react';
-import { createStyledComponent } from '../utils/styles';
-import { CSSObject, css } from 'styled-components';
-
-export interface ITextCSSProps {
-  color?: string;
-  align?: string;
-  overrides?: CSSObject;
-}
-
-const style = ({ overrides, color, align }: ITextCSSProps) => `
-  color: ${color};
-  text-align: ${align};
-  ${overrides && css(overrides)}
-`;
+import { FunctionComponent } from 'react';
+import { createStyledPiece } from '../utils/styles';
+import { CSSObject } from 'styled-components';
 
 export interface ITextProps {
   color?: string;
@@ -26,19 +14,18 @@ export const Text: FunctionComponent<ITextProps> = ({
   overrides,
   ...options
 }) => {
-  return createStyledComponent(style, {
+  return createStyledPiece({
     children,
     overrides,
-    color: digests.color(options),
-    align: digests.align(options),
+    digests: [digests.color(options), digests.align(options)],
   });
 };
 
 const digests = {
   color({ color }: ITextProps) {
-    return color;
+    return color && `color: ${color}`;
   },
   align({ align }: ITextProps) {
-    return align;
+    return align && `text-align: ${align}`;
   },
 };
