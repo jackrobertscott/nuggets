@@ -5,12 +5,6 @@ import {
   ReactElement,
 } from 'react';
 
-export interface IListProps {
-  items: any[];
-  render?: ReactElement<any>;
-  children: (item: any) => ReactNode;
-}
-
 export const List: FunctionComponent<IListProps> = ({
   items,
   render,
@@ -19,5 +13,11 @@ export const List: FunctionComponent<IListProps> = ({
   if (render) {
     return items.map(props => cloneElement(render, props));
   }
-  return items.map(children) as any;
+  return items.map((...args) => children(...args)) as any;
 };
+
+export interface IListProps {
+  items: any[];
+  render?: ReactElement<any>;
+  children: (item: any, index: number, array: any[]) => ReactNode;
+}

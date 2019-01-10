@@ -5,12 +5,14 @@ import { CSSObject } from 'styled-components';
 export const Square: FunctionComponent<ISquareProps> = ({
   children,
   overrides,
+  style,
   ...options
 }) => {
+  const data = { ...style, ...options };
   return createStyledPiece({
     children,
     overrides,
-    digests: digests.map(rule => rule(options)),
+    digests: digests.map(rule => rule(data)),
   });
 };
 
@@ -18,10 +20,11 @@ export interface ISquareProps {
   color?: string;
   children?: ReactElement<any>;
   overrides?: CSSObject;
+  style?: ISquareProps;
 }
 
 const digests: Array<(options: ISquareProps) => string | false> = [
-  ({ color }: ISquareProps) => {
+  ({ color }) => {
     return color !== undefined && `background-color: ${color};`;
   },
 ];

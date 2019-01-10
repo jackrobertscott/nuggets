@@ -1,16 +1,18 @@
-import { FunctionComponent } from 'react';
+import { FunctionComponent, ReactText } from 'react';
 import { createStyledPiece } from '../utils/styles';
 import { CSSObject } from 'styled-components';
 
 export const Text: FunctionComponent<ITextProps> = ({
   children,
   overrides,
+  style,
   ...options
 }) => {
+  const data = { ...style, ...options };
   return createStyledPiece({
     children,
     overrides,
-    digests: digests.map(rule => rule(options)),
+    digests: digests.map(rule => rule(data)),
   });
 };
 
@@ -20,25 +22,30 @@ export interface ITextProps {
   boldness?: number;
   height?: number;
   size?: number;
-  children?: string | number;
+  family?: string;
+  children?: ReactText | ReactText[];
   overrides?: CSSObject;
+  style?: ITextProps;
 }
 
 const digests: Array<(options: ITextProps) => string | false> = [
   ({ size }) => {
     return size !== undefined && `font-size: ${size}`;
   },
-  ({ color }: ITextProps) => {
+  ({ color }) => {
     return color !== undefined && `color: ${color}`;
   },
-  ({ align }: ITextProps) => {
+  ({ align }) => {
     return align !== undefined && `text-align: ${align}`;
+  },
+  ({ family }) => {
+    return family !== undefined && `font-family: ${family}`;
   },
   /**
    * CSS Fonts work between 100 and 900.
    * @see https://developer.mozilla.org/en-US/docs/Web/CSS/font-weight#Values
    */
-  ({ boldness = 400 }: ITextProps) => {
+  ({ boldness = 400 }) => {
     const min = 100;
     const max = 900;
     if (boldness < min || boldness > max) {
@@ -51,7 +58,7 @@ const digests: Array<(options: ITextProps) => string | false> = [
    * Numbers will be multiplied against the font size.
    * @see https://developer.mozilla.org/en-US/docs/Web/CSS/line-height
    */
-  ({ height }: ITextProps) => {
+  ({ height }) => {
     return height !== undefined && `line-height: ${height}`;
   },
 ];

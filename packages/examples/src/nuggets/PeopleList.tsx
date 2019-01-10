@@ -1,15 +1,21 @@
 import React, { FunctionComponent } from 'react';
-import { Linear, List, Square, Text } from 'nuggets';
+import { Linear, List, Square, Text, ITextProps } from 'nuggets';
 
-const people = [{ name: 'me' }, { name: 'you' }];
+const people: Array<{ name: string }> = [{ name: 'me' }, { name: 'you' }];
+
+const textStyle: ITextProps = {
+  color: 'yellow',
+  family: 'monospace',
+  align: 'right',
+};
 
 const PeopleList: FunctionComponent = () => (
   <Linear direction="up">
     <List items={people}>
-      {({ name }: { name: string }) => (
+      {({ name }, index) => (
         <Square key={name} color="green">
-          <Text color="yellow" align="right">
-            {name}
+          <Text color="yellow" style={textStyle}>
+            {name}: {index}
           </Text>
         </Square>
       )}

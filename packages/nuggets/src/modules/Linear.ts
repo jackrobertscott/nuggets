@@ -5,23 +5,28 @@ import { CSSObject } from 'styled-components';
 export const Linear: FunctionComponent<ILinearProps> = ({
   children,
   overrides,
+  style,
   ...options
 }) => {
+  const data = { ...style, ...options };
   return createStyledPiece({
     children,
     overrides,
-    digests: digests.map(rule => rule(options)),
+    digests: digests.map(rule => rule(data)),
   });
 };
 
 export interface ILinearProps {
   direction?: 'right' | 'left' | 'up' | 'down';
   overrides?: CSSObject;
+  style?: ILinearProps;
 }
 
 const digests: Array<(options: ILinearProps) => string | false> = [
-  () => `display: flex;`,
-  ({ direction }: ILinearProps) => {
+  () => {
+    return `display: flex;`;
+  },
+  ({ direction }) => {
     let value;
     switch (direction) {
       default:
