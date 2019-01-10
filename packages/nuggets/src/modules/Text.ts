@@ -2,23 +2,26 @@ import { FunctionComponent, ReactElement } from 'react';
 import { createStyledComponent } from '../utils/styles';
 import { CSSObject, css } from 'styled-components';
 
-export interface ISquareCSSProps {
+export interface ITextCSSProps {
   color?: string;
+  align?: string;
   overrides?: CSSObject;
 }
 
-const style = ({ overrides, color }: ISquareCSSProps) => `
-  background-color: ${color};
+const style = ({ overrides, color, align }: ITextCSSProps) => `
+  color: ${color};
+  text-align: ${align};
   ${overrides && css(overrides)}
 `;
 
-export interface ISquareProps {
+export interface ITextProps {
   color?: string;
-  children?: ReactElement<any>;
+  align?: 'left' | 'center' | 'right' | 'justify';
+  children?: string | number;
   overrides?: CSSObject;
 }
 
-export const Square: FunctionComponent<ISquareProps> = ({
+export const Text: FunctionComponent<ITextProps> = ({
   children,
   overrides,
   ...options
@@ -27,11 +30,15 @@ export const Square: FunctionComponent<ISquareProps> = ({
     children,
     overrides,
     color: digests.color(options),
+    align: digests.align(options),
   });
 };
 
 const digests = {
-  color({ color }: ISquareProps) {
+  color({ color }: ITextProps) {
     return color;
+  },
+  align({ align }: ITextProps) {
+    return align;
   },
 };

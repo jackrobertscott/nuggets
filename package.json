@@ -1,6 +1,10 @@
 {
   "name": "root",
   "private": true,
+  "nohoist": [
+    "**/react-scripts",
+    "**/react-scripts/**"
+  ],
   "scripts": {
     "ship": "lerna publish",
     "prepublishOnly": "yarn run build",
