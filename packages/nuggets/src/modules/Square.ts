@@ -6,6 +6,17 @@ import {
 } from '../utils/styles';
 import { CSSObject, css } from 'styled-components';
 
+export interface ISquareStylesBorder {
+  color?: string;
+  thickness?: number;
+  style?: string;
+  sides?: string[];
+}
+
+export interface ISquareStylesCorners {
+  radius: number;
+}
+
 export interface ISquareStylesShadow {
   color?: string;
   blur?: number;
@@ -16,12 +27,8 @@ export interface ISquareStylesShadow {
 
 export interface ISquareStyles {
   color?: string;
-  border?: {
-    color?: string;
-    thickness?: number;
-    style?: string;
-    sides?: string[];
-  };
+  border?: ISquareStylesBorder;
+  corners?: ISquareStylesCorners;
   shadow?: ISquareStylesShadow | ISquareStylesShadow[];
   overrides?: CSSObject;
 }
@@ -46,6 +53,13 @@ const digests: Array<(options: ISquareProps) => string | false> = [
         .join('\n');
     }
     return `border: ${thickness}px ${style} ${color};`;
+  },
+  ({ corners }) => {
+    if (corners === undefined) {
+      return false;
+    }
+    const { radius = 0 } = corners;
+    return `border-radius: ${radius}px;`;
   },
   ({ shadow }) => {
     if (shadow === undefined) {

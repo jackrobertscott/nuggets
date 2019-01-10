@@ -28,6 +28,7 @@ const PeopleList: FunctionComponent = () => (
             sides: ['bottom', 'top'],
           }}
           shadow={{ blur: 5 }}
+          corners={{ radius: 20 }}
         >
           <Text color="yellow" style={textStyle} overrides={textOverrides}>
             {name}: {index}
