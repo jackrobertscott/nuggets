@@ -1,17 +1,15 @@
 import { FunctionComponent } from 'react';
 import { createStyledPiece } from '../utils/styles';
-import { CSSObject } from 'styled-components';
+import { CSSObject, css } from 'styled-components';
 
 export const Linear: FunctionComponent<ILinearProps> = ({
   children,
-  overrides,
   style,
   ...options
 }) => {
   const data = { ...style, ...options };
   return createStyledPiece({
     children,
-    overrides,
     digests: digests.map(rule => rule(data)),
   });
 };
@@ -44,5 +42,8 @@ const digests: Array<(options: ILinearProps) => string | false> = [
         break;
     }
     return `flex-direction: ${value};`;
+  },
+  ({ overrides }) => {
+    return overrides !== undefined && `${css(overrides)}`;
   },
 ];

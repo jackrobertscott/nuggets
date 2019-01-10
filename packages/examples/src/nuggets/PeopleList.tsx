@@ -9,12 +9,16 @@ const textStyle: ITextProps = {
   align: 'right',
 };
 
+const textOverrides = {
+  fontSize: '30px',
+};
+
 const PeopleList: FunctionComponent = () => (
   <Linear direction="up">
     <List items={people}>
       {({ name }, index) => (
         <Square key={name} color="green">
-          <Text color="yellow" style={textStyle}>
+          <Text color="yellow" style={textStyle} overrides={textOverrides}>
             {name}: {index}
           </Text>
         </Square>
