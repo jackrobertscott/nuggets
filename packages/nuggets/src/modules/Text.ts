@@ -19,16 +19,16 @@ export interface ITextStyles {
 
 const digests: IDigestArray<ITextStyles> = [
   ({ size }) => {
-    return size !== undefined && `font-size: ${size}`;
+    return size !== undefined && `font-size: ${size}px;`;
   },
   ({ color }) => {
-    return color !== undefined && `color: ${color}`;
+    return color !== undefined && `color: ${color};`;
   },
   ({ align }) => {
-    return align !== undefined && `text-align: ${align}`;
+    return align !== undefined && `text-align: ${align};`;
   },
   ({ family }) => {
-    return family !== undefined && `font-family: ${family}`;
+    return family !== undefined && `font-family: ${family};`;
   },
   /**
    * CSS Fonts work between 100 and 900.
@@ -41,14 +41,14 @@ const digests: IDigestArray<ITextStyles> = [
       const message = `In "<Text boldness={number} />": number must be between ${min} and ${max} inclusive but got "${boldness}".`;
       throw new Error(message);
     }
-    return `font-weight: ${boldness}`;
+    return `font-weight: ${boldness};`;
   },
   /**
    * Numbers will be multiplied against the font size.
    * @see https://developer.mozilla.org/en-US/docs/Web/CSS/line-height
    */
   ({ height }) => {
-    return height !== undefined && `line-height: ${height}`;
+    return height !== undefined && `line-height: ${height};`;
   },
   ({ overrides }) => {
     return overrides !== undefined && `${css(overrides)}`;
