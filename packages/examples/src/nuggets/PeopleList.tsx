@@ -27,6 +27,7 @@ const PeopleList: FunctionComponent = () => (
             style: 'dashed',
             sides: ['bottom', 'top'],
           }}
+          shadow={{ blur: 5 }}
         >
           <Text color="yellow" style={textStyle} overrides={textOverrides}>
             {name}: {index}

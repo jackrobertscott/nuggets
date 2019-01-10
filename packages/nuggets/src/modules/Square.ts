@@ -6,6 +6,14 @@ import {
 } from '../utils/styles';
 import { CSSObject, css } from 'styled-components';
 
+export interface ISquareStylesShadow {
+  color?: string;
+  blur?: number;
+  grow?: number;
+  down?: number;
+  across?: number;
+}
+
 export interface ISquareStyles {
   color?: string;
   border?: {
@@ -14,6 +22,7 @@ export interface ISquareStyles {
     style?: string;
     sides?: string[];
   };
+  shadow?: ISquareStylesShadow | ISquareStylesShadow[];
   overrides?: CSSObject;
 }
 
@@ -37,6 +46,25 @@ const digests: Array<(options: ISquareProps) => string | false> = [
         .join('\n');
     }
     return `border: ${thickness}px ${style} ${color};`;
+  },
+  ({ shadow }) => {
+    if (shadow === undefined) {
+      return false;
+    }
+    const shadows = Array.isArray(shadow) ? shadow : [shadow];
+    const shade = shadows
+      .map((item: ISquareStylesShadow) => {
+        const {
+          color = '#000',
+          blur = 0,
+          grow = 0,
+          down = 0,
+          across = 0,
+        } = item;
+        return `${across}px ${down}px ${blur}px ${grow}px ${color}`;
+      })
+      .join(', ');
+    return `box-shadow: ${shade};`;
   },
   ({ overrides }) => {
     return overrides !== undefined && `${css(overrides)}`;
