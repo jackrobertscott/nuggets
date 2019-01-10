@@ -2,11 +2,6 @@ import { FunctionComponent } from 'react';
 import { createStyledPiece } from '../utils/styles';
 import { CSSObject } from 'styled-components';
 
-export interface ILinearProps {
-  direction?: 'right' | 'left' | 'up' | 'down';
-  overrides?: CSSObject;
-}
-
 export const Linear: FunctionComponent<ILinearProps> = ({
   children,
   overrides,
@@ -15,13 +10,19 @@ export const Linear: FunctionComponent<ILinearProps> = ({
   return createStyledPiece({
     children,
     overrides,
-    digests: [`display: flex;`, digests.direction(options)],
+    digests: digests.map(rule => rule(options)),
   });
 };
 
-const digests = {
-  direction({ direction }: ILinearProps) {
-    let value = 'down';
+export interface ILinearProps {
+  direction?: 'right' | 'left' | 'up' | 'down';
+  overrides?: CSSObject;
+}
+
+const digests: Array<(options: ILinearProps) => string | false> = [
+  () => `display: flex;`,
+  ({ direction }: ILinearProps) => {
+    let value;
     switch (direction) {
       default:
       case 'right':
@@ -39,4 +40,4 @@ const digests = {
     }
     return `flex-direction: ${value};`;
   },
-};
+];

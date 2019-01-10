@@ -4,7 +4,7 @@ import styled, { css, CSSObject } from 'styled-components';
 export interface IStyledPiece {
   children?: any;
   overrides?: CSSObject;
-  digests: Array<string | undefined>;
+  digests: Array<string | false | undefined>;
 }
 
 export const createStyledPiece = ({
