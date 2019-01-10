@@ -1,24 +1,14 @@
 import { FunctionComponent, ReactElement } from 'react';
-import { createStyledPiece } from '../utils/styles';
+import {
+  createStyledPiece,
+  IStyledNugget,
+  createCSSFromDigests,
+} from '../utils/styles';
 import { CSSObject, css } from 'styled-components';
 
-export const Square: FunctionComponent<ISquareProps> = ({
-  children,
-  style,
-  ...options
-}) => {
-  const data = { ...style, ...options };
-  return createStyledPiece({
-    children,
-    digests: digests.map(rule => rule(data)),
-  });
-};
-
-export interface ISquareProps {
+export interface ISquareStyles {
   color?: string;
-  children?: ReactElement<any>;
   overrides?: CSSObject;
-  style?: ISquareProps;
 }
 
 const digests: Array<(options: ISquareProps) => string | false> = [
@@ -29,3 +19,17 @@ const digests: Array<(options: ISquareProps) => string | false> = [
     return overrides !== undefined && `${css(overrides)}`;
   },
 ];
+
+export type ISquareProps = {
+  children?: ReactElement<any>;
+} & IStyledNugget<ISquareStyles>;
+
+export const Square: FunctionComponent<ISquareProps> = ({
+  children,
+  ...options
+}) => {
+  return createStyledPiece({
+    children,
+    css: createCSSFromDigests<ISquareStyles>(options, digests),
+  });
+};

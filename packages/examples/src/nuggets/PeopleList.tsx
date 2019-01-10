@@ -17,7 +17,7 @@ const PeopleList: FunctionComponent = () => (
   <Linear direction="up">
     <List items={people}>
       {({ name }, index) => (
-        <Square key={name} color="green">
+        <Square key={name} color="green" press={{ color: 'blue' }}>
           <Text color="yellow" style={textStyle} overrides={textOverrides}>
             {name}: {index}
           </Text>

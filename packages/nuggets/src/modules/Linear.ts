@@ -1,23 +1,14 @@
-import { FunctionComponent } from 'react';
-import { createStyledPiece } from '../utils/styles';
+import { FunctionComponent, ReactElement } from 'react';
+import {
+  createStyledPiece,
+  createCSSFromDigests,
+  IStyledNugget,
+} from '../utils/styles';
 import { CSSObject, css } from 'styled-components';
 
-export const Linear: FunctionComponent<ILinearProps> = ({
-  children,
-  style,
-  ...options
-}) => {
-  const data = { ...style, ...options };
-  return createStyledPiece({
-    children,
-    digests: digests.map(rule => rule(data)),
-  });
-};
-
-export interface ILinearProps {
+export interface ILinearStyles {
   direction?: 'right' | 'left' | 'up' | 'down';
   overrides?: CSSObject;
-  style?: ILinearProps;
 }
 
 const digests: Array<(options: ILinearProps) => string | false> = [
@@ -47,3 +38,17 @@ const digests: Array<(options: ILinearProps) => string | false> = [
     return overrides !== undefined && `${css(overrides)}`;
   },
 ];
+
+export type ILinearProps = {
+  children?: ReactElement<any> | Array<ReactElement<any>>;
+} & IStyledNugget<ILinearStyles>;
+
+export const Linear: FunctionComponent<ILinearProps> = ({
+  children,
+  ...options
+}) => {
+  return createStyledPiece({
+    children,
+    css: createCSSFromDigests<ILinearStyles>(options, digests),
+  });
+};

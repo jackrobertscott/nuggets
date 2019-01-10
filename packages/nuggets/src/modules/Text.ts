@@ -1,18 +1,11 @@
 import { FunctionComponent, ReactText } from 'react';
-import { createStyledPiece } from '../utils/styles';
+import {
+  createStyledPiece,
+  createCSSFromDigests,
+  IDigestArray,
+  IStyledNugget,
+} from '../utils/styles';
 import { CSSObject, css } from 'styled-components';
-
-export const Text: FunctionComponent<ITextProps> = ({
-  children,
-  style,
-  ...options
-}) => {
-  const data = { ...style, ...options };
-  return createStyledPiece({
-    children,
-    digests: digests.map(rule => rule(data)),
-  });
-};
 
 export interface ITextStyles {
   color?: string;
@@ -24,15 +17,7 @@ export interface ITextStyles {
   overrides?: CSSObject;
 }
 
-export type ITextProps = ITextStyles & {
-  style?: ITextProps;
-  hovered?: ITextProps;
-  pressed?: ITextProps;
-  visited?: ITextProps;
-  children?: ReactText | ReactText[];
-};
-
-const digests: Array<(options: ITextProps) => string | false> = [
+const digests: IDigestArray<ITextStyles> = [
   ({ size }) => {
     return size !== undefined && `font-size: ${size}`;
   },
@@ -69,3 +54,17 @@ const digests: Array<(options: ITextProps) => string | false> = [
     return overrides !== undefined && `${css(overrides)}`;
   },
 ];
+
+export type ITextProps = {
+  children?: ReactText | ReactText[];
+} & IStyledNugget<ITextStyles>;
+
+export const Text: FunctionComponent<ITextProps> = ({
+  children,
+  ...options
+}) => {
+  return createStyledPiece({
+    children,
+    css: createCSSFromDigests<ITextStyles>(options, digests),
+  });
+};
