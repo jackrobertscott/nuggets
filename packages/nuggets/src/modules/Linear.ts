@@ -13,23 +13,27 @@ export interface ILinearStyles {
 
 const digests: Array<(options: ILinearProps) => string | false> = [
   () => {
-    return `display: flex;`;
+    return `
+      flex-grow: 1;
+      display: flex;
+      overflow: auto;
+    `;
   },
   ({ direction }) => {
     let value;
     switch (direction) {
       default:
-      case 'right':
-        value = 'row';
-        break;
-      case 'left':
-        value = 'row-reverse';
-        break;
       case 'down':
         value = 'column';
         break;
       case 'up':
         value = 'column-reverse';
+        break;
+      case 'right':
+        value = 'row';
+        break;
+      case 'left':
+        value = 'row-reverse';
         break;
     }
     return `flex-direction: ${value};`;
@@ -49,6 +53,7 @@ export const Linear: FunctionComponent<ILinearProps> = ({
 }) => {
   return createStyledPiece({
     children,
+    options,
     css: createCSSFromDigests<ILinearStyles>(options, digests),
   });
 };

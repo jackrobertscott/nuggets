@@ -3,14 +3,16 @@ import styled from 'styled-components';
 
 export interface IStyledPiece {
   children?: any;
+  options: { [name: string]: any };
   css: string;
 }
 
-export const createStyledPiece = ({ children, css }: IStyledPiece) => {
+export const createStyledPiece = ({ children, options, css }: IStyledPiece) => {
+  const { ref } = options;
   const styledPiece = styled.div`
     ${css}
   `;
-  return createElement(styledPiece, { children });
+  return createElement(styledPiece, { children, ref });
 };
 
 export interface ITransitionProps<T> {

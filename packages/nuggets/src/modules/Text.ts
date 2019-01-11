@@ -65,6 +65,7 @@ export const Text: FunctionComponent<ITextProps> = ({
 }) => {
   return createStyledPiece({
     children,
+    options,
     css: createCSSFromDigests<ITextStyles>(options, digests),
   });
 };

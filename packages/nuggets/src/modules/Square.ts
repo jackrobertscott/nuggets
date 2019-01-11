@@ -95,6 +95,7 @@ export const Square: FunctionComponent<ISquareProps> = ({
 }) => {
   return createStyledPiece({
     children,
+    options,
     css: createCSSFromDigests<ISquareStyles>(options, digests),
   });
 };
