@@ -1,6 +1,6 @@
 # nuggets
 
-> 📯 New Default Types.
+> 📯 New Default Types
 
 A collection of essential components which compose modern web experiences.
 
@@ -79,10 +79,32 @@ import { Canvas } from 'nuggets';
 
 const Creation = ({
   color = 'white'
+  children,
 }) => (
   <Canvas color={color}>
-    {/* code */}
+    {children}
   </Canvas>
+);
+```
+
+### Text
+
+This component is required when rendering text on the page. This also styles the text.
+
+```jsx
+import { Text } from 'nuggets';
+
+const Creation = ({
+  color = 'black'
+}) => (
+  <Text
+    size={14}
+    color={color}
+    hover={{ color: 'blue' }}
+    click={() => console.log('clicked!')}
+  >
+    Hello nuggets!
+  </Text>
 );
 ```
 
@@ -95,6 +117,7 @@ import { Square } from 'nuggets';
 
 const Creation = ({
   color = 'white'
+  children,
 }) => (
   <Square
     height={100}
@@ -109,7 +132,7 @@ const Creation = ({
     press={{ color: 'blue' }}
     click={() => console.log('clicked!')}
   >
-    {/* code */}
+    {children}
   </Square>
 );
 ```
@@ -122,7 +145,8 @@ This provides a circular component which may be styled.
 import { Circle } from 'nuggets';
 
 const Creation = ({
-  color = 'white'
+  color = 'white',
+  children,
 }) => (
   <Circle
     diameter={100}
@@ -136,7 +160,7 @@ const Creation = ({
     press={{ color: 'blue' }}
     click={() => console.log('clicked!')}
   >
-    {/* code */}
+    {children}
   </Circle>
 );
 ```
@@ -146,6 +170,8 @@ const Creation = ({
 This arranges all direct child components in a linear layout.
 
 ```jsx
+import { Linear } from 'nuggets';
+
 const Creation = () => (
   <Linear direction="right">
     {/* code */}
@@ -158,6 +184,8 @@ const Creation = () => (
 This iterates over an array of values and takes a function as the child.
 
 ```jsx
+import { List, Text } from 'nuggets';
+
 const people = [
   { id: 1, name: 'Bob' },
   { id: 2, name: 'Sally' },
@@ -177,6 +205,8 @@ const Creation = () => (
 This provides easy access to the width of the browser window.
 
 ```jsx
+import { Media } from 'nuggets';
+
 const Creation = () => (
   <Media>
     {({ width }) => (
@@ -193,6 +223,8 @@ const Creation = () => (
 This allows values to be manipulated by user actions. By default, all inputs are *required* unless the `optional` property is specified.
 
 ```jsx
+import { Input } from 'nuggets';
+
 const Creation = ({ updateFirstName }) => (
   <Input.Text
     name="firstName"
@@ -205,6 +237,8 @@ const Creation = ({ updateFirstName }) => (
 There are multiple input types. You may also use a custom input component as well.
 
 ```jsx
+import { Input } from 'nuggets';
+
 const UpperCaseInput = ({ ...props }) => (
   <Input.Text
     border={{
@@ -234,6 +268,8 @@ const Creation = () => (
 This groups the values of any child inputs.
 
 ```jsx
+import { Form, Input } from 'nuggets';
+
 const Creation = ({ savePerson }) => (
   <Form submit={savePerson}>
     <Input.Text name="name" />
@@ -246,6 +282,8 @@ const Creation = ({ savePerson }) => (
 There is also a property called `wrapper` which will wrap all desired child inputs.
 
 ```jsx
+import { Square, Text } from 'nuggets';
+
 const InputWrap = ({ children, name }) => (
   <Square border={{ color: 'grey' }}>
     <Text size={12}>
@@ -268,30 +306,62 @@ const Creation = ({ savePerson }) => (
 
 ### Route
 
+This will render a component for a given url path. Route guards can be applied with the `guard` property - restricting access to a route.
+
 ```jsx
-const Creation = () => (
-  <Route>
-    {/* code */}
-  </Route>
+import { Route } from 'nuggets';
+
+const Creation = ({ isUserAuthenticated }) => (
+  <Route
+    path="/profile"
+    show={ProfilePage}
+    exact={false}
+    guard={() => isUserAuthenticated()}
+  />
 );
 ```
 
 ### Router
 
+This takes a group of routes and ensures that only one route is rendered at a time.
+
 ```jsx
+import { Router, Route } from 'nuggets';
+
 const Creation = () => (
-  <Router>
-    {/* code */}
+  <Router
+    loading={Loading}
+    nomatch={NoMatch}
+    guard={() => isUserAuthenticated()}
+    redirect="/login"
+  >
+    <Route
+      path="/"
+      exact={true}
+      show={Dashboard}
+    />
+    <Route
+      path="/profile"
+      show={Profile}
+    />
   </Router>
 );
 ```
 
 ### Link
 
+These are used to change the url of the browser window. When a link's path matches the current url path, styles in the `active` property will be applied.
+
 ```jsx
-const Creation = () => (
-  <Link>
-    {/* code */}
+import { Link } from 'nuggets';
+
+const Creation = ({ id, username }) => (
+  <Link
+    path={`/user/${id}`}
+    color="black"
+    active={{ color: 'blue' }}
+  >
+    {username}
   </Link>
 );
 ```
