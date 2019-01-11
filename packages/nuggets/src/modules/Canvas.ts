@@ -39,7 +39,7 @@ const digests: Array<(options: ICanvasProps) => string | false> = [
 
 export type ICanvasProps = {
   node?: HTMLElement | null;
-  children?: ReactElement<any>;
+  children?: ReactElement<any> | Array<ReactElement<any>>;
 } & INugget<ICanvasStyles, IEvents>;
 
 export const Canvas: FunctionComponent<ICanvasProps> = ({

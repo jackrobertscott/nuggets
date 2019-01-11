@@ -84,7 +84,7 @@ const digests: Array<(options: ISquareProps) => string | false> = [
 ];
 
 export type ISquareProps = {
-  children?: ReactElement<any>;
+  children?: ReactElement<any> | Array<ReactElement<any>>;
 } & INugget<ISquareStyles, IEvents>;
 
 export const Square: FunctionComponent<ISquareProps> = ({
