@@ -10,7 +10,7 @@ In 1980, physicist Tim Berners-Lee proposed a new markup language called HTML. T
 
 Until now...
 
-```tsx
+```jsx
 const Button = ({
   textColor = 'blue',
 }) => (
@@ -62,7 +62,7 @@ yarn add nuggets
 
 Then import the helper classes where needed.
 
-```ts
+```jsx
 import { Canvas, Square, Linear } from 'nuggets';
 ```
 
@@ -72,7 +72,7 @@ import { Canvas, Square, Linear } from 'nuggets';
 
 The canvas element prepares the browser window for components. It will fill the entire screen. It is also effective for building modals.
 
-```tsx
+```jsx
 import { Canvas } from 'nuggets';
 
 const App = ({
@@ -88,7 +88,7 @@ const App = ({
 
 This provides a box component which may be styled.
 
-```tsx
+```jsx
 import { Square } from 'nuggets';
 
 const NewComponent = ({
@@ -116,7 +116,7 @@ const NewComponent = ({
 
 This provides a circular component which may be styled.
 
-```tsx
+```jsx
 import { Circle } from 'nuggets';
 
 const NewComponent = ({
