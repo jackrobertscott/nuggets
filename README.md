@@ -181,40 +181,88 @@ const Creation = () => (
   <Media>
     {({ width }) => (
       <Text color={width > 500 ? 'green' : 'blue'}>
-        Small Screen
+        This text changes color with the size of the window.
       </Text>
     )}
   </Media>
 );
 ```
 
-### Form
+### Input
+
+This allows values to be manipulated by user actions. By default, all inputs are *required* unless the `optional` property is specified.
+
+```jsx
+const Creation = ({ updateFirstName }) => (
+  <Input.Text
+    name="firstName"
+    optional={true}
+    change={({ value }) => updateFirstName(value)}
+  />
+);
+```
+
+There are multiple input types. You may also use a custom input component as well.
+
+```jsx
+const UpperCaseInput = ({ ...props }) => (
+  <Input.Text
+    border={{
+      thickness: 1,
+      color: 'grey',
+    }}
+    focus={{
+      border: { color: 'blue' },
+    }}
+    format={({ value }) => value.toUpperCase()}
+    {...props}
+  />
+);
+```
 
 ```jsx
 const Creation = () => (
-  <Form>
-    {/* code */}
+  <Input
+    name="tag"
+    custom={UpperCaseInput}
+  />
+);
+```
+
+### Form
+
+This groups the values of any child inputs.
+
+```jsx
+const Creation = ({ savePerson }) => (
+  <Form submit={savePerson}>
+    <Input.Text name="name" />
+    <Input.Email name="email" />
+    <Input.Password name="password" />
   </Form>
 );
 ```
 
-### Input
+There is also a property called `wrapper` which will wrap all desired child inputs.
 
 ```jsx
-const Creation = () => (
-  <Input>
-    {/* code */}
-  </Input>
+const InputWrap = ({ children, name }) => (
+  <Square border={{ color: 'grey' }}>
+    <Text size={12}>
+      {createLabel(name)}
+    </Text>
+    {children}
+  </Square>
 );
 ```
 
-### Router
-
 ```jsx
-const Creation = () => (
-  <Router>
-    {/* code */}
-  </Router>
+const Creation = ({ savePerson }) => (
+  <Form submit={savePerson} wrapper={InputWrap}>
+    <Input.Text name="name" />
+    <Input.Email name="email" />
+    <Input.Password name="password" />
+  </Form>
 );
 ```
 
@@ -225,6 +273,16 @@ const Creation = () => (
   <Route>
     {/* code */}
   </Route>
+);
+```
+
+### Router
+
+```jsx
+const Creation = () => (
+  <Router>
+    {/* code */}
+  </Router>
 );
 ```
 
