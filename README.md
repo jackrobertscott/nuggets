@@ -273,9 +273,15 @@ import { Form, Input } from 'nuggets';
 
 const Creation = ({ savePerson }) => (
   <Form submit={savePerson}>
-    <Input.Text name="name" />
-    <Input.Email name="email" />
-    <Input.Password name="password" />
+    {({ submit, issues }) => (
+      <Input.Text name="name" />
+      <Input.Email name="email" />
+      <Input.Password name="password" />
+      <List items={issues}>
+        {({ message }) => <Text>{message}</Text>}
+      </List>
+      <Button click={submit}>Save</Button>
+    )}
   </Form>
 );
 ```
@@ -298,9 +304,7 @@ const InputWrap = ({ children, name }) => (
 ```jsx
 const Creation = ({ savePerson }) => (
   <Form submit={savePerson} wrapper={InputWrap}>
-    <Input.Text name="name" />
-    <Input.Email name="email" />
-    <Input.Password name="password" />
+    {/* code */}
   </Form>
 );
 ```
