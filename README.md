@@ -11,6 +11,8 @@ In 1980, physicist Tim Berners-Lee proposed a new markup language called HTML. T
 Until now...
 
 ```jsx
+import { Square, Text, Linear, List } from 'nuggets';
+
 const Button = ({
   textColor = 'blue',
 }) => (
