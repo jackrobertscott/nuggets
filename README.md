@@ -15,19 +15,20 @@ import { Square, Text, Linear, List } from 'nuggets';
 
 const Button = ({
   textColor = 'blue',
+  clickButton,
 }) => (
   <Square
     color="green"
     space={{ sides: 10, verts: 14 }}
-    click={() => console.log('clicked!')}
+    click={clickButton}
   >
     <Text color={textColor}>{children}</Text>
   </Square>
 );
 
-const Persons = ({
+const PersonList = ({
   people = []
-  selectPerson = () => {},
+  selectPerson,
 }) => (
   <Linear direction="down">
     <List items={people}>
