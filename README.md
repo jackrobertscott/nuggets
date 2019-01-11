@@ -77,7 +77,7 @@ The canvas element prepares the browser window for components. It will fill the 
 ```jsx
 import { Canvas } from 'nuggets';
 
-const App = ({
+const NewCreation = ({
   color = 'white'
 }) => (
   <Canvas color={color}>
@@ -93,7 +93,7 @@ This provides a box component which may be styled.
 ```jsx
 import { Square } from 'nuggets';
 
-const NewComponent = ({
+const NewCreation = ({
   color = 'white'
 }) => (
   <Square
@@ -121,7 +121,7 @@ This provides a circular component which may be styled.
 ```jsx
 import { Circle } from 'nuggets';
 
-const NewComponent = ({
+const NewCreation = ({
   color = 'white'
 }) => (
   <Circle
@@ -138,6 +138,103 @@ const NewComponent = ({
   >
     {/* code */}
   </Circle>
+);
+```
+
+### Linear
+
+This arranges all direct child components in a linear layout.
+
+```jsx
+const NewCreation = () => (
+  <Linear direction="right">
+    {/* code */}
+  </Linear>
+);
+```
+
+### List
+
+This iterates over an array of values and takes a function as the child.
+
+```jsx
+const people = [
+  { id: 1, name: 'Bob' },
+  { id: 2, name: 'Sally' },
+];
+
+const NewCreation = () => (
+  <List items={people}>
+    {({ id, name }) => (
+      <Text key={id}>{name}</Text>
+    )}
+  </List>
+);
+```
+
+### Media
+
+This provides easy access to the width of the browser window.
+
+```jsx
+const NewCreation = () => (
+  <Media>
+    {({ width }) => (
+      <Text color={width > 500 ? 'green' : 'blue'}>
+        Small Screen
+      </Text>
+    )}
+  </Media>
+);
+```
+
+### Form
+
+```jsx
+const NewCreation = () => (
+  <Form>
+    {/* code */}
+  </Form>
+);
+```
+
+### Input
+
+```jsx
+const NewCreation = () => (
+  <Input>
+    {/* code */}
+  </Input>
+);
+```
+
+### Router
+
+```jsx
+const NewCreation = () => (
+  <Router>
+    {/* code */}
+  </Router>
+);
+```
+
+### Route
+
+```jsx
+const NewCreation = () => (
+  <Route>
+    {/* code */}
+  </Route>
+);
+```
+
+### Link
+
+```jsx
+const NewCreation = () => (
+  <Link>
+    {/* code */}
+  </Link>
 );
 ```
 
