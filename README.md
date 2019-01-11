@@ -282,7 +282,9 @@ const Creation = ({ savePerson }) => (
       ))}
     </Form.Issues>
     <Form.Enter>
-      {({ submit }) => <Button click={submit}>Save</Button>}
+      {({ submit }) => (
+        <Button click={submit}>Save</Button>
+      )}
     </Form.Enter>
   </Form>
 );
