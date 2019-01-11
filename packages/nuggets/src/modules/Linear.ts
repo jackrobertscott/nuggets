@@ -9,7 +9,7 @@ export interface ILinearStyles {
   overrides?: CSSObject;
 }
 
-const digests: Array<(options: ILinearProps) => string | false> = [
+const digests: Array<(options: ILinearStyles) => string | false> = [
   () => {
     return `
       flex-grow: 1;

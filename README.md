@@ -273,15 +273,17 @@ import { Form, Input } from 'nuggets';
 
 const Creation = ({ savePerson }) => (
   <Form submit={savePerson}>
-    {({ submit, issues }) => (
-      <Input.Text name="name" />
-      <Input.Email name="email" />
-      <Input.Password name="password" />
-      <List items={issues}>
-        {({ message }) => <Text>{message}</Text>}
-      </List>
-      <Button click={submit}>Save</Button>
-    )}
+    <Input.Text name="name" />
+    <Input.Email name="email" />
+    <Input.Password name="password" />
+    <Form.Issues>
+      {({ issues }) => issues.map(({ message, key }) => (
+        <Text key={key}>{message}</Text>
+      ))}
+    </Form.Issues>
+    <Form.Enter>
+      {({ submit }) => <Button click={submit}>Save</Button>}
+    </Form.Enter>
   </Form>
 );
 ```

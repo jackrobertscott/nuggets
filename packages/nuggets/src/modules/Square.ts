@@ -31,7 +31,7 @@ export interface ISquareStyles {
   overrides?: CSSObject;
 }
 
-const digests: Array<(options: ISquareProps) => string | false> = [
+const digests: Array<(options: ISquareStyles) => string | false> = [
   ({ color }) => {
     return color !== undefined && `background-color: ${color};`;
   },

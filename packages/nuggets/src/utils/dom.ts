@@ -32,6 +32,5 @@ export const createDomPiece = ({
   const styledPiece = styled(type as any)`
     ${css}
   `;
-  console.log(Object.keys(attrs));
   return createElement(styledPiece, { children, ...attrs, ...into });
 };

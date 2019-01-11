@@ -16,7 +16,7 @@ export interface ICanvasStyles {
   overrides?: CSSObject;
 }
 
-const digests: Array<(options: ICanvasProps) => string | false> = [
+const digests: Array<(options: ICanvasStyles) => string | false> = [
   () => {
     return `
       display: flex;
