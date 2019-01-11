@@ -77,7 +77,7 @@ The canvas element prepares the browser window for components. It will fill the 
 ```jsx
 import { Canvas } from 'nuggets';
 
-const NewCreation = ({
+const Creation = ({
   color = 'white'
 }) => (
   <Canvas color={color}>
@@ -93,7 +93,7 @@ This provides a box component which may be styled.
 ```jsx
 import { Square } from 'nuggets';
 
-const NewCreation = ({
+const Creation = ({
   color = 'white'
 }) => (
   <Square
@@ -121,7 +121,7 @@ This provides a circular component which may be styled.
 ```jsx
 import { Circle } from 'nuggets';
 
-const NewCreation = ({
+const Creation = ({
   color = 'white'
 }) => (
   <Circle
@@ -146,7 +146,7 @@ const NewCreation = ({
 This arranges all direct child components in a linear layout.
 
 ```jsx
-const NewCreation = () => (
+const Creation = () => (
   <Linear direction="right">
     {/* code */}
   </Linear>
@@ -163,7 +163,7 @@ const people = [
   { id: 2, name: 'Sally' },
 ];
 
-const NewCreation = () => (
+const Creation = () => (
   <List items={people}>
     {({ id, name }) => (
       <Text key={id}>{name}</Text>
@@ -177,7 +177,7 @@ const NewCreation = () => (
 This provides easy access to the width of the browser window.
 
 ```jsx
-const NewCreation = () => (
+const Creation = () => (
   <Media>
     {({ width }) => (
       <Text color={width > 500 ? 'green' : 'blue'}>
@@ -191,7 +191,7 @@ const NewCreation = () => (
 ### Form
 
 ```jsx
-const NewCreation = () => (
+const Creation = () => (
   <Form>
     {/* code */}
   </Form>
@@ -201,7 +201,7 @@ const NewCreation = () => (
 ### Input
 
 ```jsx
-const NewCreation = () => (
+const Creation = () => (
   <Input>
     {/* code */}
   </Input>
@@ -211,7 +211,7 @@ const NewCreation = () => (
 ### Router
 
 ```jsx
-const NewCreation = () => (
+const Creation = () => (
   <Router>
     {/* code */}
   </Router>
@@ -221,7 +221,7 @@ const NewCreation = () => (
 ### Route
 
 ```jsx
-const NewCreation = () => (
+const Creation = () => (
   <Route>
     {/* code */}
   </Route>
@@ -231,7 +231,7 @@ const NewCreation = () => (
 ### Link
 
 ```jsx
-const NewCreation = () => (
+const Creation = () => (
   <Link>
     {/* code */}
   </Link>
