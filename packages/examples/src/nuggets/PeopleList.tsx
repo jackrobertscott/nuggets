@@ -51,6 +51,9 @@ const PeopleList: FunctionComponent = () => (
             }}
             shadow={{ blur: 5 }}
             corners={{ radius: 20 }}
+            into={{
+              onClick: () => console.log('square', name, index),
+            }}
           >
             <Text color="yellow" style={textStyle} overrides={textOverrides}>
               {name}: {index}

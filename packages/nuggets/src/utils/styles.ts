@@ -1,19 +1,4 @@
-import { createElement } from 'react';
-import styled from 'styled-components';
-
-export interface IStyledPiece {
-  children?: any;
-  options: { [name: string]: any };
-  css: string;
-}
-
-export const createStyledPiece = ({ children, options, css }: IStyledPiece) => {
-  const { ref } = options;
-  const styledPiece = styled.div`
-    ${css}
-  `;
-  return createElement(styledPiece, { children, ref });
-};
+import { INugget } from './dom';
 
 export interface ITransitionProps<T> {
   style?: T;
@@ -22,14 +7,12 @@ export interface ITransitionProps<T> {
   visited?: T;
 }
 
-export type IStyledNugget<T> = T & ITransitionProps<T>;
-
 export type IDigest<T> = (options: T) => string | false;
 
 export type IDigestArray<T> = Array<IDigest<T>>;
 
 export const createCSSFromDigests = <T>(
-  options: IStyledNugget<T>,
+  options: INugget<T, any>,
   digests: IDigestArray<T>
 ): string => {
   const { style, hover, press, visited, ...others } = options;

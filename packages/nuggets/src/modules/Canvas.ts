@@ -1,10 +1,8 @@
 import { FunctionComponent, ReactElement } from 'react';
-import {
-  createStyledPiece,
-  IStyledNugget,
-  createCSSFromDigests,
-} from '../utils/styles';
+import { createDomPiece, INugget } from '../utils/dom';
+import { createCSSFromDigests } from '../utils/styles';
 import { CSSObject, css } from 'styled-components';
+import { createEvents, IEvents } from '../utils/events';
 
 export interface ICanvasStyles {
   color?: string;
@@ -34,15 +32,16 @@ const digests: Array<(options: ICanvasProps) => string | false> = [
 
 export type ICanvasProps = {
   children?: ReactElement<any>;
-} & IStyledNugget<ICanvasStyles>;
+} & INugget<ICanvasStyles, IEvents>;
 
 export const Canvas: FunctionComponent<ICanvasProps> = ({
   children,
   ...options
 }) => {
-  return createStyledPiece({
+  return createDomPiece({
     children,
     options,
+    attrs: createEvents(options),
     css: createCSSFromDigests<ICanvasStyles>(options, digests),
   });
 };

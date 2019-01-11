@@ -1,10 +1,8 @@
 import { FunctionComponent, ReactElement } from 'react';
-import {
-  createStyledPiece,
-  IStyledNugget,
-  createCSSFromDigests,
-} from '../utils/styles';
+import { createDomPiece, INugget } from '../utils/dom';
+import { createCSSFromDigests } from '../utils/styles';
 import { CSSObject, css } from 'styled-components';
+import { createEvents, IEvents } from '../utils/events';
 
 export interface ISquareStylesBorder {
   color?: string;
@@ -87,15 +85,16 @@ const digests: Array<(options: ISquareProps) => string | false> = [
 
 export type ISquareProps = {
   children?: ReactElement<any>;
-} & IStyledNugget<ISquareStyles>;
+} & INugget<ISquareStyles, IEvents>;
 
 export const Square: FunctionComponent<ISquareProps> = ({
   children,
   ...options
 }) => {
-  return createStyledPiece({
+  return createDomPiece({
     children,
     options,
+    attrs: createEvents(options),
     css: createCSSFromDigests<ISquareStyles>(options, digests),
   });
 };

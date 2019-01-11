@@ -1,11 +1,8 @@
 import { FunctionComponent, ReactText } from 'react';
-import {
-  createStyledPiece,
-  createCSSFromDigests,
-  IDigestArray,
-  IStyledNugget,
-} from '../utils/styles';
+import { createDomPiece, INugget } from '../utils/dom';
+import { createCSSFromDigests, IDigestArray } from '../utils/styles';
 import { CSSObject, css } from 'styled-components';
+import { createEvents, IEvents } from '../utils/events';
 
 export interface ITextStyles {
   color?: string;
@@ -57,15 +54,16 @@ const digests: IDigestArray<ITextStyles> = [
 
 export type ITextProps = {
   children?: ReactText | ReactText[];
-} & IStyledNugget<ITextStyles>;
+} & INugget<ITextStyles, IEvents>;
 
 export const Text: FunctionComponent<ITextProps> = ({
   children,
   ...options
 }) => {
-  return createStyledPiece({
+  return createDomPiece({
     children,
     options,
+    attrs: createEvents(options),
     css: createCSSFromDigests<ITextStyles>(options, digests),
   });
 };

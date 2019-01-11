@@ -1,10 +1,8 @@
 import { FunctionComponent, ReactElement } from 'react';
-import {
-  createStyledPiece,
-  createCSSFromDigests,
-  IStyledNugget,
-} from '../utils/styles';
+import { createDomPiece, INugget } from '../utils/dom';
+import { createCSSFromDigests } from '../utils/styles';
 import { CSSObject, css } from 'styled-components';
+import { createEvents, IEvents } from '../utils/events';
 
 export interface ILinearStyles {
   direction?: 'right' | 'left' | 'up' | 'down';
@@ -45,15 +43,16 @@ const digests: Array<(options: ILinearProps) => string | false> = [
 
 export type ILinearProps = {
   children?: ReactElement<any> | Array<ReactElement<any>>;
-} & IStyledNugget<ILinearStyles>;
+} & INugget<ILinearStyles, IEvents>;
 
 export const Linear: FunctionComponent<ILinearProps> = ({
   children,
   ...options
 }) => {
-  return createStyledPiece({
+  return createDomPiece({
     children,
     options,
+    attrs: createEvents(options),
     css: createCSSFromDigests<ILinearStyles>(options, digests),
   });
 };

@@ -5,6 +5,12 @@ import {
   ReactElement,
 } from 'react';
 
+export interface IListProps {
+  items: any[];
+  render?: ReactElement<any>;
+  children: (item: any, index: number, array: any[]) => ReactNode;
+}
+
 export const List: FunctionComponent<IListProps> = ({
   items,
   render,
@@ -15,9 +21,3 @@ export const List: FunctionComponent<IListProps> = ({
   }
   return items.map((...args) => children(...args)) as any;
 };
-
-export interface IListProps {
-  items: any[];
-  render?: ReactElement<any>;
-  children: (item: any, index: number, array: any[]) => ReactNode;
-}

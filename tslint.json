@@ -13,7 +13,8 @@
     "no-implicit-dependencies": [true, "dev"],
     "no-empty-interface": false,
     "no-console": false,
-    "jsx-no-multiline-js": false
+    "jsx-no-multiline-js": false,
+    "jsx-no-lambda": false
   },
   "rulesDirectory": []
 }
