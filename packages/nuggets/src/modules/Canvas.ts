@@ -1,4 +1,11 @@
-import { FunctionComponent, ReactElement } from 'react';
+import {
+  FunctionComponent,
+  ReactElement,
+  Component,
+  createElement,
+  useEffect,
+} from 'react';
+import { createPortal } from 'react-dom';
 import { createDomPiece, INugget } from '../utils/dom';
 import { createCSSFromDigests } from '../utils/styles';
 import { CSSObject, css } from 'styled-components';
@@ -31,6 +38,7 @@ const digests: Array<(options: ICanvasProps) => string | false> = [
 ];
 
 export type ICanvasProps = {
+  node?: HTMLElement | null;
   children?: ReactElement<any>;
 } & INugget<ICanvasStyles, IEvents>;
 
@@ -38,10 +46,22 @@ export const Canvas: FunctionComponent<ICanvasProps> = ({
   children,
   ...options
 }) => {
-  return createDomPiece({
+  const node: HTMLElement = options.node || document.createElement('div');
+  useEffect(() => {
+    if (options.node) {
+      return;
+    }
+    document.body.appendChild(node);
+    return () => {
+      document.body.removeChild(node);
+      node.remove();
+    };
+  }, []);
+  const canvas = createDomPiece({
     children,
     options,
     attrs: createEvents(options),
     css: createCSSFromDigests<ICanvasStyles>(options, digests),
   });
+  return createPortal(canvas, node);
 };

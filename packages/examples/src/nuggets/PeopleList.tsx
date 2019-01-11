@@ -35,7 +35,7 @@ const textOverrides = {
 };
 
 const PeopleList: FunctionComponent = () => (
-  <Canvas color="yellow">
+  <Canvas color="yellow" node={document.getElementById('root')}>
     <Linear>
       <List items={people}>
         {({ name }, index) => (

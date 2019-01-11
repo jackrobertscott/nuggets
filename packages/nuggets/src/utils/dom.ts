@@ -1,6 +1,7 @@
 import { createElement } from 'react';
 import styled from 'styled-components';
 import { ITransitionProps } from './styles';
+import { IEventProps } from './events';
 
 export interface IDomPiece {
   children?: any;
@@ -13,7 +14,11 @@ export interface INuggetProps {
   into?: { [name: string]: any };
 }
 
-export type INugget<T, E> = INuggetProps & T & ITransitionProps<T> & E;
+export type INugget<T, E> = INuggetProps &
+  T &
+  ITransitionProps<T> &
+  E &
+  IEventProps<E>;
 
 export const createDomPiece = ({
   children,

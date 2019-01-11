@@ -54,13 +54,13 @@ This freedom and power means that we have a million different ways to create the
 Using [npm](https://www.npmjs.com/package/nuggets):
 
 ```shell
-npm i --save nuggets
+npm i --save nuggets react@next react-dom@next
 ```
 
 Using [yarn](https://yarnpkg.com/en/):
 
 ```shell
-yarn add nuggets
+yarn add nuggets react@next react-dom@next
 ```
 
 Then import the helper classes where needed.
