@@ -1,40 +1,31 @@
-import {
-  FunctionComponent,
-  ReactElement,
-  Component,
-  createElement,
-  useEffect,
-} from 'react';
+import { FunctionComponent, ReactElement, useEffect } from 'react';
 import { createPortal } from 'react-dom';
 import { createDomPiece, INugget } from '../utils/dom';
-import { createCSSFromDigests } from '../utils/styles';
-import { CSSObject, css } from 'styled-components';
+import {
+  createCSSFromDigests,
+  ICSSObject,
+  IDigestArray,
+} from '../utils/styles';
 import { createEvents, IEvents } from '../utils/events';
 
 export interface ICanvasStyles {
   color?: string;
-  overrides?: CSSObject;
+  overrides?: ICSSObject;
 }
 
-const digests: Array<(options: ICanvasStyles) => string | false> = [
-  () => {
-    return `
-      display: flex;
-      flex-direction: column;
-      overflow: auto;
-      position: fixed;
-      top: 0;
-      bottom: 0;
-      left: 0;
-      right: 0;
-    `;
-  },
-  ({ color }) => {
-    return color !== undefined && `background-color: ${color};`;
-  },
-  ({ overrides }) => {
-    return overrides !== undefined && `${css(overrides)}`;
-  },
+const digests: IDigestArray<ICanvasStyles> = [
+  () => ({
+    display: 'flex',
+    flexDirection: 'column',
+    overflow: 'auto',
+    position: 'fixed',
+    top: 0,
+    left: 0,
+    bottom: 0,
+    right: 0,
+  }),
+  ({ color }) => color !== undefined && { backgroundColor: color },
+  ({ overrides }) => overrides !== undefined && overrides,
 ];
 
 export type ICanvasProps = {

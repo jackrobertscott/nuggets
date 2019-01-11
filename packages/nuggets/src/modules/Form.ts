@@ -1,24 +1,24 @@
 import {
   FunctionComponent,
   ReactElement,
-  createRef,
   useState,
   createElement,
 } from 'react';
 import { createDomPiece, INugget } from '../utils/dom';
-import { createCSSFromDigests } from '../utils/styles';
-import { CSSObject, css } from 'styled-components';
-import { createEvents, IEvents, IEventParams } from '../utils/events';
+import {
+  createCSSFromDigests,
+  ICSSObject,
+  IDigestArray,
+} from '../utils/styles';
+import { createEvents, IEvents } from '../utils/events';
 import { FormProvider } from '../utils/form';
 
 export interface IFormStyles {
-  overrides?: CSSObject;
+  overrides?: ICSSObject;
 }
 
-const digests: Array<(options: IFormStyles) => string | false> = [
-  ({ overrides }) => {
-    return overrides !== undefined && `${css(overrides)}`;
-  },
+const digests: IDigestArray<IFormStyles> = [
+  ({ overrides }) => overrides !== undefined && overrides,
 ];
 
 export type IFormProps = {

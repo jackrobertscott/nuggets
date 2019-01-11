@@ -1,14 +1,17 @@
 import { FunctionComponent, ReactElement } from 'react';
 import { createDomPiece, INugget } from '../utils/dom';
-import { createCSSFromDigests } from '../utils/styles';
-import { CSSObject, css } from 'styled-components';
+import {
+  createCSSFromDigests,
+  ICSSObject,
+  IDigestArray,
+} from '../utils/styles';
 import { createEvents, IEvents } from '../utils/events';
 
 export interface ISquareStylesBorder {
   color?: string;
   thickness?: number;
   style?: string;
-  sides?: string[];
+  sides?: Array<'top' | 'left' | 'bottom' | 'right'>;
 }
 
 export interface ISquareStylesCorners {
@@ -28,13 +31,11 @@ export interface ISquareStyles {
   border?: ISquareStylesBorder;
   corners?: ISquareStylesCorners;
   shadow?: ISquareStylesShadow | ISquareStylesShadow[];
-  overrides?: CSSObject;
+  overrides?: ICSSObject;
 }
 
-const digests: Array<(options: ISquareStyles) => string | false> = [
-  ({ color }) => {
-    return color !== undefined && `background-color: ${color};`;
-  },
+const digests: IDigestArray<ISquareStyles> = [
+  ({ color }) => color !== undefined && { backgroundColor: color },
   ({ border }) => {
     if (border === undefined) {
       return false;
@@ -46,18 +47,40 @@ const digests: Array<(options: ISquareStyles) => string | false> = [
       sides = [],
     } = border;
     if (sides.length) {
-      return sides
-        .map(side => `border-${side}: ${thickness}px ${style} ${color};`)
-        .join('\n');
+      return sides.reduce((accum: any, side) => {
+        let upperSide;
+        switch (side) {
+          case 'top':
+            upperSide = 'Top';
+            break;
+          case 'bottom':
+            upperSide = 'Bottom';
+            break;
+          case 'left':
+            upperSide = 'Left';
+            break;
+          case 'right':
+            upperSide = 'Right';
+            break;
+          default:
+            break;
+        }
+        accum[`border${upperSide}`] = `${thickness}px ${style} ${color}`;
+        return accum;
+      }, {});
     }
-    return `border: ${thickness}px ${style} ${color};`;
+    return {
+      border: `${thickness}px ${style} ${color}`,
+    };
   },
   ({ corners }) => {
     if (corners === undefined) {
       return false;
     }
     const { radius = 0 } = corners;
-    return `border-radius: ${radius}px;`;
+    return {
+      borderRadius: `${radius}px`,
+    };
   },
   ({ shadow }) => {
     if (shadow === undefined) {
@@ -76,11 +99,11 @@ const digests: Array<(options: ISquareStyles) => string | false> = [
         return `${across}px ${down}px ${blur}px ${grow}px ${color}`;
       })
       .join(', ');
-    return `box-shadow: ${shade};`;
+    return {
+      boxShadow: shade,
+    };
   },
-  ({ overrides }) => {
-    return overrides !== undefined && `${css(overrides)}`;
-  },
+  ({ overrides }) => overrides !== undefined && overrides,
 ];
 
 export type ISquareProps = {

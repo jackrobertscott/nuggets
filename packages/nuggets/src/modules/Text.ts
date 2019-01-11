@@ -1,7 +1,10 @@
 import { FunctionComponent, ReactText } from 'react';
 import { createDomPiece, INugget } from '../utils/dom';
-import { createCSSFromDigests, IDigestArray } from '../utils/styles';
-import { CSSObject, css } from 'styled-components';
+import {
+  createCSSFromDigests,
+  IDigestArray,
+  ICSSObject,
+} from '../utils/styles';
 import { createEvents, IEvents } from '../utils/events';
 
 export interface ITextStyles {
@@ -11,22 +14,14 @@ export interface ITextStyles {
   height?: number;
   size?: number;
   family?: string;
-  overrides?: CSSObject;
+  overrides?: ICSSObject;
 }
 
 const digests: IDigestArray<ITextStyles> = [
-  ({ size }) => {
-    return size !== undefined && `font-size: ${size}px;`;
-  },
-  ({ color }) => {
-    return color !== undefined && `color: ${color};`;
-  },
-  ({ align }) => {
-    return align !== undefined && `text-align: ${align};`;
-  },
-  ({ family }) => {
-    return family !== undefined && `font-family: ${family};`;
-  },
+  ({ size }) => size !== undefined && { fontSize: `${size}px` },
+  ({ color }) => color !== undefined && { color },
+  ({ align }) => align !== undefined && { textAlign: align },
+  ({ family }) => family !== undefined && { fontFamily: family },
   /**
    * CSS Fonts work between 100 and 900.
    * @see https://developer.mozilla.org/en-US/docs/Web/CSS/font-weight#Values
@@ -38,18 +33,14 @@ const digests: IDigestArray<ITextStyles> = [
       const message = `In "<Text boldness={number} />": number must be between ${min} and ${max} inclusive but got "${boldness}".`;
       throw new Error(message);
     }
-    return `font-weight: ${boldness};`;
+    return { fontWeight: boldness };
   },
   /**
    * Numbers will be multiplied against the font size.
    * @see https://developer.mozilla.org/en-US/docs/Web/CSS/line-height
    */
-  ({ height }) => {
-    return height !== undefined && `line-height: ${height};`;
-  },
-  ({ overrides }) => {
-    return overrides !== undefined && `${css(overrides)}`;
-  },
+  ({ height }) => height !== undefined && { lineHeight: height },
+  ({ overrides }) => overrides !== undefined && overrides,
 ];
 
 export type ITextProps = {

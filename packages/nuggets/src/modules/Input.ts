@@ -5,19 +5,20 @@ import {
   cloneElement,
 } from 'react';
 import { createDomPiece, INugget } from '../utils/dom';
-import { createCSSFromDigests } from '../utils/styles';
-import { CSSObject, css } from 'styled-components';
+import {
+  createCSSFromDigests,
+  ICSSObject,
+  IDigestArray,
+} from '../utils/styles';
 import { createEvents, IEvents } from '../utils/events';
 import { FormConsumer, IFormContext } from '../utils/form';
 
 export interface IInputStyles {
-  overrides?: CSSObject;
+  overrides?: ICSSObject;
 }
 
-const digests: Array<(options: IInputStyles) => string | false> = [
-  ({ overrides }) => {
-    return overrides !== undefined && `${css(overrides)}`;
-  },
+const digests: IDigestArray<IInputStyles> = [
+  ({ overrides }) => overrides !== undefined && overrides,
 ];
 
 export type IInputProps = {

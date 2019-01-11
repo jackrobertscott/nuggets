@@ -1,6 +1,6 @@
+import { jsx, css as emotion } from '@emotion/core';
 import { createElement } from 'react';
-import styled from 'styled-components';
-import { ITransitionProps } from './styles';
+import { ITransitionProps, ICSSObject } from './styles';
 import { IEventProps } from './events';
 
 export interface INuggetProps {
@@ -14,7 +14,7 @@ export type INugget<T, E> = INuggetProps &
   IEventProps<E>;
 
 export interface IDomPiece {
-  css: string;
+  css: ICSSObject;
   type?: string;
   children?: any;
   attrs?: { [name: string]: any };
@@ -29,8 +29,10 @@ export const createDomPiece = ({
   attrs = {},
 }: IDomPiece) => {
   const { into } = options;
-  const styledPiece = styled(type as any)`
-    ${css}
-  `;
-  return createElement(styledPiece, { children, ...attrs, ...into });
+  return jsx(type, {
+    children,
+    css: emotion(css),
+    ...attrs,
+    ...into,
+  });
 };

@@ -1,22 +1,23 @@
 import { FunctionComponent, ReactElement } from 'react';
 import { createDomPiece, INugget } from '../utils/dom';
-import { createCSSFromDigests } from '../utils/styles';
-import { CSSObject, css } from 'styled-components';
+import {
+  createCSSFromDigests,
+  ICSSObject,
+  IDigestArray,
+} from '../utils/styles';
 import { createEvents, IEvents } from '../utils/events';
 
 export interface ILinearStyles {
   direction?: 'right' | 'left' | 'up' | 'down';
-  overrides?: CSSObject;
+  overrides?: ICSSObject;
 }
 
-const digests: Array<(options: ILinearStyles) => string | false> = [
-  () => {
-    return `
-      flex-grow: 1;
-      display: flex;
-      overflow: auto;
-    `;
-  },
+const digests: IDigestArray<ILinearStyles> = [
+  () => ({
+    flexGrow: 1,
+    display: 'flex',
+    overflow: 'auto',
+  }),
   ({ direction }) => {
     let value;
     switch (direction) {
@@ -34,11 +35,9 @@ const digests: Array<(options: ILinearStyles) => string | false> = [
         value = 'row-reverse';
         break;
     }
-    return `flex-direction: ${value};`;
+    return { flexDirection: value };
   },
-  ({ overrides }) => {
-    return overrides !== undefined && `${css(overrides)}`;
-  },
+  ({ overrides }) => overrides !== undefined && overrides,
 ];
 
 export type ILinearProps = {
