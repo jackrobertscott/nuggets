@@ -1,5 +1,4 @@
 import { jsx, css as emotion } from '@emotion/core';
-import { createElement } from 'react';
 import { ITransitionProps, ICSSObject } from './styles';
 import { IEventProps } from './events';
 
