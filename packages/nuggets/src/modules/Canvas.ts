@@ -57,11 +57,11 @@ export const Canvas: FunctionComponent<ICanvasProps> = ({
       node.remove();
     };
   }, []);
-  const canvas = createDomPiece({
+  const InterCanvas = createDomPiece({
     children,
     options,
     attrs: createEvents(options),
     css: createCSSFromDigests<ICanvasStyles>(options, digests),
   });
-  return createPortal(canvas, node);
+  return createPortal(InterCanvas, node);
 };

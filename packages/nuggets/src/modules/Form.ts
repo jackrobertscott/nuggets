@@ -30,7 +30,7 @@ export const Form: FunctionComponent<IFormProps> = ({
   ...options
 }) => {
   const [data, change] = useState({});
-  const form = createDomPiece({
+  const InterForm = createDomPiece({
     children,
     options,
     attrs: createEvents(options),
@@ -42,5 +42,5 @@ export const Form: FunctionComponent<IFormProps> = ({
       change({ ...data, [name]: value });
     },
   };
-  return createElement(FormProvider, { value: provider }, form);
+  return createElement(FormProvider, { value: provider }, InterForm);
 };
