@@ -226,6 +226,8 @@ const Creation = () => (
 This provides a simple to use toggle interface.
 
 ```jsx
+import { Toggle, Text } from 'nuggets';
+
 const Creation = ({ value, change }) => (
   <Toggle value={value} change={change}>
     {({ on, off, active }) => active ? (
@@ -240,6 +242,8 @@ const Creation = ({ value, change }) => (
 There is also a simple `toggle` property which makes it a little easier.
 
 ```jsx
+import { Toggle, Text } from 'nuggets';
+
 const Creation = ({ value, change }) => (
   <Toggle value={value} change={change}>
     {({ toggle, active }) => (
@@ -254,6 +258,8 @@ const Creation = ({ value, change }) => (
 This is a simple interface for recording user keyboard input. Styles may be applied to the text created by this component (similar to `<Text />`).
 
 ```jsx
+import { Insert } from 'nuggets';
+
 const Creation = ({ value, change }) => (
   <Insert
     color="green"
@@ -270,9 +276,11 @@ const Creation = ({ value, change }) => (
 This provides an easy to use interface for recording datetimes.
 
 ```jsx
+import { Datetime, Insert } from 'nuggets';
+
 const Creation = ({ value, change }) => (
   <Datetime value={value} change={change}>
-    {({ date, month, year }) => (
+    {({ date, month, year, hour, minute, second, millisecond }) => (
       {/* update date of month */}
       <Insert
         value={date.value}
@@ -281,6 +289,10 @@ const Creation = ({ value, change }) => (
       />
       <Insert {...month} />
       <Insert {...year} />
+      <Insert {...hour} />
+      <Insert {...minute} />
+      <Insert {...second} />
+      <Insert {...millisecond} />
     )}
   </Datetime>
 );
@@ -325,7 +337,7 @@ const Creation = ({ value, change, items }) => (
 Use this to build information collectors or inputs. This does not collect information by itself, rather it provides an easy interface which you may use to collect data. By default, all inputs are *required* unless the `optional` property is specified.
 
 ```jsx
-import { Input } from 'nuggets';
+import { Input, Square, Text, Insert } from 'nuggets';
 
 const Creation = ({ updateFirstName }) => (
   <Input
@@ -354,7 +366,8 @@ const Creation = ({ updateFirstName }) => (
 This groups the values of any child inputs.
 
 ```jsx
-import { Form, Input } from 'nuggets';
+import { Form, Issues, Enter } from 'nuggets';
+import { InputText, InputEmail, InputPassword } from '../inputs';
 
 const Creation = ({ savePerson }) => (
   <Form submit={savePerson}>
