@@ -73,7 +73,7 @@ import { Canvas, Square, Linear } from 'nuggets';
 
 ## Components
 
-### Canvas
+### `<Canvas />`
 
 The canvas element prepares the browser window for components. It will fill the entire screen. It is also effective for building modals.
 
@@ -90,7 +90,7 @@ const Creation = ({
 );
 ```
 
-### Text
+### `<Text />`
 
 This component is required when rendering text on the page. This also styles the text.
 
@@ -111,7 +111,7 @@ const Creation = ({
 );
 ```
 
-### Square
+### `<Square />`
 
 This provides a box component which may be styled.
 
@@ -140,7 +140,7 @@ const Creation = ({
 );
 ```
 
-### Circle
+### `<Circle />`
 
 This provides a circular component which may be styled.
 
@@ -168,7 +168,7 @@ const Creation = ({
 );
 ```
 
-### Linear
+### `<Linear />`
 
 This arranges all direct child components in a linear layout.
 
@@ -182,7 +182,7 @@ const Creation = () => (
 );
 ```
 
-### Media
+### `<Media />`
 
 This provides easy access to the width of the browser window.
 
@@ -200,7 +200,7 @@ const Creation = () => (
 );
 ```
 
-### Toggle
+### `<Toggle />`
 
 This provides a simple to use toggle interface.
 
@@ -232,7 +232,7 @@ const Creation = ({ value, change }) => (
 );
 ```
 
-### Insert
+### `<Insert />`
 
 This is a simple interface for recording user keyboard input. Styles may be applied to the text created by this component (similar to `<Text />`).
 
@@ -250,7 +250,7 @@ const Creation = ({ value, change }) => (
 );
 ```
 
-### Datetime
+### `<Datetime />`
 
 This provides an easy to use interface for recording datetimes.
 
@@ -277,7 +277,7 @@ const Creation = ({ value, change }) => (
 );
 ```
 
-### Multiple
+### `<Multiple />`
 
 This is an interface for collecting an array of values.
 
@@ -303,7 +303,7 @@ const Creation = ({ value, change, items }) => (
 );
 ```
 
-### Input
+### `<Input />`
 
 Use this to build information collectors or inputs. This does not collect information by itself, rather it provides an easy interface which you may use to collect data. By default, all inputs are *required* unless the `optional` property is specified.
 
@@ -332,7 +332,7 @@ const Creation = ({ updateFirstName }) => (
 );
 ```
 
-### Form
+### `<Form />`
 
 This groups the values of any child inputs.
 
@@ -383,7 +383,7 @@ const Creation = ({ savePerson }) => (
 );
 ```
 
-### Route
+### `<Route />`
 
 This will render a component for a given url path. Route guards can be applied with the `guard` property - restricting access to a route.
 
@@ -400,7 +400,7 @@ const Creation = ({ isUserAuthenticated }) => (
 );
 ```
 
-### Router
+### `<Router />`
 
 This takes a group of routes and ensures that only one route is rendered at a time.
 
@@ -427,7 +427,7 @@ const Creation = () => (
 );
 ```
 
-### Link
+### `<Link />`
 
 These are used to change the url of the browser window. When a link's path matches the current url path, styles in the `active` property will be applied.
 
