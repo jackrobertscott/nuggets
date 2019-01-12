@@ -5,13 +5,13 @@ import {
   ReactElement,
 } from 'react';
 
-export interface IListProps {
+export interface IMultipleProps {
   items: any[];
   render?: ReactElement<any>;
   children: (item: any, index: number, array: any[]) => ReactNode;
 }
 
-export const List: FunctionComponent<IListProps> = ({
+export const Multiple: FunctionComponent<IMultipleProps> = ({
   items,
   render,
   children,

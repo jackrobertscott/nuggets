@@ -182,27 +182,6 @@ const Creation = () => (
 );
 ```
 
-### List
-
-This iterates over an array of values and takes a function as the child.
-
-```jsx
-import { List, Text } from 'nuggets';
-
-const people = [
-  { id: 1, name: 'Bob' },
-  { id: 2, name: 'Sally' },
-];
-
-const Creation = () => (
-  <List items={people}>
-    {({ id, name }) => (
-      <Text key={id}>{name}</Text>
-    )}
-  </List>
-);
-```
-
 ### Media
 
 This provides easy access to the width of the browser window.
@@ -305,13 +284,9 @@ This is an interface for collecting an array of values.
 ```jsx
 const Creation = ({ value, change, items }) => (
   <Multiple value={value} change={change}>
-    {({ add, remove, includes }) => (
-      <List items={items}>
-        {({ id, name }) => (
-          <Text key={id} click={includes(id) ? add(id) : remove(id)}>{name}</Text>
-        )}
-      </List>
-    )}
+    {({ add, remove, includes }) => items.map(({ id, name }) => (
+      <Text key={id} click={includes(id) ? add(id) : remove(id)}>{name}</Text>
+    ))}
   </Multiple>
 );
 ```
@@ -321,13 +296,9 @@ There is also a simple `toggle` attribute which makes the above code a little ea
 ```jsx
 const Creation = ({ value, change, items }) => (
   <Multiple value={value} change={change}>
-    {({ toggle }) => (
-      <List items={items}>
-        {({ id, name }) => (
-          <Text key={id} click={toggle(id)}>{name}</Text>
-        )}
-      </List>
-    )}
+    {({ toggle }) => items.map(({ id, name }) => (
+      <Text key={id} click={toggle(id)}>{name}</Text>
+    ))}
   </Multiple>
 );
 ```
