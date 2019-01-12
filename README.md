@@ -339,14 +339,14 @@ const Example = ({
 
 ### `<Form />`
 
-This groups the values of any child inputs.
+This groups the values of child inputs. These forms can be nested to create subforms.
 
 ```jsx
 import { Form, Issues, Enter } from 'nuggets';
 import { InputText, InputEmail, InputPassword } from '../inputs';
 
-const Example = ({ savePerson }) => (
-  <Form submit={savePerson}>
+const Example = ({ person, savePerson }) => (
+  <Form value={person} change={savePerson}>
     <InputText name="name" />
     <InputEmail name="email" />
     <InputPassword name="password" />
@@ -355,11 +355,11 @@ const Example = ({ savePerson }) => (
         <Text key={key}>{message}</Text>
       ))}
     </Issues>
-    <Enter>
-      {({ submit }) => (
-        <Button click={submit}>Save</Button>
+    <Confirm>
+      {({ confirm }) => (
+        <Button click={confirm}>Save</Button>
       )}
-    </Enter>
+    </Confirm>
   </Form>
 );
 ```
