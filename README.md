@@ -405,6 +405,8 @@ const Example = ({ isUserAuthenticated }) => (
 );
 ```
 
+**Note:** the guard is run once on matching and again every time the route changes.
+
 ### `<Router />`
 
 This takes a group of routes and ensures that only one route is rendered at a time.
