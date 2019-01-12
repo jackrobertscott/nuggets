@@ -6,7 +6,7 @@ A collection of essential components which compose modern web experiences.
 
 ## Overview
 
-In 1980, physicist Tim Berners-Lee proposed a new markup language called HTML. Then came CSS3 in 1998. Both are powerful languages. However, since their creation, modern web development has significantly progressed and we now long for more functionality from these languages. Although there has been movement in this area, there leaves a lot to be desired in terms of functionality.
+In 1980, physicist Tim Berners-Lee proposed a new markup language called HTML. Then in 1997 and 1998 they brought out CSS2 and CSS3 respectively. Both are powerful languages. However, since their creation, our demands for more intricate functionality has increased without seeing a similar improvement of the technologies. Although there has been movement in the area of web development tooling, there leaves a lot to be desired.
 
 Until now...
 
@@ -43,11 +43,13 @@ const PersonList = ({
 );
 ```
 
-We found that the biggest problem with HTML and CSS is that it's given all the elements *too much* power. You can use almost any element to do anything.
+The biggest problem with HTML and CSS is that it's given us *too much* power. You can apply the same styles to almost any element and have it produce a result.
 
 But thats not good...
 
-This freedom and power means that we have a million different ways to create the same code. This means every time we attempt to create something, we have to think. And when you have to think about your code, the code becomes inconsistent and takes a lot more time to create. Nuggets aims to remove this thinking so that there is a simple a best way to make everything.
+This freedom and power means that a simple button could be written hundreds of different ways with almost any combination of elements. As such, almost every time we attempt to create something, we have to think way more than we should need to. And when you have to think about your code, the code becomes inconsistent and takes a lot more time to create.
+
+Nuggets aims to reduce the mental effort required to code so that you can put more effort into your designs, not the code.
 
 ## Install
 
@@ -219,48 +221,95 @@ const Creation = () => (
 );
 ```
 
+### Toggle
+
+This provides a simple to use toggle interface.
+
+```jsx
+const Creation = ({ value, change }) => (
+  <Toggle value={value} change={change}>
+    {({ on, off, active }) => active ? (
+      <Text color="green" click={off}>On</Text>
+    ) : (
+      <Text color="red" click={on}>Off</Text>
+    )}
+  </Toggle>
+);
+```
+
+### Insert
+
+This is a simple interface for recording user keyboard input. Styles may be applied to the text created by this component (similar to `<Text />`).
+
+```jsx
+const Creation = ({ value, change }) => (
+  <Insert
+    color="green"
+    rows={1}
+    value={value}
+    change={change}
+    format={value => formatUsername(value)}
+  />
+);
+```
+
+### Datetime
+
+This provides an easy to use interface for recording datetimes.
+
+```jsx
+const Creation = ({ value, change }) => (
+  <Datetime value={value} change={change}>
+    {({ update, datetime, ensure }) => (
+      {/* update date of month */}
+      <Insert
+        value={datetime.date}
+        format={ensure.date}
+        change={value => update.date(value)}
+      />
+      {/* update month */}
+      <Insert
+        value={datetime.month}
+        format={ensure.month}
+        change={value => update.month(value)}
+      />
+      {/* update year */}
+      <Insert
+        value={datetime.year}
+        format={ensure.year}
+        change={value => update.year(value)}
+      />
+    )}
+  </Datetime>
+);
+```
+
 ### Input
 
-This allows values to be manipulated by user actions. By default, all inputs are *required* unless the `optional` property is specified.
+Use this to build information collectors or inputs. This does not collect information by itself, rather it provides an easy interface which you may use to collect data. By default, all inputs are *required* unless the `optional` property is specified.
 
 ```jsx
 import { Input } from 'nuggets';
 
 const Creation = ({ updateFirstName }) => (
-  <Input.Text
-    name="firstName"
-    optional={true}
-    change={({ value }) => updateFirstName(value)}
-  />
-);
-```
-
-There are multiple input types. You may also use a custom input component as well.
-
-```jsx
-import { Input } from 'nuggets';
-
-const UpperCaseInput = ({ ...props }) => (
-  <Input.Text
-    border={{
-      thickness: 1,
-      color: 'grey',
-    }}
-    focus={{
-      border: { color: 'blue' },
-    }}
-    format={({ value }) => value.toUpperCase()}
-    {...props}
-  />
-);
-```
-
-```jsx
-const Creation = () => (
   <Input
-    name="tag"
-    custom={UpperCaseInput}
-  />
+    name="user.email"
+    optional={true}
+    validate={validators.isEmail}
+  >
+    {({ value, change, issue }) => (
+      <Square>
+        <Square border={{ color: 'green' }}>
+          <Insert
+            value={value}
+            change={change}
+            format={value => value.toUpperCase()}
+          />
+        </Square>
+        {issue && <Text>{issue}</Text>}
+      </Square>
+    )}
+  </Input>
 );
 ```
 
