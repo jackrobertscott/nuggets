@@ -237,6 +237,18 @@ const Creation = ({ value, change }) => (
 );
 ```
 
+There is also a simple `toggle` property which makes it a little easier.
+
+```jsx
+const Creation = ({ value, change }) => (
+  <Toggle value={value} change={change}>
+    {({ toggle, active }) => (
+      <Text color={active ? 'green' : 'red'} click={toggle}>On</Text>
+    )}
+  </Toggle>
+);
+```
+
 ### Insert
 
 This is a simple interface for recording user keyboard input. Styles may be applied to the text created by this component (similar to `<Text />`).
@@ -248,7 +260,7 @@ const Creation = ({ value, change }) => (
     rows={1}
     value={value}
     change={change}
-    format={value => formatUsername(value)}
+    format={value => stringToLowerCase(value)}
   />
 );
 ```
@@ -260,27 +272,51 @@ This provides an easy to use interface for recording datetimes.
 ```jsx
 const Creation = ({ value, change }) => (
   <Datetime value={value} change={change}>
-    {({ update, datetime, ensure }) => (
+    {({ date, month, year }) => (
       {/* update date of month */}
       <Insert
-        value={datetime.date}
-        format={ensure.date}
-        change={value => update.date(value)}
+        value={date.value}
+        format={date.format}
+        change={date.change}
       />
-      {/* update month */}
-      <Insert
-        value={datetime.month}
-        format={ensure.month}
-        change={value => update.month(value)}
-      />
-      {/* update year */}
-      <Insert
-        value={datetime.year}
-        format={ensure.year}
-        change={value => update.year(value)}
-      />
+      <Insert {...month} />
+      <Insert {...year} />
     )}
   </Datetime>
+);
+```
+
+### Multiple
+
+This is an interface for collecting an array of values.
+
+```jsx
+const Creation = ({ value, change, items }) => (
+  <Multiple value={value} change={change}>
+    {({ add, remove, includes }) => (
+      <List items={items}>
+        {({ id, name }) => (
+          <Text key={id} click={includes(id) ? add(id) : remove(id)}>{name}</Text>
+        )}
+      </List>
+    )}
+  </Multiple>
+);
+```
+
+There is also a simple `toggle` attribute which makes the above code a little easier.
+
+```jsx
+const Creation = ({ value, change, items }) => (
+  <Multiple value={value} change={change}>
+    {({ toggle }) => (
+      <List items={items}>
+        {({ id, name }) => (
+          <Text key={id} click={toggle(id)}>{name}</Text>
+        )}
+      </List>
+    )}
+  </Multiple>
 );
 ```
 
@@ -322,19 +358,19 @@ import { Form, Input } from 'nuggets';
 
 const Creation = ({ savePerson }) => (
   <Form submit={savePerson}>
-    <Input.Text name="name" />
-    <Input.Email name="email" />
-    <Input.Password name="password" />
-    <Form.Issues>
+    <InputText name="name" />
+    <InputEmail name="email" />
+    <InputPassword name="password" />
+    <Issues>
       {({ issues }) => issues.map(({ message, key }) => (
         <Text key={key}>{message}</Text>
       ))}
-    </Form.Issues>
-    <Form.Enter>
+    </Issues>
+    <Enter>
       {({ submit }) => (
         <Button click={submit}>Save</Button>
       )}
-    </Form.Enter>
+    </Enter>
   </Form>
 );
 ```
@@ -357,7 +393,8 @@ const InputWrap = ({ children, name }) => (
 ```jsx
 const Creation = ({ savePerson }) => (
   <Form submit={savePerson} wrapper={InputWrap}>
-    {/* code */}
+    {/* this input will be wrapped by the wrapper input */}
+    <TextInput name="name" />
   </Form>
 );
 ```
