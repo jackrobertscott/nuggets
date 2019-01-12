@@ -310,11 +310,16 @@ Use this to build information collectors or inputs. This does not collect inform
 ```jsx
 import { Input, Square, Text, Insert } from 'nuggets';
 
-const Creation = ({ updateFirstName }) => (
+const Creation = ({
+  name = 'address.city',
+  optional = true,
+  ...props,
+}) => (
   <Input
-    name="user.email"
-    optional={true}
-    validate={validators.isEmail}
+    name={name}
+    optional={optional}
+    validate={value => validators.isEmail(value)}
+    {...props}
   >
     {({ value, change, issue }) => (
       <Square>
