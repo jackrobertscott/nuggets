@@ -8,25 +8,12 @@ import {
 } from '../utils/styles';
 import { createEvents, IEvents } from '../utils/events';
 
-export interface ICanvasStyles {
-  color?: string;
-  overrides?: ICSSObject;
-}
-
-const digests: IDigestArray<ICanvasStyles> = [
-  () => ({
-    display: 'flex',
-    flexDirection: 'column',
-    overflow: 'auto',
-    position: 'fixed',
-    top: 0,
-    left: 0,
-    bottom: 0,
-    right: 0,
-  }),
-  ({ color }) => color !== undefined && { backgroundColor: color },
-  ({ overrides }) => overrides !== undefined && overrides,
-];
+/**
+ * 1. Optionally add styles based on props.
+ * 2. Optionally render a dom item.
+ * 3. Optionally have a state and state manipulation functions.
+ * 4. Needs onmount, componentdidupdate and willunmount access.
+ */
 
 export type ICanvasProps = {
   node?: HTMLElement | null;
@@ -56,3 +43,23 @@ export const Canvas: FunctionComponent<ICanvasProps> = ({
   });
   return createPortal(InterCanvas, node);
 };
+
+export interface ICanvasStyles {
+  color?: string;
+  overrides?: ICSSObject;
+}
+
+const digests: IDigestArray<ICanvasStyles> = [
+  () => ({
+    display: 'flex',
+    flexDirection: 'column',
+    overflow: 'auto',
+    position: 'fixed',
+    top: 0,
+    left: 0,
+    bottom: 0,
+    right: 0,
+  }),
+  ({ color }) => color !== undefined && { backgroundColor: color },
+  ({ overrides }) => overrides !== undefined && overrides,
+];
