@@ -80,7 +80,7 @@ The canvas element prepares the browser window for components. It will fill the 
 ```jsx
 import { Canvas } from 'nuggets';
 
-const Creation = ({
+const Example = ({
   color = 'white'
   children,
 }) => (
@@ -97,7 +97,7 @@ This component is required when rendering text on the page. This also styles the
 ```jsx
 import { Text } from 'nuggets';
 
-const Creation = ({
+const Example = ({
   color = 'black'
 }) => (
   <Text
@@ -118,7 +118,7 @@ This provides a box component which may be styled.
 ```jsx
 import { Square } from 'nuggets';
 
-const Creation = ({
+const Example = ({
   color = 'white'
   children,
 }) => (
@@ -147,7 +147,7 @@ This provides a circular component which may be styled.
 ```jsx
 import { Circle } from 'nuggets';
 
-const Creation = ({
+const Example = ({
   color = 'white',
   children,
 }) => (
@@ -175,7 +175,7 @@ This arranges all direct child components in a linear layout.
 ```jsx
 import { Linear } from 'nuggets';
 
-const Creation = () => (
+const Example = () => (
   <Linear direction="right">
     {/* code */}
   </Linear>
@@ -189,7 +189,7 @@ This provides easy access to the width of the browser window.
 ```jsx
 import { Media } from 'nuggets';
 
-const Creation = () => (
+const Example = () => (
   <Media>
     {({ width }) => (
       <Text color={width > 500 ? 'green' : 'blue'}>
@@ -207,7 +207,7 @@ This provides a simple to use toggle interface.
 ```jsx
 import { Toggle, Text } from 'nuggets';
 
-const Creation = ({ value, change }) => (
+const Example = ({ value, change }) => (
   <Toggle value={value} change={change}>
     {({ on, off, active }) => active ? (
       <Text color="green" click={off}>On</Text>
@@ -223,7 +223,7 @@ There is also a simple `toggle` property which makes it a little easier.
 ```jsx
 import { Toggle, Text } from 'nuggets';
 
-const Creation = ({ value, change }) => (
+const Example = ({ value, change }) => (
   <Toggle value={value} change={change}>
     {({ toggle, active }) => (
       <Text color={active ? 'green' : 'red'} click={toggle}>On</Text>
@@ -239,7 +239,7 @@ This is a simple interface for recording user keyboard input. Styles may be appl
 ```jsx
 import { Insert } from 'nuggets';
 
-const Creation = ({ value, change }) => (
+const Example = ({ value, change }) => (
   <Insert
     color="green"
     rows={1}
@@ -257,7 +257,7 @@ This provides an easy to use interface for recording datetimes.
 ```jsx
 import { Datetime, Insert } from 'nuggets';
 
-const Creation = ({ value, change }) => (
+const Example = ({ value, change }) => (
   <Datetime value={value} change={change}>
     {({ date, month, year, hour, minute, second, millisecond }) => (
       {/* update date of month */}
@@ -282,7 +282,7 @@ const Creation = ({ value, change }) => (
 This is an interface for collecting an array of values.
 
 ```jsx
-const Creation = ({ value, change, items }) => (
+const Example = ({ value, change, items }) => (
   <Multiple value={value} change={change}>
     {({ add, remove, includes }) => items.map(({ id, name }) => (
       <Text key={id} click={includes(id) ? add(id) : remove(id)}>{name}</Text>
@@ -294,7 +294,7 @@ const Creation = ({ value, change, items }) => (
 There is also a simple `toggle` attribute which makes the above code a little easier.
 
 ```jsx
-const Creation = ({ value, change, items }) => (
+const Example = ({ value, change, items }) => (
   <Multiple value={value} change={change}>
     {({ toggle }) => items.map(({ id, name }) => (
       <Text key={id} click={toggle(id)}>{name}</Text>
@@ -310,7 +310,7 @@ Use this to build information collectors or inputs. This does not collect inform
 ```jsx
 import { Input, Square, Text, Insert } from 'nuggets';
 
-const Creation = ({
+const Example = ({
   name = 'address.city',
   optional = true,
   ...props,
@@ -345,7 +345,7 @@ This groups the values of any child inputs.
 import { Form, Issues, Enter } from 'nuggets';
 import { InputText, InputEmail, InputPassword } from '../inputs';
 
-const Creation = ({ savePerson }) => (
+const Example = ({ savePerson }) => (
   <Form submit={savePerson}>
     <InputText name="name" />
     <InputEmail name="email" />
@@ -380,7 +380,7 @@ const InputWrap = ({ children, name }) => (
 ```
 
 ```jsx
-const Creation = ({ savePerson }) => (
+const Example = ({ savePerson }) => (
   <Form submit={savePerson} wrapper={InputWrap}>
     {/* this input will be wrapped by the wrapper input */}
     <TextInput name="name" />
@@ -395,7 +395,7 @@ This will render a component for a given url path. Route guards can be applied w
 ```jsx
 import { Route } from 'nuggets';
 
-const Creation = ({ isUserAuthenticated }) => (
+const Example = ({ isUserAuthenticated }) => (
   <Route
     path="/profile"
     show={ProfilePage}
@@ -412,7 +412,7 @@ This takes a group of routes and ensures that only one route is rendered at a ti
 ```jsx
 import { Router, Route } from 'nuggets';
 
-const Creation = () => (
+const Example = () => (
   <Router
     loading={Loading}
     nomatch={NoMatch}
@@ -439,7 +439,7 @@ These are used to change the url of the browser window. When a link's path match
 ```jsx
 import { Link } from 'nuggets';
 
-const Creation = ({ id, username }) => (
+const Example = ({ id, username }) => (
   <Link
     path={`/user/${id}`}
     color="black"
