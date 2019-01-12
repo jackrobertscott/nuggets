@@ -398,8 +398,8 @@ import { Route } from 'nuggets';
 const Example = ({ isUserAuthenticated }) => (
   <Route
     path="/profile"
-    show={ProfilePage}
     exact={false}
+    render={ProfilePage}
     guard={() => isUserAuthenticated()}
   />
 );
@@ -422,13 +422,14 @@ const Example = () => (
     redirect="/login"
   >
     <Route
+      path="/profile"
+      render={Profile}
+    />
+    {/* lazy load routes */}
+    <Route
       path="/"
       exact={true}
-      show={Dashboard}
-    />
-    <Route
-      path="/profile"
-      show={Profile}
+      render={() => import('./Dashboard')}  
     />
   </Router>
 );
