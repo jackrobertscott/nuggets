@@ -12,7 +12,7 @@ const HelloForm: FunctionComponent = () => {
   return (
     <Square color="green" padding={100}>
       <Form value={form} change={console.log}>
-        <Input name="name" value={form.name} change={console.log}>
+        <Input name="name" value={form.name}>
           {({ value, change }: any) => (
             <input
               value={value || ''}
@@ -20,7 +20,7 @@ const HelloForm: FunctionComponent = () => {
             />
           )}
         </Input>
-        <Input name="home" change={console.log}>
+        <Input name="home">
           {({ value, change }: any) => (
             <input
               value={value || ''}
