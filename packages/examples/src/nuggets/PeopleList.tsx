@@ -1,5 +1,5 @@
 import React, { FunctionComponent } from 'react';
-import { Linear, List, Square, Text, ITextStyles } from 'nuggets';
+import { Linear, Square, Text, ITextStyles } from 'nuggets';
 
 const people: Array<{ name: string }> = [
   { name: 'atlantis' },
@@ -20,30 +20,33 @@ const textOverrides = {
 
 const PeopleList: FunctionComponent = () => (
   <Linear>
-    <List items={people}>
-      {({ name }, index) => (
-        <Square
-          key={name + index}
-          color="green"
-          press={{ color: 'blue' }}
-          border={{
-            color: 'blue',
-            thickness: 5,
-            style: 'dashed',
-            sides: ['bottom', 'top'],
-          }}
-          shadow={{ blur: 5 }}
-          corners={{ radius: 20 }}
-          into={{
-            onClick: () => console.log('square', name, index),
-          }}
-        >
-          <Text color="yellow" style={textStyle} overrides={textOverrides}>
-            {name}: {index}
-          </Text>
-        </Square>
-      )}
-    </List>
+    {people.map(({ name }, index) => (
+      <Square
+        key={name + index}
+        color="green"
+        press={{ color: 'blue' }}
+        border={{
+          color: 'blue',
+          thickness: 5,
+          style: 'dashed',
+          sides: ['bottom', 'top'],
+        }}
+        padding={{
+          top: 20,
+          bottom: 30,
+          right: 50,
+        }}
+        shadow={{ blur: 5 }}
+        corners={{ radius: 20 }}
+        into={{
+          onClick: () => console.log('square', name, index),
+        }}
+      >
+        <Text color="yellow" style={textStyle} overrides={textOverrides}>
+          {name}: {index}
+        </Text>
+      </Square>
+    ))}
   </Linear>
 );
 
