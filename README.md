@@ -337,29 +337,31 @@ const Example = ({
 
 ### `<Form />`
 
-This groups the values of child inputs. These forms can be nested to create subforms.
+This creates an wrapper around multiple inputs. The value of the form is an object with properties that match the names and values of the inputs inside the form. These forms can be nested to create subforms.
 
 ```jsx
-import { Form, Issues, Enter } from 'nuggets';
-import { InputText, InputEmail, InputPassword } from '../inputs';
+import { Form, Issues } from 'nuggets';
+import { CustomButton, InputText, InputEmail, InputPassword } from '../creations';
 
-const Example = ({ person, savePerson }) => (
-  <Form value={person} change={savePerson}>
-    <InputText name="name" />
-    <InputEmail name="email" />
-    <InputPassword name="password" />
-    <Issues>
-      {({ issues }) => issues.map(({ message, key }) => (
-        <Text key={key}>{message}</Text>
-      ))}
-    </Issues>
-    <Confirm>
-      {({ confirm }) => (
-        <Button click={confirm}>Save</Button>
-      )}
-    </Confirm>
-  </Form>
-);
+const Example = ({ person, savePerson }) => {
+  const [updatedPerson, setPerson] = useState(person);
+  function save() {
+    savePerson(updatedPerson);
+  }
+  return (
+    <Form value={updatedPerson} change={setPerson}>
+      <InputText name="name" />
+      <InputEmail name="email" />
+      <InputPassword name="password" />
+      <CustomButton click={save}>Save</CustomButton>
+      <Issues>
+        {({ issues }) => issues.map(({ message, key }) => (
+          <Text key={key}>{message}</Text>
+        ))}
+      </Issues>
+    </Form>
+  );
+};
 ```
 
 There is also a property called `wrapper` which will wrap all desired child inputs.
