@@ -34,7 +34,7 @@ export const Canvas: FunctionComponent<ICanvasProps> = ({
   const InterCanvas = createNuggie<ICanvasStylesProps, ICanvasEventsProps>({
     children,
     options,
-    events: [happenClick],
+    events: [happenClick()],
     styles: [
       () => ({
         display: 'flex',

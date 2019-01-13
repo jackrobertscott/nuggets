@@ -1,13 +1,25 @@
 import { IEventsExecuter } from './events';
 
+export type IUpdate = (...args: any[]) => any;
+
 /**
  * Click.
  */
 export interface IClickHappener {
   click?: IEventsExecuter;
 }
-export const happenClick = ({ click }: IClickHappener) => {
-  return click ? { onClick: (event: any) => click({ event }) } : {};
+export const happenClick = (update?: IUpdate) => {
+  return ({ click }: IClickHappener) => ({
+    onClick(event: any) {
+      const data = { event };
+      if (click) {
+        click(data);
+      }
+      if (update) {
+        update(data);
+      }
+    },
+  });
 };
 
 /**
@@ -16,6 +28,19 @@ export const happenClick = ({ click }: IClickHappener) => {
 export interface IChangeHappener {
   change?: IEventsExecuter;
 }
-export const happenChange = ({ change }: IChangeHappener) => {
-  return change ? { onChange: (event: any) => change({ event }) } : {};
+export const happenChange = (update?: IUpdate) => {
+  return ({ change }: IChangeHappener) => ({
+    onChange(event: any) {
+      const data = {
+        event,
+        value: event.target.value || '',
+      };
+      if (change) {
+        change(data);
+      }
+      if (update) {
+        update(data);
+      }
+    },
+  });
 };

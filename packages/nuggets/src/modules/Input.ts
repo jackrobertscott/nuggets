@@ -31,13 +31,21 @@ export const Input: FunctionComponent<IInputProps> = ({
     }
     return children({
       value,
+      /**
+       * Here "data.value" is checked so that we can do "change={change}" on
+       * <Insert /> comps which would normally be "change={({ value }) => change(value)}"
+       */
       change: data => {
-        change(data);
+        let next = data;
+        if (data.value) {
+          next = data.value;
+        }
+        change(next);
         if (options.change) {
-          options.change(data);
+          options.change(next);
         }
         form.update({
-          [name]: data,
+          [name]: next,
         });
       },
     });

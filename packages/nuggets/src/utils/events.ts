@@ -1,4 +1,8 @@
-export type IEventsExecuter = ({ event }: { event: any }) => any;
+export interface IEventsPayload {
+  event: any;
+}
+
+export type IEventsExecuter = ({ event }: IEventsPayload) => any;
 
 export interface IEventsObject {
   [name: string]: IEventsExecuter | undefined;

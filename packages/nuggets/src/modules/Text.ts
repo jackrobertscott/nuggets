@@ -18,7 +18,7 @@ export const Text: FunctionComponent<ITextProps> = ({
   return createNuggie<ITextStylesProps, ITextEventsProps>({
     children,
     options,
-    events: [happenClick],
+    events: [happenClick()],
     styles: [digestText],
   });
 };

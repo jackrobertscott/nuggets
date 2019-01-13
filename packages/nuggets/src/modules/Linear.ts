@@ -18,7 +18,7 @@ export const Linear: FunctionComponent<ILinearProps> = ({
   return createNuggie<ILinearStylesProps, ILinearEventsProps>({
     children,
     options,
-    events: [happenClick],
+    events: [happenClick()],
     styles: [
       () => ({
         flexGrow: 1,

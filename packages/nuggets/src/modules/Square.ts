@@ -33,7 +33,7 @@ export const Square: FunctionComponent<ISquareProps> = ({
   return createNuggie<ISquareStylesProps, ISquareEventsProps>({
     children,
     options,
-    events: [happenClick],
+    events: [happenClick()],
     styles: [
       digestBackgroundColor,
       digestBorder,

@@ -21,7 +21,7 @@ export const Circle: FunctionComponent<ICircleProps> = ({
   return createNuggie<ICircleStylesProps, ICircleEventsProps>({
     children,
     options,
-    events: [happenClick],
+    events: [happenClick()],
     styles: [digestBackgroundColor],
   });
 };
