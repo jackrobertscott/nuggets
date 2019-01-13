@@ -11,7 +11,7 @@ export interface ICSSObject {
   [name: string]: string | number | ICSSObject | undefined;
 }
 
-export type IDigest<T> = (options: T) => ICSSObject | false;
+export type IDigest<T> = (options: T) => ICSSObject;
 
 export type IDigestArray<T> = Array<IDigest<T>>;
 

@@ -8,7 +8,7 @@ export interface IOverridesDigest {
 }
 export const digestOverrides = ({ overrides }: IOverridesDigest) => {
   if (overrides === undefined) {
-    return false;
+    return {};
   }
   return overrides;
 };
@@ -21,7 +21,7 @@ export interface IBackgroundColorDigest {
 }
 export const digestBackgroundColor = ({ color }: IBackgroundColorDigest) => {
   if (color === undefined) {
-    return false;
+    return {};
   }
   return { backgroundColor: color };
 };
@@ -40,7 +40,7 @@ export interface IPaddingDigest {
 }
 export const digestPadding = ({ padding }: IPaddingDigest) => {
   if (padding === undefined) {
-    return false;
+    return {};
   }
   if (typeof padding === 'number') {
     return { padding: `${padding}px` };
@@ -66,7 +66,7 @@ export interface IShadowDigest {
 }
 export const digestShadow = ({ shadow }: IShadowDigest) => {
   if (shadow === undefined) {
-    return false;
+    return {};
   }
   const shadows = Array.isArray(shadow) ? shadow : [shadow];
   const shade = shadows
@@ -91,7 +91,7 @@ export interface ICornersDigest {
 }
 export const digestCorners = ({ corners }: ICornersDigest) => {
   if (corners === undefined) {
-    return false;
+    return {};
   }
   const { radius = 0 } = corners;
   return {
@@ -113,7 +113,7 @@ export interface IBorderDigest {
 }
 export const digestBorder = ({ border }: IBorderDigest) => {
   if (border === undefined) {
-    return false;
+    return {};
   }
   const { color = '#000', thickness = 1, style = 'solid', sides = [] } = border;
   if (sides.length) {
