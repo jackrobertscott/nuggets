@@ -9,10 +9,6 @@ import {
   ITextDigest,
 } from '../utils/digests';
 
-export type ITextStyles = ITextDigest & IOverridesDigest;
-
-const digests: IDigestArray<ITextStyles> = [digestText, digestOverrides];
-
 export type ITextProps = {
   children?: ReactText | ReactText[];
 } & INugget<ITextStyles, IEvents>;
@@ -28,3 +24,7 @@ export const Text: FunctionComponent<ITextProps> = ({
     css: createCSSFromDigests<ITextStyles>(options, digests),
   });
 };
+
+export type ITextStyles = ITextDigest & IOverridesDigest;
+
+const digests: IDigestArray<ITextStyles> = [digestText, digestOverrides];

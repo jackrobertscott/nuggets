@@ -10,10 +10,6 @@ import { createEvents, IEvents } from '../utils/events';
 import { FormProvider } from '../utils/form';
 import { digestOverrides, IOverridesDigest } from '../utils/digests';
 
-export type IFormStyles = IOverridesDigest;
-
-const digests: IDigestArray<IFormStyles> = [digestOverrides];
-
 export type IFormProps = {
   children?: ReactElement<any> | Array<ReactElement<any>>;
 } & INugget<IFormStyles, IEvents>;
@@ -37,3 +33,7 @@ export const Form: FunctionComponent<IFormProps> = ({
   };
   return createElement(FormProvider, { value: provider }, InterForm);
 };
+
+export type IFormStyles = IOverridesDigest;
+
+const digests: IDigestArray<IFormStyles> = [digestOverrides];

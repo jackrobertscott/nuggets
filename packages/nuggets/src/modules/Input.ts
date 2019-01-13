@@ -10,10 +10,6 @@ import { createEvents, IEvents } from '../utils/events';
 import { FormConsumer, IFormContext } from '../utils/form';
 import { digestOverrides, IOverridesDigest } from '../utils/digests';
 
-export type IInputStyles = IOverridesDigest;
-
-const digests: IDigestArray<IInputStyles> = [digestOverrides];
-
 export type IInputProps = {
   name: string;
   children?: ReactElement<any> | Array<ReactElement<any>>;
@@ -43,3 +39,7 @@ export const Input: FunctionComponent<IInputProps> = ({
     children: render as any,
   });
 };
+
+export type IInputStyles = IOverridesDigest;
+
+const digests: IDigestArray<IInputStyles> = [digestOverrides];

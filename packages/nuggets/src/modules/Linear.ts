@@ -9,18 +9,6 @@ import {
   digestDirection,
 } from '../utils/digests';
 
-export type ILinearStyles = IDirectionDigest & IOverridesDigest;
-
-const digests: IDigestArray<ILinearStyles> = [
-  () => ({
-    flexGrow: 1,
-    display: 'flex',
-    overflow: 'auto',
-  }),
-  digestDirection,
-  digestOverrides,
-];
-
 export type ILinearProps = {
   children?: ReactElement<any> | Array<ReactElement<any>>;
 } & INugget<ILinearStyles, IEvents>;
@@ -36,3 +24,15 @@ export const Linear: FunctionComponent<ILinearProps> = ({
     css: createCSSFromDigests<ILinearStyles>(options, digests),
   });
 };
+
+export type ILinearStyles = IDirectionDigest & IOverridesDigest;
+
+const digests: IDigestArray<ILinearStyles> = [
+  () => ({
+    flexGrow: 1,
+    display: 'flex',
+    overflow: 'auto',
+  }),
+  digestDirection,
+  digestOverrides,
+];

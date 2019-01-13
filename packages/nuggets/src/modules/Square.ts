@@ -17,22 +17,6 @@ import {
   IOverridesDigest,
 } from '../utils/digests';
 
-export type ISquareStyles = IBackgroundColorDigest &
-  IPaddingDigest &
-  IBorderDigest &
-  IShadowDigest &
-  ICornersDigest &
-  IOverridesDigest;
-
-const digests: IDigestArray<ISquareStyles> = [
-  digestBackgroundColor,
-  digestBorder,
-  digestCorners,
-  digestShadow,
-  digestPadding,
-  digestOverrides,
-];
-
 export type ISquareProps = {
   children?: ReactElement<any> | Array<ReactElement<any>>;
 } & INugget<ISquareStyles, IEvents>;
@@ -48,3 +32,19 @@ export const Square: FunctionComponent<ISquareProps> = ({
     css: createCSSFromDigests<ISquareStyles>(options, digests),
   });
 };
+
+export type ISquareStyles = IBackgroundColorDigest &
+  IPaddingDigest &
+  IBorderDigest &
+  IShadowDigest &
+  ICornersDigest &
+  IOverridesDigest;
+
+const digests: IDigestArray<ISquareStyles> = [
+  digestBackgroundColor,
+  digestBorder,
+  digestCorners,
+  digestShadow,
+  digestPadding,
+  digestOverrides,
+];
