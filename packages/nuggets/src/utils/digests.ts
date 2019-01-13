@@ -1,25 +1,10 @@
-import { ICSSObject } from './styles';
-
-/**
- * Overrides.
- */
-export interface IOverridesDigest {
-  overrides?: ICSSObject;
-}
-export const digestOverrides = ({ overrides }: IOverridesDigest) => {
-  if (overrides === undefined) {
-    return {};
-  }
-  return overrides;
-};
-
 /**
  * Background color.
  */
-export interface IBackgroundColorDigest {
+export interface IBackgroundColorDigester {
   color?: string;
 }
-export const digestBackgroundColor = ({ color }: IBackgroundColorDigest) => {
+export const digestBackgroundColor = ({ color }: IBackgroundColorDigester) => {
   if (color === undefined) {
     return {};
   }
@@ -29,16 +14,16 @@ export const digestBackgroundColor = ({ color }: IBackgroundColorDigest) => {
 /**
  * Padding.
  */
-export interface IPaddingObjectDigest {
+export interface IPaddingObjectDigester {
   top?: number;
   bottom?: number;
   left?: number;
   right?: number;
 }
-export interface IPaddingDigest {
-  padding?: number | IPaddingObjectDigest;
+export interface IPaddingDigester {
+  padding?: number | IPaddingObjectDigester;
 }
-export const digestPadding = ({ padding }: IPaddingDigest) => {
+export const digestPadding = ({ padding }: IPaddingDigester) => {
   if (padding === undefined) {
     return {};
   }
@@ -54,23 +39,23 @@ export const digestPadding = ({ padding }: IPaddingDigest) => {
 /**
  * Shadow.
  */
-export interface IShadowObjectDigest {
+export interface IShadowObjectDigester {
   color?: string;
   blur?: number;
   grow?: number;
   down?: number;
   across?: number;
 }
-export interface IShadowDigest {
-  shadow?: IShadowObjectDigest | IShadowObjectDigest[];
+export interface IShadowDigester {
+  shadow?: IShadowObjectDigester | IShadowObjectDigester[];
 }
-export const digestShadow = ({ shadow }: IShadowDigest) => {
+export const digestShadow = ({ shadow }: IShadowDigester) => {
   if (shadow === undefined) {
     return {};
   }
   const shadows = Array.isArray(shadow) ? shadow : [shadow];
   const shade = shadows
-    .map((item: IShadowObjectDigest) => {
+    .map((item: IShadowObjectDigester) => {
       const { color = '#000', blur = 0, grow = 0, down = 0, across = 0 } = item;
       return `${across}px ${down}px ${blur}px ${grow}px ${color}`;
     })
@@ -83,13 +68,13 @@ export const digestShadow = ({ shadow }: IShadowDigest) => {
 /**
  * Corners.
  */
-export interface ICornersObjectDigest {
+export interface ICornersObjectDigester {
   radius: number;
 }
-export interface ICornersDigest {
-  corners?: ICornersObjectDigest;
+export interface ICornersDigester {
+  corners?: ICornersObjectDigester;
 }
-export const digestCorners = ({ corners }: ICornersDigest) => {
+export const digestCorners = ({ corners }: ICornersDigester) => {
   if (corners === undefined) {
     return {};
   }
@@ -102,16 +87,16 @@ export const digestCorners = ({ corners }: ICornersDigest) => {
 /**
  * Border.
  */
-export interface IBorderObjectDigest {
+export interface IBorderObjectDigester {
   color?: string;
   thickness?: number;
   style?: string;
   sides?: Array<'top' | 'left' | 'bottom' | 'right'>;
 }
-export interface IBorderDigest {
-  border?: IBorderObjectDigest;
+export interface IBorderDigester {
+  border?: IBorderObjectDigester;
 }
-export const digestBorder = ({ border }: IBorderDigest) => {
+export const digestBorder = ({ border }: IBorderDigester) => {
   if (border === undefined) {
     return {};
   }
@@ -147,10 +132,10 @@ export const digestBorder = ({ border }: IBorderDigest) => {
 /**
  * Flex direction.
  */
-export interface IDirectionDigest {
+export interface IDirectionDigester {
   direction?: 'right' | 'left' | 'up' | 'down';
 }
-export const digestDirection = ({ direction }: IDirectionDigest) => {
+export const digestDirection = ({ direction }: IDirectionDigester) => {
   let value;
   switch (direction) {
     default:
@@ -173,7 +158,7 @@ export const digestDirection = ({ direction }: IDirectionDigest) => {
 /**
  * Text.
  */
-export interface ITextDigest {
+export interface ITextDigester {
   size?: number;
   color?: string;
   align?: 'left' | 'center' | 'right' | 'justify';
@@ -188,7 +173,7 @@ export const digestText = ({
   family,
   height,
   boldness,
-}: ITextDigest) => {
+}: ITextDigester) => {
   const css = {};
   if (size !== undefined) {
     Object.assign(css, { fontSize: `${size}px` });

@@ -1,33 +1,30 @@
-export interface IEventParams {
-  event: any;
+export interface IEventsObject {
+  [name: string]: ({ event }: { event: any }) => any;
 }
 
-export interface IEventProps<E> {
+export interface IEventsMap {
+  [name: string]: (event: any) => any;
+}
+
+export type IEventsProps<E> = E & {
   events?: E;
-}
-
-export interface IEvents {
-  click?: ({ event }: IEventParams) => any;
-  change?: ({ event }: IEventParams) => any;
-}
-
-const transfromEvent = (cb: ({ event }: IEventParams) => any) => {
-  return (event: any) => cb({ event });
 };
 
-export const createEvents = ({
-  events,
-  ...others
-}: IEvents & IEventProps<IEvents>) => {
-  const { click, change } = { ...events, ...others };
-  const callbacks: any = {
-    onClick: click && transfromEvent(click),
-    onChange: change && transfromEvent(change),
-  };
-  return Object.keys(callbacks).reduce((accum: any, key) => {
-    if (callbacks[key]) {
-      accum[key] = callbacks[key];
-    }
-    return accum;
-  }, {});
+export type IEventsDigester<S> = (options: S) => IEventsObject;
+
+export type IEventsDigesterArray<S> = Array<IEventsDigester<S>>;
+
+export const createEvents = <E>(
+  options: IEventsProps<E>,
+  digests: IEventsDigesterArray<E>
+): IEventsMap => {
+  const events = options.events || {};
+  return eventify(digests, { ...events, ...options });
+};
+
+const eventify = <E>(digests: IEventsDigesterArray<E>, options: E) => {
+  return digests
+    .map(digester => digester(options))
+    .filter(exists => exists)
+    .reduce((accum, next) => ({ ...accum, ...next }), {});
 };

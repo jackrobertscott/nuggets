@@ -1,52 +1,46 @@
 import { FunctionComponent, ReactElement } from 'react';
-import { createDOMNode, INugget } from '../utils/dom';
-import { createCSSFromDigests, IDigestArray } from '../utils/styles';
-import { createEvents, IEvents } from '../utils/events';
 import {
   digestPadding,
   digestShadow,
   digestCorners,
   digestBorder,
   digestBackgroundColor,
-  digestOverrides,
-  IPaddingDigest,
-  IBorderDigest,
-  IShadowDigest,
-  ICornersDigest,
-  IBackgroundColorDigest,
-  IOverridesDigest,
+  IPaddingDigester,
+  IBorderDigester,
+  IShadowDigester,
+  ICornersDigester,
+  IBackgroundColorDigester,
 } from '../utils/digests';
+import { INuggie, createNuggie } from '../utils/nuggie';
+
+export type ISquareStylesProps = IBackgroundColorDigester &
+  IPaddingDigester &
+  IBorderDigester &
+  IShadowDigester &
+  ICornersDigester;
+
+export interface ISquareEventsProps {}
 
 export type ISquareProps = {
   children?: ReactElement<any> | Array<ReactElement<any>>;
-} & INugget<ISquareStyles, IEvents>;
+} & INuggie<ISquareStylesProps, ISquareEventsProps>;
 
 export const Square: FunctionComponent<ISquareProps> = ({
   children,
   ...options
 }) => {
-  return createDOMNode({
+  return createNuggie({
     children,
     options,
-    attrs: createEvents(options),
-    css: createCSSFromDigests<ISquareStyles>(options, digests),
+    styles: [
+      digestBackgroundColor,
+      digestBorder,
+      digestCorners,
+      digestShadow,
+      digestPadding,
+    ],
+    events: [],
   });
 };
 
 Square.displayName = 'Square';
-
-export type ISquareStyles = IBackgroundColorDigest &
-  IPaddingDigest &
-  IBorderDigest &
-  IShadowDigest &
-  ICornersDigest &
-  IOverridesDigest;
-
-const digests: IDigestArray<ISquareStyles> = [
-  digestBackgroundColor,
-  digestBorder,
-  digestCorners,
-  digestShadow,
-  digestPadding,
-  digestOverrides,
-];

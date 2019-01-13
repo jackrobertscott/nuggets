@@ -5,16 +5,13 @@ import {
   useEffect,
   ReactNode,
 } from 'react';
-import { INugget } from '../utils/dom';
-import { IDigestArray } from '../utils/styles';
 import { FormProvider, IFormContext, IFormValue } from '../utils/form';
-import { digestOverrides, IOverridesDigest } from '../utils/digests';
 
-export type IFormProps = {
-  children?: ReactNode;
+export interface IFormProps {
   value?: IFormValue;
   change?: (value: IFormValue) => any;
-} & INugget<IFormStyles, {}>;
+  children?: ReactNode;
+}
 
 export const Form: FunctionComponent<IFormProps> = ({
   children,
@@ -41,7 +38,3 @@ export const Form: FunctionComponent<IFormProps> = ({
 };
 
 Form.displayName = 'Form';
-
-export type IFormStyles = IOverridesDigest;
-
-const digests: IDigestArray<IFormStyles> = [digestOverrides];

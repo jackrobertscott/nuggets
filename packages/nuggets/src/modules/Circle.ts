@@ -1,31 +1,27 @@
-import { FunctionComponent, createElement } from 'react';
-import { digestBackgroundColor } from '../utils/digests';
-import { IDigestArray } from '../utils/styles';
+import { FunctionComponent, ReactNode } from 'react';
+import {
+  digestBackgroundColor,
+  IBackgroundColorDigester,
+} from '../utils/digests';
+import { INuggie, createNuggie } from '../utils/nuggie';
 
-interface ICircleProps {
-  color?: string;
-  click?: (...args: any[]) => any;
-}
+export type ICircleStylesProps = IBackgroundColorDigester;
 
-interface ICreateDom {
-  options: ICircleProps;
-  styles: IDigestArray<any>;
-  events: Array<
-    (
-      options: ICircleProps
-    ) => { [prop: string]: (...args: any[]) => any } | undefined
-  >;
-}
+export interface ICircleEventsProps {}
 
-const createDOM = ({ options }: ICreateDom) => {
-  return createElement('div', { ...options });
-};
+export type ICircleProps = {
+  children?: ReactNode;
+} & INuggie<ICircleStylesProps, ICircleEventsProps>;
 
-export const Circle: FunctionComponent<ICircleProps> = ({ ...options }) => {
-  return createDOM({
+export const Circle: FunctionComponent<ICircleProps> = ({
+  children,
+  ...options
+}) => {
+  return createNuggie<ICircleStylesProps, ICircleEventsProps>({
+    children,
     options,
-    styles: [({ color }) => digestBackgroundColor({ color })],
-    events: [({ click }) => ({ onClick: () => click && click() })],
+    styles: [digestBackgroundColor],
+    events: [],
   });
 };
 

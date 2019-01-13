@@ -1,40 +1,32 @@
 import { FunctionComponent, ReactElement } from 'react';
-import { createDOMNode, INugget } from '../utils/dom';
-import { createCSSFromDigests, IDigestArray } from '../utils/styles';
-import { createEvents, IEvents } from '../utils/events';
-import {
-  digestOverrides,
-  IOverridesDigest,
-  IDirectionDigest,
-  digestDirection,
-} from '../utils/digests';
+import { digestDirection, IDirectionDigester } from '../utils/digests';
+import { createNuggie, INuggie } from '../utils/nuggie';
+
+export type ILinearStylesProps = IDirectionDigester;
+
+export interface ILinearEventsProps {}
 
 export type ILinearProps = {
   children?: ReactElement<any> | Array<ReactElement<any>>;
-} & INugget<ILinearStyles, IEvents>;
+} & INuggie<ILinearStylesProps, ILinearEventsProps>;
 
 export const Linear: FunctionComponent<ILinearProps> = ({
   children,
   ...options
 }) => {
-  return createDOMNode({
+  return createNuggie({
     children,
     options,
-    attrs: createEvents(options),
-    css: createCSSFromDigests<ILinearStyles>(options, digests),
+    styles: [
+      () => ({
+        flexGrow: 1,
+        display: 'flex',
+        overflow: 'auto',
+      }),
+      digestDirection,
+    ],
+    events: [],
   });
 };
 
 Linear.displayName = 'Linear';
-
-export type ILinearStyles = IDirectionDigest & IOverridesDigest;
-
-const digests: IDigestArray<ILinearStyles> = [
-  () => ({
-    flexGrow: 1,
-    display: 'flex',
-    overflow: 'auto',
-  }),
-  digestDirection,
-  digestOverrides,
-];

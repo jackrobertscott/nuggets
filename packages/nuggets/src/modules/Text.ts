@@ -1,32 +1,25 @@
 import { FunctionComponent, ReactText } from 'react';
-import { createDOMNode, INugget } from '../utils/dom';
-import { createCSSFromDigests, IDigestArray } from '../utils/styles';
-import { createEvents, IEvents } from '../utils/events';
-import {
-  digestText,
-  digestOverrides,
-  IOverridesDigest,
-  ITextDigest,
-} from '../utils/digests';
+import { digestText, ITextDigester } from '../utils/digests';
+import { createNuggie, INuggie } from '../utils/nuggie';
+
+export type ITextStylesProps = ITextDigester;
+
+export interface ITextEventsProps {}
 
 export type ITextProps = {
   children?: ReactText | ReactText[];
-} & INugget<ITextStyles, IEvents>;
+} & INuggie<ITextStylesProps, ITextEventsProps>;
 
 export const Text: FunctionComponent<ITextProps> = ({
   children,
   ...options
 }) => {
-  return createDOMNode({
+  return createNuggie({
     children,
     options,
-    attrs: createEvents(options),
-    css: createCSSFromDigests<ITextStyles>(options, digests),
+    styles: [digestText],
+    events: [],
   });
 };
 
 Text.displayName = 'Text';
-
-export type ITextStyles = ITextDigest & IOverridesDigest;
-
-const digests: IDigestArray<ITextStyles> = [digestText, digestOverrides];

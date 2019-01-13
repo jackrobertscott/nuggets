@@ -1,5 +1,5 @@
 import React, { FunctionComponent } from 'react';
-import { Linear, Square, Text, ITextStyles } from 'nuggets';
+import { Linear, Square, Text, ITextStylesProps } from 'nuggets';
 
 const people: Array<{ name: string }> = [
   { name: 'atlantis' },
@@ -8,7 +8,7 @@ const people: Array<{ name: string }> = [
   { name: 'atlantis' },
 ];
 
-const textStyle: ITextStyles = {
+const textStyle: ITextStylesProps = {
   color: 'yellow',
   family: 'monospace',
   align: 'right',
@@ -42,7 +42,7 @@ const PeopleList: FunctionComponent = () => (
           onClick: () => console.log('square', name, index),
         }}
       >
-        <Text color="yellow" style={textStyle} overrides={textOverrides}>
+        <Text color="yellow" style={textStyle} override={textOverrides}>
           {name}: {index}
         </Text>
       </Square>

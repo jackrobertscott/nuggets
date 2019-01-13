@@ -14,8 +14,8 @@ export interface IInputProps {
 }
 
 export const Input: FunctionComponent<IInputProps> = ({
-  children,
   name,
+  children,
   ...options
 }) => {
   const [value, change] = useState<any>(options.value);

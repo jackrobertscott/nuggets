@@ -1,42 +1,50 @@
-import { INugget } from './dom';
-
-export interface ITransitionProps<T> {
-  style?: T;
-  hover?: T;
-  press?: T;
-  visited?: T;
-}
-
 export interface ICSSObject {
   [name: string]: string | number | ICSSObject | undefined;
 }
 
-export type IDigest<T> = (options: T) => ICSSObject;
+export type IStylesProps<S> = S & {
+  style?: S;
+  hover?: S;
+  press?: S;
+  visited?: S;
+  override?: ICSSObject;
+};
 
-export type IDigestArray<T> = Array<IDigest<T>>;
+export type IStylesDigester<S> = (options: S) => ICSSObject;
 
-export const createCSSFromDigests = <T>(
-  options: INugget<T, any>,
-  digests: IDigestArray<T>
+export type IStylesDigesterArray<S> = Array<IStylesDigester<S>>;
+
+export const createCSS = <S>(
+  options: IStylesProps<S>,
+  digests: IStylesDigesterArray<S>
 ): ICSSObject => {
-  const { style, hover, press, visited, ...others } = options;
-  const stylize = (config: any) =>
-    digests
-      .map(rule => rule(config))
-      .filter(exists => exists)
-      .reduce((accum, next) => ({ ...accum, ...next }), {});
-  const substylize = (access: string, data?: T): ICSSObject => {
-    if (data) {
-      return {
-        [access]: stylize(data),
-      };
-    }
-    return {};
-  };
+  const style = options.style || {};
+  const override = options.override || {};
   return [
-    stylize({ ...style, ...others }),
-    substylize('&:hover', hover),
-    substylize('&:active', press),
-    substylize('&:visited', visited),
+    stylize(digests, { ...style, ...options }),
+    substylize(digests, '&:hover', options.hover),
+    substylize(digests, '&:active', options.press),
+    substylize(digests, '&:visited', options.visited),
+    override,
   ].reduce((accum, next) => ({ ...accum, ...next }), {});
+};
+
+const stylize = <S>(digests: IStylesDigesterArray<S>, config: S) => {
+  return digests
+    .map(rule => rule(config))
+    .filter(exists => exists)
+    .reduce((accum, next) => ({ ...accum, ...next }), {});
+};
+
+const substylize = <S>(
+  digests: IStylesDigesterArray<S>,
+  access: string,
+  data?: S
+): ICSSObject => {
+  if (data) {
+    return {
+      [access]: stylize(digests, data),
+    };
+  }
+  return {};
 };
