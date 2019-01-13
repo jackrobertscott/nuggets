@@ -5,21 +5,14 @@ import {
   cloneElement,
 } from 'react';
 import { createDomPiece, INugget } from '../utils/dom';
-import {
-  createCSSFromDigests,
-  ICSSObject,
-  IDigestArray,
-} from '../utils/styles';
+import { createCSSFromDigests, IDigestArray } from '../utils/styles';
 import { createEvents, IEvents } from '../utils/events';
 import { FormConsumer, IFormContext } from '../utils/form';
+import { digestOverrides, IOverridesDigest } from '../utils/digests';
 
-export interface IInputStyles {
-  overrides?: ICSSObject;
-}
+export type IInputStyles = IOverridesDigest;
 
-const digests: IDigestArray<IInputStyles> = [
-  ({ overrides }) => overrides !== undefined && overrides,
-];
+const digests: IDigestArray<IInputStyles> = [digestOverrides];
 
 export type IInputProps = {
   name: string;

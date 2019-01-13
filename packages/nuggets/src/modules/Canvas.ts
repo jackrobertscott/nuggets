@@ -1,12 +1,14 @@
 import { FunctionComponent, ReactElement, useEffect } from 'react';
 import { createPortal } from 'react-dom';
 import { createDomPiece, INugget } from '../utils/dom';
-import {
-  createCSSFromDigests,
-  ICSSObject,
-  IDigestArray,
-} from '../utils/styles';
+import { createCSSFromDigests, IDigestArray } from '../utils/styles';
 import { createEvents, IEvents } from '../utils/events';
+import {
+  digestBackgroundColor,
+  digestOverrides,
+  IBackgroundColorDigest,
+  IOverridesDigest,
+} from '../utils/digests';
 
 /**
  * 1. Optionally add styles based on props.
@@ -44,10 +46,7 @@ export const Canvas: FunctionComponent<ICanvasProps> = ({
   return createPortal(InterCanvas, node);
 };
 
-export interface ICanvasStyles {
-  color?: string;
-  overrides?: ICSSObject;
-}
+export type ICanvasStyles = IBackgroundColorDigest & IOverridesDigest;
 
 const digests: IDigestArray<ICanvasStyles> = [
   () => ({
@@ -60,6 +59,6 @@ const digests: IDigestArray<ICanvasStyles> = [
     bottom: 0,
     right: 0,
   }),
-  ({ color }) => color !== undefined && { backgroundColor: color },
-  ({ overrides }) => overrides !== undefined && overrides,
+  digestBackgroundColor,
+  digestOverrides,
 ];

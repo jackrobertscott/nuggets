@@ -1,16 +1,15 @@
 import { FunctionComponent, ReactElement } from 'react';
 import { createDomPiece, INugget } from '../utils/dom';
-import {
-  createCSSFromDigests,
-  ICSSObject,
-  IDigestArray,
-} from '../utils/styles';
+import { createCSSFromDigests, IDigestArray } from '../utils/styles';
 import { createEvents, IEvents } from '../utils/events';
+import {
+  digestOverrides,
+  IOverridesDigest,
+  IDirectionDigest,
+  digestDirection,
+} from '../utils/digests';
 
-export interface ILinearStyles {
-  direction?: 'right' | 'left' | 'up' | 'down';
-  overrides?: ICSSObject;
-}
+export type ILinearStyles = IDirectionDigest & IOverridesDigest;
 
 const digests: IDigestArray<ILinearStyles> = [
   () => ({
@@ -18,26 +17,8 @@ const digests: IDigestArray<ILinearStyles> = [
     display: 'flex',
     overflow: 'auto',
   }),
-  ({ direction }) => {
-    let value;
-    switch (direction) {
-      default:
-      case 'down':
-        value = 'column';
-        break;
-      case 'up':
-        value = 'column-reverse';
-        break;
-      case 'right':
-        value = 'row';
-        break;
-      case 'left':
-        value = 'row-reverse';
-        break;
-    }
-    return { flexDirection: value };
-  },
-  ({ overrides }) => overrides !== undefined && overrides,
+  digestDirection,
+  digestOverrides,
 ];
 
 export type ILinearProps = {

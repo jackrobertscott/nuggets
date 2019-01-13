@@ -5,21 +5,14 @@ import {
   createElement,
 } from 'react';
 import { createDomPiece, INugget } from '../utils/dom';
-import {
-  createCSSFromDigests,
-  ICSSObject,
-  IDigestArray,
-} from '../utils/styles';
+import { createCSSFromDigests, IDigestArray } from '../utils/styles';
 import { createEvents, IEvents } from '../utils/events';
 import { FormProvider } from '../utils/form';
+import { digestOverrides, IOverridesDigest } from '../utils/digests';
 
-export interface IFormStyles {
-  overrides?: ICSSObject;
-}
+export type IFormStyles = IOverridesDigest;
 
-const digests: IDigestArray<IFormStyles> = [
-  ({ overrides }) => overrides !== undefined && overrides,
-];
+const digests: IDigestArray<IFormStyles> = [digestOverrides];
 
 export type IFormProps = {
   children?: ReactElement<any> | Array<ReactElement<any>>;
