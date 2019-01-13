@@ -11,7 +11,7 @@ In 1980, physicist Tim Berners-Lee proposed a new markup language called HTML. T
 Until now...
 
 ```jsx
-import { Square, Text, Linear, List } from 'nuggets';
+import { Square, Text, Linear } from 'nuggets';
 
 const Button = ({
   textColor = 'blue',
@@ -31,14 +31,12 @@ const PersonList = ({
   selectPerson,
 }) => (
   <Linear direction="down">
-    <List items={people}>
-      {({ id, name }) => (
-        <Square key={id} color="grey">
-          <Text>{name}<Text>
-          <Button click={selectPerson}>Start message with {name}</Button>
-        </Square>
-      )}
-    </List>
+    {people.map({ id, name }) => (
+      <Square key={id} color="grey">
+        <Text>{name}<Text>
+        <Button click={selectPerson}>Start message with {name}</Button>
+      </Square>
+    )}
   </Linear>
 );
 ```
