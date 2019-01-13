@@ -8,10 +8,12 @@ const HelloForm: FunctionComponent = () => {
       name: 'memes',
       home: 'dreams',
     });
-  console.log(form);
+  const save = () => {
+    console.log('save: ', form);
+  };
   return (
     <Square color="green" padding={100}>
-      <Form value={form} change={console.log}>
+      <Form value={form} change={setForm}>
         <Input name="name" value={form.name}>
           {({ value, change }: any) => (
             <input
@@ -30,7 +32,10 @@ const HelloForm: FunctionComponent = () => {
         </Input>
       </Form>
       <Square color="blue" padding={10} corners={{ radius: 3 }} click={reform}>
-        <Text>Update form</Text>
+        <Text color="white">Meme form</Text>
+      </Square>
+      <Square color="purple" padding={10} corners={{ radius: 3 }} click={save}>
+        <Text color="white">Save form</Text>
       </Square>
     </Square>
   );
