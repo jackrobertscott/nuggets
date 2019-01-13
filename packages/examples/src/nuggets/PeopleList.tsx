@@ -42,7 +42,7 @@ const PeopleList: FunctionComponent = () => (
           onClick: () => console.log('square', name, index),
         }}
       >
-        <Text color="yellow" style={textStyle} override={textOverrides}>
+        <Text color="yellow" style={textStyle}>
           {name}: {index}
         </Text>
       </Square>

@@ -7,7 +7,7 @@ export type IStylesProps<S> = S & {
   hover?: S;
   press?: S;
   visited?: S;
-  override?: ICSSObject;
+  css?: ICSSObject;
 };
 
 export type IStylesDigester<S> = (options: S) => ICSSObject;
@@ -19,7 +19,7 @@ export const createCSS = <S>(
   digests: IStylesDigesterArray<S>
 ): ICSSObject => {
   const style = options.style || {};
-  const override = options.override || {};
+  const override = options.css || {};
   return [
     stylize(digests, { ...style, ...options }),
     substylize(digests, '&:hover', options.hover),
