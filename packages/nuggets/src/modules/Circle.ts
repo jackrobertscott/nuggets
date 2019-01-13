@@ -4,10 +4,11 @@ import {
   IBackgroundColorDigester,
 } from '../utils/digests';
 import { INuggie, createNuggie } from '../utils/nuggie';
+import { happenClick, IClickHappener } from '../utils/happen';
 
 export type ICircleStylesProps = IBackgroundColorDigester;
 
-export interface ICircleEventsProps {}
+export type ICircleEventsProps = IClickHappener;
 
 export type ICircleProps = {
   children?: ReactNode;
@@ -20,8 +21,8 @@ export const Circle: FunctionComponent<ICircleProps> = ({
   return createNuggie<ICircleStylesProps, ICircleEventsProps>({
     children,
     options,
+    events: [happenClick],
     styles: [digestBackgroundColor],
-    events: [],
   });
 };
 

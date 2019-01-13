@@ -1,23 +1,27 @@
+export type IEventsExecuter = ({ event }: { event: any }) => any;
+
 export interface IEventsObject {
-  [name: string]: ({ event }: { event: any }) => any;
+  [name: string]: IEventsExecuter | undefined;
 }
 
-export interface IEventsMap {
-  [name: string]: (event: any) => any;
+export type IDOMEvent = (event: any) => any;
+
+export interface IEventsMapper {
+  [name: string]: IDOMEvent | undefined;
 }
 
 export type IEventsProps<E> = E & {
   events?: E;
 };
 
-export type IEventsDigester<S> = (options: S) => IEventsObject;
+export type IEventsDigester<E> = (options: E) => IEventsObject;
 
-export type IEventsDigesterArray<S> = Array<IEventsDigester<S>>;
+export type IEventsDigesterArray<E> = Array<IEventsDigester<E>>;
 
 export const createEvents = <E>(
   options: IEventsProps<E>,
   digests: IEventsDigesterArray<E>
-): IEventsMap => {
+): IEventsMapper => {
   const events = options.events || {};
   return eventify(digests, { ...events, ...options });
 };

@@ -1,10 +1,11 @@
 import { FunctionComponent, ReactText } from 'react';
 import { digestText, ITextDigester } from '../utils/digests';
 import { createNuggie, INuggie } from '../utils/nuggie';
+import { happenClick, IClickHappener } from '../utils/happen';
 
 export type ITextStylesProps = ITextDigester;
 
-export interface ITextEventsProps {}
+export type ITextEventsProps = IClickHappener;
 
 export type ITextProps = {
   children?: ReactText | ReactText[];
@@ -17,8 +18,8 @@ export const Text: FunctionComponent<ITextProps> = ({
   return createNuggie({
     children,
     options,
+    events: [happenClick],
     styles: [digestText],
-    events: [],
   });
 };
 

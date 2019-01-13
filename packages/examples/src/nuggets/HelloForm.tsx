@@ -31,10 +31,10 @@ const HelloForm: FunctionComponent = () => {
           )}
         </Input>
       </Form>
-      <Square color="blue" padding={10} corners={{ radius: 3 }}>
+      <Square color="blue" padding={10} corners={{ radius: 3 }} click={reform}>
         <Text color="white">Meme form</Text>
       </Square>
-      <Square color="purple" padding={10} corners={{ radius: 3 }}>
+      <Square color="purple" padding={10} corners={{ radius: 3 }} click={save}>
         <Text color="white">Save form</Text>
       </Square>
     </Square>

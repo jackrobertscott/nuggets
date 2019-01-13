@@ -12,6 +12,7 @@ import {
   IBackgroundColorDigester,
 } from '../utils/digests';
 import { INuggie, createNuggie } from '../utils/nuggie';
+import { happenClick, IClickHappener } from '../utils/happen';
 
 export type ISquareStylesProps = IBackgroundColorDigester &
   IPaddingDigester &
@@ -19,7 +20,7 @@ export type ISquareStylesProps = IBackgroundColorDigester &
   IShadowDigester &
   ICornersDigester;
 
-export interface ISquareEventsProps {}
+export type ISquareEventsProps = IClickHappener;
 
 export type ISquareProps = {
   children?: ReactElement<any> | Array<ReactElement<any>>;
@@ -32,6 +33,7 @@ export const Square: FunctionComponent<ISquareProps> = ({
   return createNuggie({
     children,
     options,
+    events: [happenClick],
     styles: [
       digestBackgroundColor,
       digestBorder,
@@ -39,7 +41,6 @@ export const Square: FunctionComponent<ISquareProps> = ({
       digestShadow,
       digestPadding,
     ],
-    events: [],
   });
 };
 

@@ -5,10 +5,11 @@ import {
   IBackgroundColorDigester,
 } from '../utils/digests';
 import { INuggie, createNuggie } from '../utils/nuggie';
+import { IClickHappener, happenClick } from '../utils/happen';
 
 export type ICanvasStylesProps = IBackgroundColorDigester;
 
-export interface ICanvasEventsProps {}
+export type ICanvasEventsProps = IClickHappener;
 
 export type ICanvasProps = {
   node?: HTMLElement | null;
@@ -33,7 +34,7 @@ export const Canvas: FunctionComponent<ICanvasProps> = ({
   const InterCanvas = createNuggie({
     children,
     options,
-    events: [],
+    events: [happenClick],
     styles: [
       () => ({
         display: 'flex',

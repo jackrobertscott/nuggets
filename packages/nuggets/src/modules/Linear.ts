@@ -1,10 +1,11 @@
 import { FunctionComponent, ReactElement } from 'react';
 import { digestDirection, IDirectionDigester } from '../utils/digests';
 import { createNuggie, INuggie } from '../utils/nuggie';
+import { happenClick, IClickHappener } from '../utils/happen';
 
 export type ILinearStylesProps = IDirectionDigester;
 
-export interface ILinearEventsProps {}
+export type ILinearEventsProps = IClickHappener;
 
 export type ILinearProps = {
   children?: ReactElement<any> | Array<ReactElement<any>>;
@@ -17,6 +18,7 @@ export const Linear: FunctionComponent<ILinearProps> = ({
   return createNuggie({
     children,
     options,
+    events: [happenClick],
     styles: [
       () => ({
         flexGrow: 1,
@@ -25,7 +27,6 @@ export const Linear: FunctionComponent<ILinearProps> = ({
       }),
       digestDirection,
     ],
-    events: [],
   });
 };
 
