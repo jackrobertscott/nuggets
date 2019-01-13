@@ -1,22 +1,23 @@
 import { IEventsExecuter } from './events';
 
-export type IUpdate = (...args: any[]) => any;
+export type IUpdate = (value: any, { event }: { event: any }) => any;
 
 /**
  * Click.
  */
 export interface IClickHappener {
-  click?: IEventsExecuter;
+  click?: IEventsExecuter<boolean>;
 }
 export const happenClick = (update?: IUpdate) => {
   return ({ click }: IClickHappener) => ({
     onClick(event: any) {
       const data = { event };
+      const clickOnExactObject = true; // todo
       if (click) {
-        click(data);
+        click(clickOnExactObject, data);
       }
       if (update) {
-        update(data);
+        update(clickOnExactObject, data);
       }
     },
   });
@@ -25,21 +26,21 @@ export const happenClick = (update?: IUpdate) => {
 /**
  * Change.
  */
-export interface IChangeHappener {
-  change?: IEventsExecuter;
+export interface IChangeHappener<E> {
+  change?: IEventsExecuter<E>;
 }
-export const happenChange = (update?: IUpdate) => {
-  return ({ change }: IChangeHappener) => ({
+export const happenChange = <E>(update?: IUpdate) => {
+  return ({ change }: IChangeHappener<E>) => ({
     onChange(event: any) {
       const data = {
         event,
         value: event.target.value || '',
       };
       if (change) {
-        change(data);
+        change(data.value, data);
       }
       if (update) {
-        update(data);
+        update(data.value, data);
       }
     },
   });

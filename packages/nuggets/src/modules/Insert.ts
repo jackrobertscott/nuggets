@@ -10,7 +10,7 @@ import { ITextDigester, digestText } from '../utils/digests';
 
 export type IInsertStylesProps = ITextDigester;
 
-export type IInsertEventsProps = IClickHappener & IChangeHappener;
+export type IInsertEventsProps = IClickHappener & IChangeHappener<string>;
 
 export type IInsertProps = INuggie<IInsertStylesProps, IInsertEventsProps> & {
   value?: string;
@@ -31,10 +31,7 @@ export const Insert: FunctionComponent<IInsertProps> = ({
     children,
     options,
     extras: { value },
-    events: [
-      happenClick(),
-      happenChange(({ event }) => change(event.target.value)),
-    ],
+    events: [happenClick(), happenChange(eventValue => change(eventValue))],
     styles: [digestText],
   });
 };
