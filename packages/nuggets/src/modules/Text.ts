@@ -1,5 +1,5 @@
 import { FunctionComponent, ReactText } from 'react';
-import { createDomPiece, INugget } from '../utils/dom';
+import { createDOMNode, INugget } from '../utils/dom';
 import { createCSSFromDigests, IDigestArray } from '../utils/styles';
 import { createEvents, IEvents } from '../utils/events';
 import {
@@ -17,7 +17,7 @@ export const Text: FunctionComponent<ITextProps> = ({
   children,
   ...options
 }) => {
-  return createDomPiece({
+  return createDOMNode({
     children,
     options,
     attrs: createEvents(options),

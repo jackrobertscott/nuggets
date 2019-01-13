@@ -1,5 +1,5 @@
 import { FunctionComponent, ReactElement } from 'react';
-import { createDomPiece, INugget } from '../utils/dom';
+import { createDOMNode, INugget } from '../utils/dom';
 import { createCSSFromDigests, IDigestArray } from '../utils/styles';
 import { createEvents, IEvents } from '../utils/events';
 import {
@@ -17,7 +17,7 @@ export const Linear: FunctionComponent<ILinearProps> = ({
   children,
   ...options
 }) => {
-  return createDomPiece({
+  return createDOMNode({
     children,
     options,
     attrs: createEvents(options),

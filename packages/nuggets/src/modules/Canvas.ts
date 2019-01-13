@@ -1,6 +1,6 @@
 import { FunctionComponent, ReactElement, useEffect } from 'react';
 import { createPortal } from 'react-dom';
-import { createDomPiece, INugget } from '../utils/dom';
+import { createDOMNode, INugget } from '../utils/dom';
 import { createCSSFromDigests, IDigestArray } from '../utils/styles';
 import { createEvents, IEvents } from '../utils/events';
 import {
@@ -37,7 +37,7 @@ export const Canvas: FunctionComponent<ICanvasProps> = ({
       node.remove();
     };
   }, []);
-  const InterCanvas = createDomPiece({
+  const InterCanvas = createDOMNode({
     children,
     options,
     attrs: createEvents(options),

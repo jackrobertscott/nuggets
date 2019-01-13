@@ -20,7 +20,7 @@ export interface IDomPiece {
   options: { [name: string]: any };
 }
 
-export const createDomPiece = ({
+export const createDOMNode = ({
   css,
   type = 'div',
   children,
