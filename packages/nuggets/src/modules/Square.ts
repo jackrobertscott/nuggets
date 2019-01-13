@@ -26,11 +26,19 @@ export interface ISquareStylesShadow {
   across?: number;
 }
 
+export interface ISquareStylesPadding {
+  top?: number;
+  bottom?: number;
+  left?: number;
+  right?: number;
+}
+
 export interface ISquareStyles {
   color?: string;
   border?: ISquareStylesBorder;
   corners?: ISquareStylesCorners;
   shadow?: ISquareStylesShadow | ISquareStylesShadow[];
+  padding?: number | ISquareStylesPadding;
   overrides?: ICSSObject;
 }
 
@@ -101,6 +109,18 @@ const digests: IDigestArray<ISquareStyles> = [
       .join(', ');
     return {
       boxShadow: shade,
+    };
+  },
+  ({ padding }) => {
+    if (padding === undefined) {
+      return false;
+    }
+    if (typeof padding === 'number') {
+      return { padding: `${padding}px` };
+    }
+    const { top, right, bottom, left } = padding;
+    return {
+      padding: `${top || 0}px ${right || 0}px ${bottom || 0}px ${left || 0}px`,
     };
   },
   ({ overrides }) => overrides !== undefined && overrides,
