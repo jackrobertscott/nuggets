@@ -21,3 +21,5 @@ export const Multiple: FunctionComponent<IMultipleProps> = ({
   }
   return items.map((...args) => children(...args)) as any;
 };
+
+Multiple.displayName = 'Multiple';

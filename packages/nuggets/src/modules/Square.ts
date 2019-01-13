@@ -33,6 +33,8 @@ export const Square: FunctionComponent<ISquareProps> = ({
   });
 };
 
+Square.displayName = 'Square';
+
 export type ISquareStyles = IBackgroundColorDigest &
   IPaddingDigest &
   IBorderDigest &

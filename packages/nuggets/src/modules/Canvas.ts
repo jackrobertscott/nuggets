@@ -46,6 +46,8 @@ export const Canvas: FunctionComponent<ICanvasProps> = ({
   return createPortal(InterCanvas, node);
 };
 
+Canvas.displayName = 'Canvas';
+
 export type ICanvasStyles = IBackgroundColorDigest & IOverridesDigest;
 
 const digests: IDigestArray<ICanvasStyles> = [

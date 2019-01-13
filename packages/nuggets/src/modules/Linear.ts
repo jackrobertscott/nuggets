@@ -25,6 +25,8 @@ export const Linear: FunctionComponent<ILinearProps> = ({
   });
 };
 
+Linear.displayName = 'Linear';
+
 export type ILinearStyles = IDirectionDigest & IOverridesDigest;
 
 const digests: IDigestArray<ILinearStyles> = [

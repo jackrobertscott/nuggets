@@ -1,16 +1,39 @@
-import React, { FunctionComponent } from 'react';
-import { Square, Text } from 'nuggets';
+import React, { FunctionComponent, useState } from 'react';
+import { Square, Form, Input, Text } from 'nuggets';
 
-const niceShadow = [
-  { down: -100, color: 'blue', blur: 20, grow: 10 },
-  { down: -100, color: 'rgba(0, 0, 0, 0.3)', blur: 20, grow: 30 },
-  { down: -100, color: 'yellow', blur: 20, grow: 50 },
-];
-
-const HelloForm: FunctionComponent = () => (
-  <Square color="green" shadow={niceShadow}>
-    <Text color="yellow">Dan Scott</Text>
-  </Square>
-);
+const HelloForm: FunctionComponent = () => {
+  const [form, setForm] = useState<any>({});
+  const reform = () =>
+    setForm({
+      name: 'memes',
+      home: 'dreams',
+    });
+  console.log(form);
+  return (
+    <Square color="green" padding={100}>
+      <Form value={form} change={console.log}>
+        <Input name="name" value={form.name} change={console.log}>
+          {({ value, change }: any) => (
+            <input
+              value={value || ''}
+              onChange={({ target }) => change(target.value)}
+            />
+          )}
+        </Input>
+        <Input name="home" change={console.log}>
+          {({ value, change }: any) => (
+            <input
+              value={value || ''}
+              onChange={({ target }) => change(target.value)}
+            />
+          )}
+        </Input>
+      </Form>
+      <Square color="blue" padding={10} corners={{ radius: 3 }} click={reform}>
+        <Text>Update form</Text>
+      </Square>
+    </Square>
+  );
+};
 
 export default HelloForm;

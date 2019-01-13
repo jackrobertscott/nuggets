@@ -1,45 +1,47 @@
-import {
-  FunctionComponent,
-  ReactElement,
-  createElement,
-  cloneElement,
-} from 'react';
-import { createDomPiece, INugget } from '../utils/dom';
-import { createCSSFromDigests, IDigestArray } from '../utils/styles';
-import { createEvents, IEvents } from '../utils/events';
-import { FormConsumer, IFormContext } from '../utils/form';
-import { digestOverrides, IOverridesDigest } from '../utils/digests';
+import { FunctionComponent, ReactNode, useState, useEffect } from 'react';
+import { IFormContext, renderConsumer } from '../utils/form';
 
-export type IInputProps = {
+export interface IInputChildren {
+  value: any;
+  change: (value: any) => any;
+}
+
+export interface IInputProps {
   name: string;
-  children?: ReactElement<any> | Array<ReactElement<any>>;
-} & INugget<IInputStyles, IEvents>;
+  value?: any;
+  change?: (value: any) => any;
+  children: ({ value, change }: IInputChildren) => ReactNode;
+}
 
 export const Input: FunctionComponent<IInputProps> = ({
   children,
   name,
   ...options
 }) => {
-  const InterInput = createDomPiece({
-    children,
-    options,
-    attrs: {
-      ...createEvents(options),
-      name,
+  const [value, change] = useState<any>(options.value);
+  useEffect(
+    () => {
+      change(options.value);
     },
-    css: createCSSFromDigests<IInputStyles>(options, digests),
-    type: 'input',
-  });
-  const render = ({ data, change }: IFormContext) =>
-    cloneElement(InterInput, {
-      value: data[name],
-      onChange: ({ target }: any) => change({ name, value: target.value }),
+    [options.value]
+  );
+  return renderConsumer((form: IFormContext) => {
+    if (form.value[name] !== value) {
+      change(form.value[name]);
+    }
+    return children({
+      value,
+      change: data => {
+        change(data);
+        if (options.change) {
+          options.change(data);
+        }
+        form.update({
+          [name]: data,
+        });
+      },
     });
-  return createElement(FormConsumer, {
-    children: render as any,
   });
 };
 
-export type IInputStyles = IOverridesDigest;
-
-const digests: IDigestArray<IInputStyles> = [digestOverrides];
+Input.displayName = 'Input';

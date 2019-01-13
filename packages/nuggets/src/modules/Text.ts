@@ -25,6 +25,8 @@ export const Text: FunctionComponent<ITextProps> = ({
   });
 };
 
+Text.displayName = 'Text';
+
 export type ITextStyles = ITextDigest & IOverridesDigest;
 
 const digests: IDigestArray<ITextStyles> = [digestText, digestOverrides];
