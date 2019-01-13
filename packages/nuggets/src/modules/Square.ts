@@ -30,7 +30,7 @@ export const Square: FunctionComponent<ISquareProps> = ({
   children,
   ...options
 }) => {
-  return createNuggie({
+  return createNuggie<ISquareStylesProps, ISquareEventsProps>({
     children,
     options,
     events: [happenClick],

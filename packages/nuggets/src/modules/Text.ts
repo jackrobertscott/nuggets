@@ -15,7 +15,7 @@ export const Text: FunctionComponent<ITextProps> = ({
   children,
   ...options
 }) => {
-  return createNuggie({
+  return createNuggie<ITextStylesProps, ITextEventsProps>({
     children,
     options,
     events: [happenClick],

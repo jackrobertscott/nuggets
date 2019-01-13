@@ -31,7 +31,7 @@ export const Canvas: FunctionComponent<ICanvasProps> = ({
       node.remove();
     };
   }, []);
-  const InterCanvas = createNuggie({
+  const InterCanvas = createNuggie<ICanvasStylesProps, ICanvasEventsProps>({
     children,
     options,
     events: [happenClick],

@@ -15,7 +15,7 @@ export const Linear: FunctionComponent<ILinearProps> = ({
   children,
   ...options
 }) => {
-  return createNuggie({
+  return createNuggie<ILinearStylesProps, ILinearEventsProps>({
     children,
     options,
     events: [happenClick],
