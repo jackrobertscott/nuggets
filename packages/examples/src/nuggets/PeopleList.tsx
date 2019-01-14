@@ -1,5 +1,5 @@
 import React, { FunctionComponent } from 'react';
-import { Linear, Square, Text, ITextStylesProps } from 'nuggets';
+import { Linear, Square, Text, Circle, ITextStylesProps } from 'nuggets';
 
 const people: Array<{ name: string }> = [
   { name: 'atlantis' },
@@ -12,10 +12,6 @@ const textStyle: ITextStylesProps = {
   color: 'yellow',
   family: 'monospace',
   align: 'right',
-};
-
-const textOverrides = {
-  fontSize: '30px',
 };
 
 const PeopleList: FunctionComponent = () => (
@@ -31,17 +27,14 @@ const PeopleList: FunctionComponent = () => (
           style: 'dashed',
           sides: ['bottom', 'top'],
         }}
-        padding={{
-          top: 20,
-          bottom: 30,
-          right: 50,
-        }}
+        orbit={30}
         shadow={{ blur: 5 }}
         corners={{ radius: 20 }}
         into={{
           onClick: () => console.log('square', name, index),
         }}
       >
+        <Circle diameter={30} color="blue" orbit={30} />
         <Text color="yellow" style={textStyle}>
           {name}: {index}
         </Text>

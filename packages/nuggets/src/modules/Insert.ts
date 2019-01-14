@@ -28,11 +28,17 @@ export const Insert: FunctionComponent<IInsertProps> = ({
     [options.value]
   );
   return createNuggie<IInsertStylesProps, IInsertEventsProps>({
+    type: 'input',
     children,
     options,
     extras: { value },
     events: [happenClick(), happenChange(eventValue => change(eventValue))],
-    styles: [digestText],
+    styles: [
+      () => ({
+        width: '100%',
+      }),
+      digestText,
+    ],
   });
 };
 

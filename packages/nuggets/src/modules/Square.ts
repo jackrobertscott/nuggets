@@ -1,24 +1,27 @@
 import { FunctionComponent, ReactElement } from 'react';
 import {
-  digestPadding,
+  digestSpace,
   digestShadow,
   digestCorners,
   digestBorder,
   digestBackgroundColor,
-  IPaddingDigester,
+  ISpaceDigester,
   IBorderDigester,
   IShadowDigester,
   ICornersDigester,
   IBackgroundColorDigester,
+  digestOrbit,
+  IOrbitDigester,
 } from '../utils/digests';
 import { INuggie, createNuggie } from '../utils/nuggie';
 import { happenClick, IClickHappener } from '../utils/happen';
 
 export type ISquareStylesProps = IBackgroundColorDigester &
-  IPaddingDigester &
+  ISpaceDigester &
   IBorderDigester &
   IShadowDigester &
-  ICornersDigester;
+  ICornersDigester &
+  IOrbitDigester;
 
 export type ISquareEventsProps = IClickHappener;
 
@@ -39,7 +42,8 @@ export const Square: FunctionComponent<ISquareProps> = ({
       digestBorder,
       digestCorners,
       digestShadow,
-      digestPadding,
+      digestOrbit,
+      digestSpace,
     ],
   });
 };

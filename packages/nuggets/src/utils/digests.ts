@@ -14,25 +14,50 @@ export const digestBackgroundColor = ({ color }: IBackgroundColorDigester) => {
 /**
  * Padding.
  */
-export interface IPaddingObjectDigester {
+export interface ISpaceObjectDigester {
   top?: number;
   bottom?: number;
   left?: number;
   right?: number;
 }
-export interface IPaddingDigester {
-  padding?: number | IPaddingObjectDigester;
+export interface ISpaceDigester {
+  space?: number | ISpaceObjectDigester;
 }
-export const digestPadding = ({ padding }: IPaddingDigester) => {
-  if (padding === undefined) {
+export const digestSpace = ({ space }: ISpaceDigester) => {
+  if (space === undefined) {
     return {};
   }
-  if (typeof padding === 'number') {
-    return { padding: `${padding}px` };
+  if (typeof space === 'number') {
+    return { padding: `${space}px` };
   }
-  const { top, right, bottom, left } = padding;
+  const { top, right, bottom, left } = space;
   return {
     padding: `${top || 0}px ${right || 0}px ${bottom || 0}px ${left || 0}px`,
+  };
+};
+
+/**
+ * Orbit.
+ */
+export interface IOrbitObjectDigester {
+  top?: number;
+  bottom?: number;
+  left?: number;
+  right?: number;
+}
+export interface IOrbitDigester {
+  orbit?: number | IOrbitObjectDigester;
+}
+export const digestOrbit = ({ orbit }: IOrbitDigester) => {
+  if (orbit === undefined) {
+    return {};
+  }
+  if (typeof orbit === 'number') {
+    return { margin: `${orbit}px` };
+  }
+  const { top, right, bottom, left } = orbit;
+  return {
+    margin: `${top || 0}px ${right || 0}px ${bottom || 0}px ${left || 0}px`,
   };
 };
 
@@ -81,6 +106,23 @@ export const digestCorners = ({ corners }: ICornersDigester) => {
   const { radius = 0 } = corners;
   return {
     borderRadius: `${radius}px`,
+  };
+};
+
+/**
+ * Diameter.
+ */
+export interface IDiameterDigester {
+  diameter?: number;
+}
+export const digestDiameter = ({ diameter }: IDiameterDigester) => {
+  if (diameter === undefined) {
+    return {};
+  }
+  return {
+    borderRadius: '50%',
+    height: `${diameter}px`,
+    width: `${diameter}px`,
   };
 };
 

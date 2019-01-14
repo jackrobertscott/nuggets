@@ -1,6 +1,8 @@
 import { jsx, css as emotion } from '@emotion/core';
+import { StyleSheet } from '@emotion/sheet';
 import { IStylesDigesterArray, IStylesProps, createCSS } from './styles';
 import { IEventsProps, IEventsDigesterArray, createEvents } from './events';
+import clean from './clean';
 
 export interface INuggieProps {
   into?: { [name: string]: any };
@@ -17,22 +19,30 @@ export interface INuggieConfig<S, E> {
   events: IEventsDigesterArray<E>;
 }
 
+const nuggie = 'nuggie';
+const sheet = new StyleSheet({ key: 'clean', container: document.head });
+sheet.insert(`.${nuggie} {${clean}}`);
+
 export const createNuggie = <S, E>({
   type = 'div',
   children,
   options,
   styles,
   events,
-  extras,
+  extras = {},
 }: INuggieConfig<S, E>) => {
   const css = createCSS(options, styles);
   const attrs = createEvents(options, events);
   const into = options.into || {};
-  return jsx(type, {
-    children,
-    css: emotion(css),
+  const props = {
     ...attrs,
     ...into,
-    ...((extras as any) || {}),
+    ...extras,
+  };
+  return jsx(type, {
+    ...props,
+    children,
+    className: [props.className || '', nuggie].join(' ').trim(),
+    css: emotion(css),
   });
 };
