@@ -283,7 +283,7 @@ This is an interface for collecting an array of values.
 const Example = ({ value, change, items }) => (
   <Multiple value={value} change={change}>
     {({ add, remove, includes }) => items.map(({ id, name }) => (
-      <Text key={id} click={includes(id) ? add(id) : remove(id)}>{name}</Text>
+      <Text key={id} click={() => includes(id) ? add(id) : remove(id)}>{name}</Text>
     ))}
   </Multiple>
 );
@@ -295,7 +295,7 @@ There is also a simple `toggle` attribute which makes the above code a little ea
 const Example = ({ value, change, items }) => (
   <Multiple value={value} change={change}>
     {({ toggle }) => items.map(({ id, name }) => (
-      <Text key={id} click={toggle(id)}>{name}</Text>
+      <Text key={id} click={() => toggle(id)}>{name}</Text>
     ))}
   </Multiple>
 );
