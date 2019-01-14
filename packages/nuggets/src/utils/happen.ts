@@ -11,13 +11,15 @@ export interface IClickHappener {
 export const happenClick = (update?: IUpdate) => {
   return ({ click }: IClickHappener) => ({
     onClick(event: any) {
-      const data = { event };
-      const clickOnExactObject = true; // todo
+      const data = {
+        event,
+        exact: event.currentTarget === event.target,
+      };
       if (click) {
-        click(clickOnExactObject, data);
+        click(data.exact, data);
       }
       if (update) {
-        update(clickOnExactObject, data);
+        update(data.exact, data);
       }
     },
   });
@@ -28,13 +30,14 @@ export const happenClick = (update?: IUpdate) => {
  */
 export interface IChangeHappener<E> {
   change?: IEventsExecuter<E>;
+  value?: E;
 }
 export const happenChange = <E>(update?: IUpdate) => {
   return ({ change }: IChangeHappener<E>) => ({
     onChange(event: any) {
       const data = {
         event,
-        value: event.target.value || '',
+        value: event.target.value,
       };
       if (change) {
         change(data.value, data);

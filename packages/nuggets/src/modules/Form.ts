@@ -18,12 +18,14 @@ export const Form: FunctionComponent<IFormProps> = ({
   ...options
 }) => {
   const [value, change] = useState<IFormValue>(options.value || {});
-  useEffect(
-    () => {
-      change(options.value || {});
-    },
-    [options.value]
-  );
+  useEffect(() => update(options.value), [options.value]);
+  const update = (next?: any) => {
+    const data = next || {};
+    change(data);
+    if (options.change) {
+      options.change(data);
+    }
+  };
   const context: IFormContext = {
     value,
     update: data => {

@@ -10,24 +10,30 @@ import { ITextDigester, digestText } from '../utils/digests';
 
 export type IInsertStylesProps = ITextDigester;
 
-export type IInsertEventsProps = IClickHappener & IChangeHappener<string>;
+export type IInsertEventsProps = IClickHappener &
+  IChangeHappener<string | number>;
 
-export type IInsertProps = INuggie<IInsertStylesProps, IInsertEventsProps> & {
-  value?: string;
-};
+export type IInsertProps = INuggie<IInsertStylesProps, IInsertEventsProps>;
 
 export const Insert: FunctionComponent<IInsertProps> = ({
   children,
   ...options
 }) => {
-  const [value, change] = useState<string>(options.value || '');
-  useEffect(() => change(options.value || ''), [options.value]);
+  const [value, change] = useState<string>(String(options.value || ''));
+  useEffect(() => update(options.value), [options.value]);
+  const update = (next?: string | number) => {
+    const data = String(next || '');
+    change(data);
+    if (options.change) {
+      options.change(data, {});
+    }
+  };
   return createNuggie<IInsertStylesProps, IInsertEventsProps>({
     type: 'input',
     children,
     options,
     extras: { value },
-    events: [happenClick(), happenChange(eventValue => change(eventValue))],
+    events: [happenClick(), happenChange(change)],
     styles: [
       () => ({
         width: '100%',

@@ -1,5 +1,5 @@
 export interface IEventsPayload {
-  event: any;
+  event?: any;
 }
 
 export type IEventsExecuter<T> = (value: T, { event }: IEventsPayload) => any;

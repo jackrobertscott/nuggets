@@ -11,14 +11,17 @@ export interface IMultipleChildren {
   remove: (item: any | ((item: any) => any), ...args: any[]) => any;
   includes: (item: any | ((item: any) => any), ...args: any[]) => any;
   toggle: (item: any | ((item: any) => any), ...args: any[]) => any;
-  value: any[];
+  use: {
+    value: any[];
+    change: (value: any[]) => any;
+  };
 }
 
 export interface IMultipleProps {
   value?: any[];
   change?: (value: any[]) => any;
   children: (
-    { add, remove, includes, toggle, value }: IMultipleChildren
+    { add, remove, includes, toggle, use }: IMultipleChildren
   ) => ReactNode;
 }
 
@@ -27,16 +30,12 @@ export const Multiple: FunctionComponent<IMultipleProps> = ({
   ...options
 }) => {
   const [value, change] = useState<any[]>(options.value || []);
-  useEffect(
-    () => {
-      change(options.value || []);
-    },
-    [options.value]
-  );
-  const update = (next: any[]) => {
-    change(next);
+  useEffect(() => update(options.value), [options.value]);
+  const update = (next?: any[]) => {
+    const data = next || [];
+    change(data);
     if (options.change) {
-      options.change(next);
+      options.change(data);
     }
   };
   const add = (item: any) => update([...value, item]);
@@ -65,7 +64,10 @@ export const Multiple: FunctionComponent<IMultipleProps> = ({
     remove,
     includes,
     toggle,
-    value,
+    use: {
+      value,
+      change: update,
+    },
   }) as ReactElement<any>;
 };
 

@@ -19,33 +19,23 @@ export const Field: FunctionComponent<IFieldProps> = ({
   ...options
 }) => {
   const [value, change] = useState<any>(options.value);
-  useEffect(
-    () => {
-      change(options.value);
-    },
-    [options.value]
-  );
+  useEffect(() => update(options.value), [options.value]);
+  const update = (data: any) => {
+    change(data);
+    if (options.change) {
+      options.change(data);
+    }
+  };
   return renderConsumer((form: IFormContext) => {
     if (form.value[name] !== value) {
-      change(form.value[name]);
+      update(form.value[name]);
     }
     return children({
       value,
-      /**
-       * Here "data.value" is checked so that we can do "change={change}" on
-       * <Insert /> comps which would normally be "change={({ value }) => change(value)}"
-       */
       change: data => {
-        let next = data;
-        if (data.value) {
-          next = data.value;
-        }
-        change(next);
-        if (options.change) {
-          options.change(next);
-        }
+        update(data);
         form.update({
-          [name]: next,
+          [name]: data,
         });
       },
     });
