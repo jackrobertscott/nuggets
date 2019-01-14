@@ -301,19 +301,19 @@ const Example = ({ value, change, items }) => (
 );
 ```
 
-### `<Input />`
+### `<Field />`
 
-Use this to build information collectors or inputs. This does not collect information by itself, rather it provides an easy interface which you may use to collect data. By default, all inputs are *required* unless the `optional` property is specified.
+Use this to connect values to a form. This does not collect information by itself, rather it provides an easy interface which you may use to collect data. By default, all fields are *required* unless the `optional` property is specified.
 
 ```jsx
-import { Input, Square, Text, Insert } from 'nuggets';
+import { Field, Square, Text, Insert } from 'nuggets';
 
 const Example = ({
   name = 'address.city',
   optional = true,
   ...props,
 }) => (
-  <Input
+  <Field
     name={name}
     optional={optional}
     validate={value => validators.isEmail(value)}
@@ -331,17 +331,17 @@ const Example = ({
         {issue && <Text>{issue}</Text>}
       </Square>
     )}
-  </Input>
+  </Field>
 );
 ```
 
 ### `<Form />`
 
-This creates an wrapper around multiple inputs. The value of the form is an object with properties that match the names and values of the inputs inside the form. These forms can be nested to create subforms.
+This creates an wrapper around multiple fields. The value of the form is an object with properties that match the names and values of the fields inside the form. These forms can be nested to create subforms.
 
 ```jsx
 import { Form, Issues } from 'nuggets';
-import { CustomButton, InputText, InputEmail, InputPassword } from '../creations';
+import { CustomButton, FieldText, FieldEmail, FieldPassword } from '../creations';
 
 const Example = ({ person, savePerson }) => {
   const [updatedPerson, setPerson] = useState(person);
@@ -350,9 +350,9 @@ const Example = ({ person, savePerson }) => {
   }
   return (
     <Form value={updatedPerson} change={setPerson}>
-      <InputText name="name" />
-      <InputEmail name="email" />
-      <InputPassword name="password" />
+      <FieldText name="name" />
+      <FieldEmail name="email" />
+      <FieldPassword name="password" />
       <CustomButton click={save}>Save</CustomButton>
       <Issues>
         {({ issues }) => issues.map(({ message, key }) => (
@@ -364,12 +364,12 @@ const Example = ({ person, savePerson }) => {
 };
 ```
 
-There is also a property called `wrapper` which will wrap all desired child inputs.
+There is also a property called `wrapper` which will wrap all desired child fields.
 
 ```jsx
 import { Square, Text } from 'nuggets';
 
-const InputWrap = ({ children, name }) => (
+const FieldWrap = ({ children, name }) => (
   <Square border={{ color: 'grey' }}>
     <Text size={12}>
       {createLabel(name)}
@@ -381,9 +381,9 @@ const InputWrap = ({ children, name }) => (
 
 ```jsx
 const Example = ({ savePerson }) => (
-  <Form submit={savePerson} wrapper={InputWrap}>
-    {/* this input will be wrapped by the wrapper input */}
-    <TextInput name="name" />
+  <Form submit={savePerson} wrapper={FieldWrap}>
+    {/* this field will be wrapped by the wrapper */}
+    <TextField name="name" />
   </Form>
 );
 ```
