@@ -30,14 +30,16 @@ export const happenClick = (update?: IUpdate) => {
  */
 export interface IChangeHappener<E> {
   change?: IEventsExecuter<E>;
+  format?: (value: E) => E;
   value?: E;
 }
 export const happenChange = <E>(update?: IUpdate) => {
-  return ({ change }: IChangeHappener<E>) => ({
+  return ({ change, format }: IChangeHappener<E>) => ({
     onChange(event: any) {
+      const value = event.target.value;
       const data = {
         event,
-        value: event.target.value,
+        value: format ? format(value) : value,
       };
       if (change) {
         change(data.value, data);

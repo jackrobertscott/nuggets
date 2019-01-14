@@ -354,11 +354,6 @@ const Example = ({ person, savePerson }) => {
       <FieldEmail name="email" />
       <FieldPassword name="password" />
       <CustomButton click={save}>Save</CustomButton>
-      <Issues>
-        {({ issues }) => issues.map(({ message, key }) => (
-          <Text key={key}>{message}</Text>
-        ))}
-      </Issues>
     </Form>
   );
 };

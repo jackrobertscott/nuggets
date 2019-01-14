@@ -5,7 +5,11 @@ const TextField = ({ name }: { name: string }) => (
   <Field name={name}>
     {({ value, change }) => (
       <Square color="white">
-        <Insert value={value} change={change} />
+        <Insert
+          value={value}
+          change={change}
+          format={data => String(data).toUpperCase()}
+        />
       </Square>
     )}
   </Field>
