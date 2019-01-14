@@ -16,7 +16,9 @@ const HelloForm: FunctionComponent = () => {
   const reform = () =>
     setForm({
       one: 'memes',
-      two: 'dreams',
+      nested: {
+        three: 'something',
+      },
     });
   const save = () => {
     console.log('save: ', form);
@@ -25,25 +27,39 @@ const HelloForm: FunctionComponent = () => {
     <Square color="green" space={10} orbit={20}>
       <Form value={form} change={setForm}>
         <TextField name="one" />
-        <TextField name="two" />
-        <Field name="nested" value={{}}>
+        <Field name="nested">
           {(data: any) => (
             <Form {...data}>
               <TextField name="three" />
-              <TextField name="four" />
             </Form>
           )}
         </Field>
       </Form>
-      <Media>
-        {({ height, width }: any) => `width: ${width}, height: ${height}`}
+      <Media throttle={150}>
+        {({ width }: any) => {
+          return width > 600 ? (
+            <Square
+              color="blue"
+              space={10}
+              corners={{ radius: Math.floor(width / 50) }}
+              click={reform}
+              height={300}
+              width={width / 2}
+            >
+              <Text color="white">Meme form</Text>
+            </Square>
+          ) : (
+            <Square
+              color="purple"
+              space={10}
+              corners={{ radius: Math.floor(width / 50) }}
+              click={save}
+            >
+              <Text color="white">Save form</Text>
+            </Square>
+          );
+        }}
       </Media>
-      <Square color="blue" space={10} corners={{ radius: 3 }} click={reform}>
-        <Text color="white">Meme form</Text>
-      </Square>
-      <Square color="purple" space={10} corners={{ radius: 3 }} click={save}>
-        <Text color="white">Save form</Text>
-      </Square>
     </Square>
   );
 };

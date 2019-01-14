@@ -21,12 +21,7 @@ export const Insert: FunctionComponent<IInsertProps> = ({
   ...options
 }) => {
   const [value, change] = useState<string>(options.value || '');
-  useEffect(
-    () => {
-      change(options.value || '');
-    },
-    [options.value]
-  );
+  useEffect(() => change(options.value || ''), [options.value]);
   return createNuggie<IInsertStylesProps, IInsertEventsProps>({
     type: 'input',
     children,

@@ -1,3 +1,5 @@
+import { ICSSObject } from './styles';
+
 /**
  * Background color.
  */
@@ -107,6 +109,24 @@ export const digestCorners = ({ corners }: ICornersDigester) => {
   return {
     borderRadius: `${radius}px`,
   };
+};
+
+/**
+ * Sizing.
+ */
+export interface ISizeDigester {
+  width?: number;
+  height?: number;
+}
+export const digestSize = ({ height, width }: ISizeDigester) => {
+  const size: ICSSObject = {};
+  if (width !== undefined) {
+    size.width = `${width}px`;
+  }
+  if (height !== undefined) {
+    size.height = `${height}px`;
+  }
+  return size;
 };
 
 /**

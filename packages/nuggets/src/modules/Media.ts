@@ -5,6 +5,7 @@ import {
   ReactElement,
   useEffect,
 } from 'react';
+import { throttle } from '../utils/helpers';
 
 export interface IMediaChildren {
   width: number;
@@ -13,18 +14,23 @@ export interface IMediaChildren {
 
 export interface IMediaProps {
   children: ({ width, height }: IMediaChildren) => ReactNode;
+  throttle?: number;
 }
 
-export const Media: FunctionComponent<IMediaProps> = ({ children }) => {
+export const Media: FunctionComponent<IMediaProps> = ({
+  children,
+  ...options
+}) => {
   const [sizes, change] = useState<IMediaChildren>({
     width: 0,
     height: 0,
   });
-  const update = () =>
+  const update = throttle(options.throttle || 0, () => {
     change({
       width: window.innerWidth,
       height: window.innerHeight,
     });
+  });
   useEffect(() => {
     update();
     window.addEventListener('resize', update);

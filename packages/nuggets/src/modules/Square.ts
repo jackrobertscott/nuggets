@@ -12,16 +12,19 @@ import {
   IBackgroundColorDigester,
   digestOrbit,
   IOrbitDigester,
+  digestSize,
+  ISizeDigester,
 } from '../utils/digests';
 import { INuggie, createNuggie } from '../utils/nuggie';
 import { happenClick, IClickHappener } from '../utils/happen';
 
 export type ISquareStylesProps = IBackgroundColorDigester &
-  ISpaceDigester &
   IBorderDigester &
   IShadowDigester &
   ICornersDigester &
-  IOrbitDigester;
+  IOrbitDigester &
+  ISpaceDigester &
+  ISizeDigester;
 
 export type ISquareEventsProps = IClickHappener;
 
@@ -44,6 +47,7 @@ export const Square: FunctionComponent<ISquareProps> = ({
       digestShadow,
       digestOrbit,
       digestSpace,
+      digestSize,
     ],
   });
 };
