@@ -1,5 +1,5 @@
 import React, { FunctionComponent, useState } from 'react';
-import { Square, Form, Field, Text, Insert } from 'nuggets';
+import { Square, Form, Field, Text, Insert, Media } from 'nuggets';
 
 const TextField = ({ name }: { name: string }) => (
   <Field name={name}>
@@ -41,6 +41,9 @@ const HelloForm: FunctionComponent = () => {
       <Square color="purple" space={10} corners={{ radius: 3 }} click={save}>
         <Text color="white">Save form</Text>
       </Square>
+      <Media>
+        {({ height, width }: any) => `width: ${width}, height: ${height}`}
+      </Media>
     </Square>
   );
 };

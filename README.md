@@ -189,7 +189,7 @@ import { Media } from 'nuggets';
 
 const Example = () => (
   <Media>
-    {({ width }) => (
+    {({ width, height }) => (
       <Text color={width > 500 ? 'green' : 'blue'}>
         This text changes color with the size of the window.
       </Text>
