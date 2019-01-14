@@ -10,13 +10,14 @@ export interface IToggleChildren {
   on: (...args: any[]) => any;
   off: (...args: any[]) => any;
   toggle: (override?: boolean, ...args: any[]) => any;
+  value: boolean;
   active: boolean;
 }
 
 export interface IToggleProps {
   value?: any;
   change?: (value: any) => any;
-  children: ({ on, off, toggle, active }: IToggleChildren) => ReactNode;
+  children: ({ on, off, toggle, value }: IToggleChildren) => ReactNode;
 }
 
 export const Toggle: FunctionComponent<IToggleProps> = ({
@@ -41,6 +42,7 @@ export const Toggle: FunctionComponent<IToggleProps> = ({
     off: () => update(false),
     toggle: override =>
       update(typeof override === 'boolean' ? override : !value),
+    value,
     active: value,
   }) as ReactElement<any>;
 };

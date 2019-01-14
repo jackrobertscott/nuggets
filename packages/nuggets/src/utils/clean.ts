@@ -95,8 +95,8 @@ export default `
   margin-top: 0;
   max-height: none;
   max-width: none;
-  min-height: 0;
-  min-width: 0;
+  min-height: auto;
+  min-width: auto;
   opacity: 1;
   orphans: 0;
   outline: 0;

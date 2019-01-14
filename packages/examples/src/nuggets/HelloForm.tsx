@@ -35,15 +35,15 @@ const HelloForm: FunctionComponent = () => {
           )}
         </Field>
       </Form>
+      <Media>
+        {({ height, width }: any) => `width: ${width}, height: ${height}`}
+      </Media>
       <Square color="blue" space={10} corners={{ radius: 3 }} click={reform}>
         <Text color="white">Meme form</Text>
       </Square>
       <Square color="purple" space={10} corners={{ radius: 3 }} click={save}>
         <Text color="white">Save form</Text>
       </Square>
-      <Media>
-        {({ height, width }: any) => `width: ${width}, height: ${height}`}
-      </Media>
     </Square>
   );
 };
