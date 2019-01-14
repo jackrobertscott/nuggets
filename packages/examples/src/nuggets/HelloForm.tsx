@@ -1,12 +1,22 @@
 import React, { FunctionComponent, useState } from 'react';
-import { Square, Form, Input, Text, Insert } from 'nuggets';
+import { Square, Form, Field, Text, Insert } from 'nuggets';
+
+const TextField = ({ name }: { name: string }) => (
+  <Field name={name}>
+    {({ value, change }: any) => (
+      <Square color="white">
+        <Insert value={value} change={change} />
+      </Square>
+    )}
+  </Field>
+);
 
 const HelloForm: FunctionComponent = () => {
   const [form, setForm] = useState<any>({});
   const reform = () =>
     setForm({
-      name: 'memes',
-      home: 'dreams',
+      one: 'memes',
+      two: 'dreams',
     });
   const save = () => {
     console.log('save: ', form);
@@ -14,20 +24,16 @@ const HelloForm: FunctionComponent = () => {
   return (
     <Square color="green" space={10} orbit={20}>
       <Form value={form} change={setForm}>
-        <Input name="name" value={form.name}>
-          {({ value, change }: any) => (
-            <Square color="white">
-              <Insert value={value} change={change} />
-            </Square>
+        <TextField name="one" />
+        <TextField name="two" />
+        <Field name="nested" value={{}}>
+          {(data: any) => (
+            <Form {...data}>
+              <TextField name="three" />
+              <TextField name="four" />
+            </Form>
           )}
-        </Input>
-        <Input name="home">
-          {({ value, change }: any) => (
-            <Square color="white">
-              <Insert value={value} change={change} />
-            </Square>
-          )}
-        </Input>
+        </Field>
       </Form>
       <Square color="blue" space={10} corners={{ radius: 3 }} click={reform}>
         <Text color="white">Meme form</Text>

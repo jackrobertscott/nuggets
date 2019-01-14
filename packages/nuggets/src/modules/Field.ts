@@ -1,19 +1,19 @@
 import { FunctionComponent, ReactNode, useState, useEffect } from 'react';
 import { IFormContext, renderConsumer } from '../utils/form';
 
-export interface IInputChildren {
+export interface IFieldChildren {
   value: any;
   change: (value: any) => any;
 }
 
-export interface IInputProps {
+export interface IFieldProps {
   name: string;
   value?: any;
   change?: (value: any) => any;
-  children: ({ value, change }: IInputChildren) => ReactNode;
+  children: ({ value, change }: IFieldChildren) => ReactNode;
 }
 
-export const Input: FunctionComponent<IInputProps> = ({
+export const Field: FunctionComponent<IFieldProps> = ({
   name,
   children,
   ...options
@@ -52,4 +52,4 @@ export const Input: FunctionComponent<IInputProps> = ({
   });
 };
 
-Input.displayName = 'Input';
+Field.displayName = 'Field';
