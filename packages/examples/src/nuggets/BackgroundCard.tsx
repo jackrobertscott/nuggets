@@ -3,7 +3,13 @@ import { Canvas, Square, Text } from 'nuggets';
 
 const BackgroundCard = () => (
   <Canvas color="white">
-    <Square color="black" corners={3} inside={10} outside={20}>
+    <Square
+      color="black"
+      corners={3}
+      inside={10}
+      outside={20}
+      height={{ max: 100 }}
+    >
       <Text color="white">Hello</Text>
     </Square>
   </Canvas>

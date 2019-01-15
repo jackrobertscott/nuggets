@@ -1,5 +1,8 @@
 import { ICSSObject } from './styles';
 
+const formatValue = (value: string | number, type: string = 'px'): string =>
+  typeof value === 'string' ? value : `${value}${type}`;
+
 /**
  * Background color.
  */
@@ -103,19 +106,48 @@ export const digestCorners = ({ corners }: ICornersDigester) => {
 /**
  * Sizing.
  */
+export interface ISizeObjectDigester {
+  use?: number | string;
+  min?: number | string;
+  max?: number | string;
+}
 export interface ISizeDigester {
-  width?: number;
-  height?: number;
+  width?: number | string | ISizeObjectDigester;
+  height?: number | string | ISizeObjectDigester;
 }
 export const digestSize = ({ height, width }: ISizeDigester) => {
-  const size: ICSSObject = {};
+  const css: ICSSObject = {};
   if (width !== undefined) {
-    size.width = `${width}px`;
+    if (typeof width === 'number' || typeof width === 'string') {
+      css.width = formatValue(width);
+    } else {
+      if (width.min) {
+        css.minWidth = formatValue(width.min);
+      }
+      if (width.max) {
+        css.maxWidth = formatValue(width.max);
+      }
+      if (width.use) {
+        css.width = formatValue(width.use);
+      }
+    }
   }
   if (height !== undefined) {
-    size.height = `${height}px`;
+    if (typeof height === 'number' || typeof height === 'string') {
+      css.height = formatValue(height);
+    } else {
+      if (height.min) {
+        css.minHeight = formatValue(height.min);
+      }
+      if (height.max) {
+        css.maxHeight = formatValue(height.max);
+      }
+      if (height.use) {
+        css.height = formatValue(height.use);
+      }
+    }
   }
-  return size;
+  return css;
 };
 
 /**
