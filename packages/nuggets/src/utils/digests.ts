@@ -248,6 +248,17 @@ export interface ITextDigester {
   family?: string;
   height?: number;
   boldness?: number;
+  italic?: boolean;
+  divide?: number;
+  decoration?: {
+    color?: string;
+    style?: 'solid' | 'double' | 'dotted' | 'dashed' | 'wavy';
+    lines:
+      | 'underline'
+      | 'overline'
+      | 'line-through'
+      | Array<'underline' | 'overline' | 'line-through'>;
+  };
 }
 export const digestText = ({
   size,
@@ -256,26 +267,40 @@ export const digestText = ({
   family,
   height,
   boldness,
+  italic,
+  divide,
+  decoration,
 }: ITextDigester) => {
-  const css = {};
+  const css: ICSSObject = {};
   if (size !== undefined) {
-    Object.assign(css, { fontSize: `${size}px` });
+    css.fontSize = `${size}px`;
   }
   if (color !== undefined) {
-    Object.assign(css, { color });
+    css.color = color;
   }
   if (align !== undefined) {
-    Object.assign(css, { textAlign: align });
+    css.textAlign = align;
   }
   if (family !== undefined) {
-    Object.assign(css, { fontFamily: family });
+    css.fontFamily = family;
+  }
+  if (italic !== undefined) {
+    css.fontStyle = 'italic';
+  }
+  if (divide !== undefined) {
+    css.letterSpacing = `${divide}em`;
+  }
+  if (decoration !== undefined) {
+    const { lines, style, color: decolor } = decoration;
+    const delines = Array.isArray(lines) ? lines : [lines];
+    css.textDecoration = `${[...delines, style, decolor].join(' ')}`;
   }
   /**
    * Numbers will be multiplied against the font size.
    * @see https://developer.mozilla.org/en-US/docs/Web/CSS/line-height
    */
   if (height !== undefined) {
-    Object.assign(css, { lineHeight: height });
+    css.lineHeight = `${height}em`;
   }
   /**
    * CSS Fonts work between 100 and 900.
@@ -288,7 +313,7 @@ export const digestText = ({
       const message = `In "<Text boldness={number} />": number must be between ${min} and ${max} inclusive but got "${boldness}".`;
       throw new Error(message);
     }
-    Object.assign(css, { fontWeight: boldness });
+    css.fontWeight = boldness;
   }
   return css;
 };

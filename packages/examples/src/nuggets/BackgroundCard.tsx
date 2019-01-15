@@ -13,7 +13,15 @@ const BackgroundCard = () => (
             </Text>
           </Linear>
           <Linear direction="right">
-            <Text color="white" align="center">
+            <Text
+              color="white"
+              align="center"
+              decoration={{
+                lines: ['underline', 'overline'],
+                color: 'yellow',
+                style: 'dotted',
+              }}
+            >
               Rapture
             </Text>
           </Linear>
