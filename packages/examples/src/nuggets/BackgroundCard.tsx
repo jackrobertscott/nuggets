@@ -4,23 +4,7 @@ import { Canvas, Square, Text, Circle, Linear } from 'nuggets';
 const BackgroundCard = () => (
   <Canvas color="white">
     <Linear direction="down">
-      <Square
-        color="black"
-        corners={3}
-        inside={10}
-        outside={20}
-        border={[
-          {
-            color: 'yellow',
-            thickness: 3,
-            sides: ['top', 'bottom'],
-          },
-          {
-            color: 'green',
-            sides: ['right', 'left'],
-          },
-        ]}
-      >
+      <Square color="black" corners={3} inside={10} outside={20}>
         <Linear direction="down">
           <Linear direction="right">
             <Text color="white">Free before 11</Text>
