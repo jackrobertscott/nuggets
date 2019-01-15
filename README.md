@@ -340,7 +340,7 @@ const Example = ({
 This creates an wrapper around multiple fields. The value of the form is an object with properties that match the names and values of the fields inside the form. These forms can be nested to create subforms.
 
 ```jsx
-import { Form, Issues } from 'nuggets';
+import { Form } from 'nuggets';
 import { CustomButton, FieldText, FieldEmail, FieldPassword } from '../creations';
 
 const Example = ({ person, savePerson }) => {
