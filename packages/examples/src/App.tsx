@@ -1,8 +1,15 @@
 import React, { Component } from 'react';
-import BackgroundCard from './nuggets/BackgroundCard';
+import { Canvas, Square } from 'nuggets';
+import Button from './nuggets/Button';
 
 export default class App extends Component {
   public render() {
-    return <BackgroundCard />;
+    return (
+      <Canvas>
+        <Square outside={50}>
+          <Button />
+        </Square>
+      </Canvas>
+    );
   }
 }

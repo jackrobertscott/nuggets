@@ -195,11 +195,16 @@ export interface IBorderDigester {
 const createBorder = (border: IBorderObjectDigester) => {
   let css: ICSSObject = {};
   if (border !== undefined) {
-    const { color = '#000', thickness = 1, style = 'solid', sides } = border;
-    const bordersides = Array.isArray(sides) ? sides : [sides];
-    if (!bordersides.length) {
+    const {
+      color = '#000',
+      thickness = 1,
+      style = 'solid',
+      sides = [],
+    } = border;
+    if (!sides.length) {
       css.border = `${thickness}px ${style} ${color}`;
     } else {
+      const bordersides = Array.isArray(sides) ? sides : [sides];
       css = bordersides
         .filter(exists => exists)
         .map(side => (side as string).toLowerCase())
@@ -238,7 +243,6 @@ export const digestBorder = ({ border }: IBorderDigester) => {
           .map(createBorder)
           .reduce((accum, data) => ({ ...accum, ...data }), {})
       : createBorder(border);
-    console.log(css, border);
   }
   return css;
 };
