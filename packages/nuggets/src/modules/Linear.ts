@@ -24,6 +24,9 @@ export const Linear: FunctionComponent<ILinearProps> = ({
         flexGrow: 1,
         display: 'flex',
         overflow: 'auto',
+        '& > *': {
+          flexGrow: 1,
+        },
       }),
       digestDirection,
     ],

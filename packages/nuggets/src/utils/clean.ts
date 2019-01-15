@@ -72,6 +72,10 @@ export default `
   direction: ltr;
   display: block;
   empty-cells: show;
+  flex-basis: auto;
+  flex-grow: 0;
+  flex-shrink: 0;
+  flex-direction: column;
   float: none;
   font: normal;
   font-family: inherit;

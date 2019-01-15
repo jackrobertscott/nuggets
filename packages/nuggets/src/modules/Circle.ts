@@ -8,6 +8,8 @@ import {
   IShadowDigester,
   IDiameterDigester,
   IBackgroundColorDigester,
+  digestSpace,
+  ISpaceDigester,
 } from '../utils/digests';
 import { INuggie, createNuggie } from '../utils/nuggie';
 import { happenClick, IClickHappener } from '../utils/happen';
@@ -15,7 +17,8 @@ import { happenClick, IClickHappener } from '../utils/happen';
 export type ICircleStylesProps = IBackgroundColorDigester &
   IBorderDigester &
   IShadowDigester &
-  IDiameterDigester;
+  IDiameterDigester &
+  ISpaceDigester;
 
 export type ICircleEventsProps = IClickHappener;
 
@@ -31,7 +34,13 @@ export const Circle: FunctionComponent<ICircleProps> = ({
     children,
     options,
     events: [happenClick()],
-    styles: [digestBackgroundColor, digestBorder, digestShadow, digestDiameter],
+    styles: [
+      digestBackgroundColor,
+      digestBorder,
+      digestShadow,
+      digestDiameter,
+      digestSpace,
+    ],
   });
 };
 

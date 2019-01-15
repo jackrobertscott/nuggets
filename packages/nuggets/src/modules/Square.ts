@@ -42,8 +42,7 @@ export const Square: FunctionComponent<ISquareProps> = ({
     events: [happenClick()],
     styles: [
       () => ({
-        flexGrow: 1,
-        flexShrink: 0,
+        display: 'flex',
       }),
       digestBackgroundColor,
       digestBorder,

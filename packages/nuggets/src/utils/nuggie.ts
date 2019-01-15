@@ -13,10 +13,10 @@ export type INuggie<S, E> = INuggieProps & IStylesProps<S> & IEventsProps<E>;
 export interface INuggieConfig<S, E> {
   type?: string;
   children?: any;
-  extras?: { [name: string]: any };
   options: INuggie<S, E>;
-  styles: IStylesDigesterArray<S>;
-  events: IEventsDigesterArray<E>;
+  styles?: IStylesDigesterArray<S>;
+  events?: IEventsDigesterArray<E>;
+  extras?: { [name: string]: any };
 }
 
 const nuggie = 'nuggie';
@@ -27,8 +27,8 @@ export const createNuggie = <S, E>({
   type = 'div',
   children,
   options,
-  styles,
-  events,
+  styles = [],
+  events = [],
   extras = {},
 }: INuggieConfig<S, E>) => {
   const css = createCSS(options, styles);
