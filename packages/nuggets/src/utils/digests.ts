@@ -14,7 +14,7 @@ export const digestBackgroundColor = ({ color }: IBackgroundColorDigester) => {
 };
 
 /**
- * Padding.
+ * Padding and margins.
  */
 export interface ISpaceObjectDigester {
   top?: number;
@@ -23,44 +23,30 @@ export interface ISpaceObjectDigester {
   right?: number;
 }
 export interface ISpaceDigester {
-  space?: number | ISpaceObjectDigester;
+  inside?: number | ISpaceObjectDigester;
+  outside?: number | ISpaceObjectDigester;
 }
-export const digestSpace = ({ space }: ISpaceDigester) => {
-  if (space === undefined) {
-    return {};
+export const digestSpace = ({ inside, outside }: ISpaceDigester) => {
+  const css: ICSSObject = {};
+  if (inside !== undefined) {
+    if (typeof inside === 'number') {
+      css.padding = `${inside}px`;
+    } else {
+      const { top, right, bottom, left } = inside;
+      css.padding = `${top || 0}px ${right || 0}px ${bottom || 0}px ${left ||
+        0}px`;
+    }
   }
-  if (typeof space === 'number') {
-    return { padding: `${space}px` };
+  if (outside !== undefined) {
+    if (typeof outside === 'number') {
+      css.margin = `${outside}px`;
+    } else {
+      const { top, right, bottom, left } = outside;
+      css.margin = `${top || 0}px ${right || 0}px ${bottom || 0}px ${left ||
+        0}px`;
+    }
   }
-  const { top, right, bottom, left } = space;
-  return {
-    padding: `${top || 0}px ${right || 0}px ${bottom || 0}px ${left || 0}px`,
-  };
-};
-
-/**
- * Orbit.
- */
-export interface IOrbitObjectDigester {
-  top?: number;
-  bottom?: number;
-  left?: number;
-  right?: number;
-}
-export interface IOrbitDigester {
-  orbit?: number | IOrbitObjectDigester;
-}
-export const digestOrbit = ({ orbit }: IOrbitDigester) => {
-  if (orbit === undefined) {
-    return {};
-  }
-  if (typeof orbit === 'number') {
-    return { margin: `${orbit}px` };
-  }
-  const { top, right, bottom, left } = orbit;
-  return {
-    margin: `${top || 0}px ${right || 0}px ${bottom || 0}px ${left || 0}px`,
-  };
+  return css;
 };
 
 /**
@@ -99,16 +85,19 @@ export interface ICornersObjectDigester {
   radius: number;
 }
 export interface ICornersDigester {
-  corners?: ICornersObjectDigester;
+  corners?: number | ICornersObjectDigester;
 }
 export const digestCorners = ({ corners }: ICornersDigester) => {
-  if (corners === undefined) {
-    return {};
+  const css: ICSSObject = {};
+  if (corners !== undefined) {
+    if (typeof corners === 'number') {
+      css.borderRadius = `${corners}px`;
+    } else {
+      const { radius = 0 } = corners;
+      css.borderRadius = `${radius}px`;
+    }
   }
-  const { radius = 0 } = corners;
-  return {
-    borderRadius: `${radius}px`,
-  };
+  return css;
 };
 
 /**
@@ -198,23 +187,23 @@ export interface IDirectionDigester {
   direction?: 'right' | 'left' | 'up' | 'down';
 }
 export const digestDirection = ({ direction }: IDirectionDigester) => {
-  let value;
+  const css: ICSSObject = {};
   switch (direction) {
     default:
     case 'down':
-      value = 'column';
+      css.flexDirection = 'column';
       break;
     case 'up':
-      value = 'column-reverse';
+      css.flexDirection = 'column-reverse';
       break;
     case 'right':
-      value = 'row';
+      css.flexDirection = 'row';
       break;
     case 'left':
-      value = 'row-reverse';
+      css.flexDirection = 'row-reverse';
       break;
   }
-  return { flexDirection: value };
+  return css;
 };
 
 /**
@@ -269,5 +258,62 @@ export const digestText = ({
     }
     Object.assign(css, { fontWeight: boldness });
   }
+  return css;
+};
+
+/**
+ * Transforms.
+ */
+export interface ITransformRotateDigester {
+  x?: number | string;
+  y?: number | string;
+  z?: number | string;
+}
+export interface ITransformDigester {
+  rotate?: number | string | ITransformRotateDigester;
+  transform?: {
+    rotate?: number | string | ITransformRotateDigester;
+  };
+}
+const createTransform = (name: string, value: any): string => {
+  if (typeof value === 'number') {
+    return `${name}(${value}deg)`;
+  } else if (typeof value === 'string') {
+    return `${name}(${value})`;
+  }
+  return '';
+};
+const createRotateTransform = (
+  rotate?: number | string | ITransformRotateDigester
+): string => {
+  let transforms = '';
+  if (rotate !== undefined) {
+    const next = createTransform('rotate', rotate);
+    if (next) {
+      transforms = [transforms, next].join(' ').trim();
+    } else {
+      const { x, y, z } = rotate as ITransformRotateDigester;
+      transforms = [
+        transforms,
+        createTransform('rotateX', x),
+        createTransform('rotateY', y),
+        createTransform('rotateZ', z),
+      ]
+        .filter(exists => exists)
+        .join(' ')
+        .trim();
+    }
+  }
+  return transforms;
+};
+export const digestTransform = ({ transform, rotate }: ITransformDigester) => {
+  const css: ICSSObject = {};
+  css.transform = [
+    createRotateTransform(transform && transform.rotate),
+    createRotateTransform(rotate),
+  ]
+    .filter(exists => exists)
+    .join(' ')
+    .trim();
   return css;
 };
