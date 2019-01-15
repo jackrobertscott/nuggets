@@ -43,6 +43,7 @@ export const Square: FunctionComponent<ISquareProps> = ({
     styles: [
       () => ({
         flexGrow: 1,
+        flexShrink: 0,
       }),
       digestBackgroundColor,
       digestBorder,
