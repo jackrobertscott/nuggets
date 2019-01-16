@@ -8,4 +8,4 @@ export * from './modules/Linear';
 export * from './modules/Media';
 export * from './modules/Multiple';
 export * from './modules/Square';
-export * from './modules/Text';
+export * from './modules/Toggle';

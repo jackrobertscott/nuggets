@@ -1,14 +1,44 @@
-import { FunctionComponent, useState, useEffect } from 'react';
-import { createNuggie, INuggie } from '../utils/nuggie';
+import { FunctionComponent, ReactNode, useState, useEffect } from 'react';
+import { INuggie, createNuggie } from '../utils/nuggie';
+import {
+  digestSpace,
+  digestShadow,
+  digestCorners,
+  digestBorder,
+  digestBackgroundColor,
+  digestTransform,
+  digestTransition,
+  digestSize,
+  digestCursor,
+  digestText,
+  ISpaceDigester,
+  IBorderDigester,
+  IShadowDigester,
+  ICornersDigester,
+  IBackgroundColorDigester,
+  ISizeDigester,
+  ITransformDigester,
+  ITransitionDigester,
+  ICursorDigester,
+  ITextDigester,
+} from '../utils/digests';
 import {
   happenClick,
-  IClickHappener,
   happenChange,
+  IClickHappener,
   IChangeHappener,
 } from '../utils/happen';
-import { ITextObjectDigester, digestObjectText } from '../utils/digests';
 
-export type IInsertStylesProps = ITextObjectDigester;
+export type IInsertStylesProps = IBackgroundColorDigester &
+  IBorderDigester &
+  IShadowDigester &
+  ICornersDigester &
+  ISpaceDigester &
+  ISizeDigester &
+  ICursorDigester &
+  ITransitionDigester &
+  ITransformDigester &
+  ITextDigester;
 
 export type IInsertEventsProps = IClickHappener &
   IChangeHappener<string | number>;
@@ -38,7 +68,16 @@ export const Insert: FunctionComponent<IInsertProps> = ({
       () => ({
         width: '100%',
       }),
-      digestObjectText,
+      digestBackgroundColor,
+      digestBorder,
+      digestCorners,
+      digestShadow,
+      digestSpace,
+      digestSize,
+      digestCursor,
+      digestTransition,
+      digestTransform,
+      digestText,
     ],
   });
 };
