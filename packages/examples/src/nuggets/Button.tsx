@@ -1,15 +1,40 @@
-import React from 'react';
-import { Canvas, Square, Text } from 'nuggets';
+import React, { FunctionComponent, ReactNode } from 'react';
+import { Square } from 'nuggets';
+import colors from '../colors';
 
-const BackgroundCard = () => (
-  <Square
-    color="black"
-    corners={3}
-    inside={10}
-    border={{ color: 'green', thickness: 1 }}
-  >
-    <Text color="white">Hello</Text>
-  </Square>
-);
+export interface IButtonProps {
+  words?: ReactNode;
+}
 
-export default BackgroundCard;
+const Button: FunctionComponent<IButtonProps> = ({ words = 'Submit' }) => {
+  return (
+    <Square
+      cursor="pointer"
+      corners={4}
+      transition={200}
+      inside={{ sides: 15, verts: 11 }}
+      style={{
+        color: colors.marine,
+        hover: {
+          color: colors.marineLight,
+        },
+        press: {
+          color: colors.marine,
+        },
+      }}
+      text={{
+        color: colors.marineLighter,
+        hover: {
+          color: colors.white,
+        },
+      }}
+      border={{
+        color: colors.marineDark,
+      }}
+    >
+      {words}
+    </Square>
+  );
+};
+
+export default Button;

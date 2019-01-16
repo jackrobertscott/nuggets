@@ -17,6 +17,32 @@ export const digestBackgroundColor = ({ color }: IBackgroundColorDigester) => {
 };
 
 /**
+ * Transition.
+ */
+export interface ITransitionDigester {
+  transition?: number;
+}
+export const digestTransition = ({ transition }: ITransitionDigester) => {
+  if (transition === undefined) {
+    return {};
+  }
+  return { transition: `${transition}ms` };
+};
+
+/**
+ * Cursors.
+ */
+export interface ICursorDigester {
+  cursor?: string;
+}
+export const digestCursor = ({ cursor }: ICursorDigester) => {
+  if (cursor === undefined) {
+    return {};
+  }
+  return { cursor };
+};
+
+/**
  * Padding and margins.
  */
 export interface ISpaceObjectDigester {
@@ -24,6 +50,8 @@ export interface ISpaceObjectDigester {
   bottom?: number;
   left?: number;
   right?: number;
+  sides?: number;
+  verts?: number;
 }
 export interface ISpaceDigester {
   inside?: number | ISpaceObjectDigester;
@@ -35,18 +63,20 @@ export const digestSpace = ({ inside, outside }: ISpaceDigester) => {
     if (typeof inside === 'number') {
       css.padding = `${inside}px`;
     } else {
-      const { top, right, bottom, left } = inside;
-      css.padding = `${top || 0}px ${right || 0}px ${bottom || 0}px ${left ||
-        0}px`;
+      const { top, right, bottom, left, sides, verts } = inside;
+      css.padding = `${top || verts || 0}px ${right || sides || 0}px ${bottom ||
+        verts ||
+        0}px ${left || sides || 0}px`;
     }
   }
   if (outside !== undefined) {
     if (typeof outside === 'number') {
       css.margin = `${outside}px`;
     } else {
-      const { top, right, bottom, left } = outside;
-      css.margin = `${top || 0}px ${right || 0}px ${bottom || 0}px ${left ||
-        0}px`;
+      const { top, right, bottom, left, sides, verts } = outside;
+      css.margin = `${top || verts || 0}px ${right || sides || 0}px ${bottom ||
+        verts ||
+        0}px ${left || sides || 0}px`;
     }
   }
   return css;
@@ -276,7 +306,7 @@ export const digestDirection = ({ direction }: IDirectionDigester) => {
 /**
  * Text.
  */
-export interface ITextDigester {
+export interface ITextObjectDigester {
   size?: number;
   color?: string;
   align?: 'left' | 'center' | 'right' | 'justify';
@@ -295,7 +325,10 @@ export interface ITextDigester {
       | Array<'underline' | 'overline' | 'line-through'>;
   };
 }
-export const digestText = ({
+export interface ITextDigester {
+  text?: ITextObjectDigester;
+}
+export const digestObjectText = ({
   size,
   color,
   align,
@@ -305,7 +338,7 @@ export const digestText = ({
   italic,
   divide,
   decoration,
-}: ITextDigester) => {
+}: ITextObjectDigester) => {
   const css: ICSSObject = {};
   if (size !== undefined) {
     css.fontSize = `${size}px`;
@@ -351,6 +384,9 @@ export const digestText = ({
     css.fontWeight = boldness;
   }
   return css;
+};
+export const digestText = ({ text }: ITextDigester) => {
+  return digestObjectText(text || {});
 };
 
 /**

@@ -6,9 +6,9 @@ import {
   happenChange,
   IChangeHappener,
 } from '../utils/happen';
-import { ITextDigester, digestText } from '../utils/digests';
+import { ITextObjectDigester, digestObjectText } from '../utils/digests';
 
-export type IInsertStylesProps = ITextDigester;
+export type IInsertStylesProps = ITextObjectDigester;
 
 export type IInsertEventsProps = IClickHappener &
   IChangeHappener<string | number>;
@@ -38,7 +38,7 @@ export const Insert: FunctionComponent<IInsertProps> = ({
       () => ({
         width: '100%',
       }),
-      digestText,
+      digestObjectText,
     ],
   });
 };

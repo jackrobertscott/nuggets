@@ -1,15 +1,23 @@
-import { FunctionComponent, ReactElement } from 'react';
+import { FunctionComponent, ReactNode } from 'react';
 import {
   digestShadow,
   digestBorder,
   digestBackgroundColor,
   digestDiameter,
+  digestSpace,
+  digestTransform,
+  digestTransition,
+  digestCursor,
+  digestText,
   IBorderDigester,
   IShadowDigester,
   IDiameterDigester,
   IBackgroundColorDigester,
-  digestSpace,
   ISpaceDigester,
+  ICursorDigester,
+  ITransitionDigester,
+  ITransformDigester,
+  ITextDigester,
 } from '../utils/digests';
 import { INuggie, createNuggie } from '../utils/nuggie';
 import { happenClick, IClickHappener } from '../utils/happen';
@@ -18,12 +26,16 @@ export type ICircleStylesProps = IBackgroundColorDigester &
   IBorderDigester &
   IShadowDigester &
   IDiameterDigester &
-  ISpaceDigester;
+  ISpaceDigester &
+  ICursorDigester &
+  ITransitionDigester &
+  ITransformDigester &
+  ITextDigester;
 
 export type ICircleEventsProps = IClickHappener;
 
 export type ICircleProps = {
-  children?: ReactElement<any> | Array<ReactElement<any>>;
+  children?: ReactNode;
 } & INuggie<ICircleStylesProps, ICircleEventsProps>;
 
 export const Circle: FunctionComponent<ICircleProps> = ({
@@ -38,8 +50,12 @@ export const Circle: FunctionComponent<ICircleProps> = ({
       digestBackgroundColor,
       digestBorder,
       digestShadow,
-      digestDiameter,
       digestSpace,
+      digestDiameter,
+      digestCursor,
+      digestTransition,
+      digestTransform,
+      digestText,
     ],
   });
 };

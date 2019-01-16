@@ -1,6 +1,6 @@
 import { jsx, css as emotion } from '@emotion/core';
 import { StyleSheet } from '@emotion/sheet';
-import { IStylesDigesterArray, IStylesProps, createCSS } from './styles';
+import { IStylesDigesterArray, IStylesProps, createAwesomeCSS } from './styles';
 import { IEventsProps, IEventsDigesterArray, createEvents } from './events';
 import clean from './clean';
 
@@ -31,7 +31,7 @@ export const createNuggie = <S, E>({
   events = [],
   extras = {},
 }: INuggieConfig<S, E>) => {
-  const css = createCSS(options, styles);
+  const css = createAwesomeCSS(options, styles);
   const attrs = createEvents(options, events);
   const into = options.into || {};
   const props = {

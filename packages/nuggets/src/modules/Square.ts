@@ -1,19 +1,25 @@
-import { FunctionComponent, ReactElement } from 'react';
+import { FunctionComponent, ReactNode } from 'react';
 import {
   digestSpace,
   digestShadow,
   digestCorners,
   digestBorder,
   digestBackgroundColor,
+  digestTransform,
+  digestTransition,
+  digestSize,
+  digestCursor,
+  digestText,
   ISpaceDigester,
   IBorderDigester,
   IShadowDigester,
   ICornersDigester,
   IBackgroundColorDigester,
-  digestSize,
   ISizeDigester,
   ITransformDigester,
-  digestTransform,
+  ITransitionDigester,
+  ICursorDigester,
+  ITextDigester,
 } from '../utils/digests';
 import { INuggie, createNuggie } from '../utils/nuggie';
 import { happenClick, IClickHappener } from '../utils/happen';
@@ -24,12 +30,15 @@ export type ISquareStylesProps = IBackgroundColorDigester &
   ICornersDigester &
   ISpaceDigester &
   ISizeDigester &
-  ITransformDigester;
+  ICursorDigester &
+  ITransitionDigester &
+  ITransformDigester &
+  ITextDigester;
 
 export type ISquareEventsProps = IClickHappener;
 
 export type ISquareProps = {
-  children?: ReactElement<any> | Array<ReactElement<any>>;
+  children?: ReactNode;
 } & INuggie<ISquareStylesProps, ISquareEventsProps>;
 
 export const Square: FunctionComponent<ISquareProps> = ({
@@ -50,7 +59,10 @@ export const Square: FunctionComponent<ISquareProps> = ({
       digestShadow,
       digestSpace,
       digestSize,
+      digestCursor,
+      digestTransition,
       digestTransform,
+      digestText,
     ],
   });
 };
