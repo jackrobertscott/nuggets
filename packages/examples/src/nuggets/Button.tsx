@@ -1,5 +1,5 @@
 import React, { FunctionComponent } from 'react';
-import { Square } from 'nuggets';
+import { Square, In, Out } from 'nuggets';
 import colors from '../colors';
 
 const action = {
@@ -96,7 +96,8 @@ const Button: FunctionComponent<IButtonProps> = ({
       inside={{ sides: 15, verts: 11 }}
       style={style}
     >
-      {children}
+      <Out value={children} format={value => String(value).toUpperCase()} />
+      <In value={children} change={console.log} />
     </Square>
   );
 };

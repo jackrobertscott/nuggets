@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
-import { Canvas, Square } from 'nuggets';
+import { Layer, Square } from 'nuggets';
 import Button from './nuggets/Button';
 
 export default class App extends Component {
   public render() {
     return (
-      <Canvas>
+      <Layer>
         <Square outside={50}>
           <Button />
           <br />
@@ -13,7 +13,7 @@ export default class App extends Component {
           <br />
           <Button type="dark">Delete</Button>
         </Square>
-      </Canvas>
+      </Layer>
     );
   }
 }
