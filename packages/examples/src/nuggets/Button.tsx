@@ -1,46 +1,102 @@
 import React, { FunctionComponent } from 'react';
-import { Square, Insert } from 'nuggets';
+import { Square } from 'nuggets';
 import colors from '../colors';
 
-export interface IButtonProps {
-  words?: string;
-}
-
-const blue = {
-  color: colors.marine,
-  hover: {
-    color: 'yellow',
+const action = {
+  surface: {
+    color: colors.marine,
+    border: {
+      color: colors.marineDark,
+    },
+    hover: {
+      color: colors.marineLight,
+    },
+    press: {
+      color: colors.marine,
+    },
   },
-  press: {
-    color: 'green',
+  words: {
+    text: {
+      color: colors.marineLighter,
+    },
+    hover: {
+      text: {
+        color: colors.white,
+      },
+    },
   },
 };
 
-const Button: FunctionComponent<IButtonProps> = ({ words }) => {
+const danger = {
+  surface: {
+    color: colors.danger,
+    border: {
+      color: colors.dangerDark,
+    },
+    hover: {
+      color: colors.dangerLight,
+    },
+    press: {
+      color: colors.danger,
+    },
+  },
+  words: {
+    text: {
+      color: colors.dangerLighter,
+    },
+    hover: {
+      text: {
+        color: colors.white,
+      },
+    },
+  },
+};
+
+const dark = {
+  surface: {
+    color: colors.night,
+    border: {
+      color: colors.nightDark,
+    },
+    hover: {
+      color: colors.nightLight,
+    },
+    press: {
+      color: colors.night,
+    },
+  },
+  words: {
+    text: {
+      color: colors.white,
+    },
+  },
+};
+
+export interface IButtonProps {
+  children?: string;
+  type?: string;
+}
+
+const Button: FunctionComponent<IButtonProps> = ({
+  children = 'Submit',
+  type = 'primary',
+}) => {
+  let style: any = [action.surface, action.words];
+  if (type === 'danger') {
+    style = [danger.surface, danger.words];
+  }
+  if (type === 'dark') {
+    style = [dark.surface, dark.words];
+  }
   return (
     <Square
       cursor="pointer"
       corners={4}
       transition={200}
       inside={{ sides: 15, verts: 11 }}
-      style={{
-        ...blue,
-        hover: {
-          border: { thickness: 10 },
-        },
-      }}
-      text={blue}
-      border={{
-        color: 'green',
-      }}
+      style={style}
     >
-      <Insert
-        inside={20}
-        color="yellow"
-        text={{ color: 'black' }}
-        corners={{ radius: 3 }}
-        value={'hello'}
-      />
+      {children}
     </Square>
   );
 };

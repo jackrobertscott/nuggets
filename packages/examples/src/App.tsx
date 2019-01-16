@@ -8,6 +8,10 @@ export default class App extends Component {
       <Canvas>
         <Square outside={50}>
           <Button />
+          <br />
+          <Button type="danger">Delete</Button>
+          <br />
+          <Button type="dark">Delete</Button>
         </Square>
       </Canvas>
     );
