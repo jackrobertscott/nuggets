@@ -477,8 +477,7 @@ export const digestTransform = ({
   scale,
   translate,
 }: ITransformDigester) => {
-  const css: ICSSObject = {};
-  css.transform = [
+  const css: string = [
     createRotateTransform(transform && transform.rotate),
     createRotateTransform(rotate),
     createScaleTransform(transform && transform.scale),
@@ -489,5 +488,5 @@ export const digestTransform = ({
     .filter(exists => exists)
     .join(' ')
     .trim();
-  return css;
+  return css ? { transform: css } : {};
 };
