@@ -285,12 +285,10 @@ This manages a simple value such as a number or string.
 import { useSimple, Square, Out, In } from 'nuggets';
 import { NiceSquare } from './mycomponents';
 
-export default ({
-  update,
-}) => {
+export default ({ valueChange }) => {
   const { value, change, format } = useSimple({
-    format: value => Number(value),
-    change: update,
+    format: data => Number(data),
+    change: valueChange,
   });
   return (
     <NiceSquare>
@@ -313,16 +311,16 @@ This manages a object with sub properties - similar to a form.
 
 ```tsx
 import { useComplex } from 'nuggets';
-import { CustomButton, FieldText, FieldEmail, FieldPassword } from '../mycomponents';
+import { CustomButton, FieldText, FieldEmail, FieldPassword } from './mycomponents';
 
-export default ({ person, change, savePerson }) => {
+export default ({ person, valueChange, savePerson }) => {
   const { setter, value } = useComplex({
     value: person,
-    change,
+    change: valueChange,
   });
   return (
-    <Square value={updatedPerson} change={setPerson}>
-      <FieldText change={value => setter('password').change(value)} />
+    <Square>
+      <FieldText change={data => setter('password').change(data)} />
       <FieldEmail change={setter('email').change} />
       <FieldPassword {...setter('password')} />
       <CustomButton events={{ click: () => savePerson(value) }}>
@@ -556,4 +554,4 @@ export default ({ id }) => {
 
 ## Authors
 
-- Jack Scott [@jacrobsco](https://twitter.com/jacrobsco) - I tweet about my coding projects.
+- Jack Scott [@jacrobsco](https://twitter.com/jacrobsco) - I tweet about my coding and startups.
