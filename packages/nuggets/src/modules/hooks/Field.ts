@@ -1,5 +1,5 @@
 import { FunctionComponent, ReactNode, useState, useEffect } from 'react';
-import { IFormContext, renderConsumer } from '../utils/form';
+import { IFormContext, renderConsumer } from '../../utils/form';
 
 export interface IFieldChildren {
   value: any;

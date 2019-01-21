@@ -3,9 +3,9 @@ import { createPortal } from 'react-dom';
 import {
   digestBackgroundColor,
   IBackgroundColorDigester,
-} from '../utils/digests';
-import { INuggie, createNuggie } from '../utils/nuggie';
-import { IClickHappener, happenClick } from '../utils/happen';
+} from '../../utils/digests';
+import { INuggie, createNuggie } from '../../utils/nuggie';
+import { IClickHappener, happenClick } from '../../utils/happen';
 
 export type ILayerStylesProps = IBackgroundColorDigester;
 

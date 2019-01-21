@@ -1,6 +1,6 @@
 import { FunctionComponent, ReactText } from 'react';
-import { INuggie, createNuggie } from '../utils/nuggie';
-import { happenClick, IClickHappener } from '../utils/happen';
+import { INuggie, createNuggie } from '../../utils/nuggie';
+import { happenClick, IClickHappener } from '../../utils/happen';
 
 export type IOutEventsProps = IClickHappener;
 

@@ -1,11 +1,11 @@
 import { FunctionComponent, useState, useEffect } from 'react';
-import { INuggie, createNuggie } from '../utils/nuggie';
+import { INuggie, createNuggie } from '../../utils/nuggie';
 import {
   happenClick,
   happenChange,
   IClickHappener,
   IChangeHappener,
-} from '../utils/happen';
+} from '../../utils/happen';
 
 export type IInEventsProps = IClickHappener & IChangeHappener<string | number>;
 

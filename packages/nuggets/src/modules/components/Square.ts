@@ -20,9 +20,9 @@ import {
   ITransitionDigester,
   ICursorDigester,
   ITextDigester,
-} from '../utils/digests';
-import { INuggie, createNuggie } from '../utils/nuggie';
-import { happenClick, IClickHappener } from '../utils/happen';
+} from '../../utils/digests';
+import { INuggie, createNuggie } from '../../utils/nuggie';
+import { happenClick, IClickHappener } from '../../utils/happen';
 
 export type ISquareStylesProps = IBackgroundColorDigester &
   IBorderDigester &

@@ -5,7 +5,7 @@ import {
   useEffect,
   ReactNode,
 } from 'react';
-import { FormProvider, IFormContext, IFormValue } from '../utils/form';
+import { FormProvider, IFormContext, IFormValue } from '../../utils/form';
 
 export interface IFormProps {
   value?: IFormValue;

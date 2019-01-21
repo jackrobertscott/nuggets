@@ -5,7 +5,7 @@ import {
   ReactElement,
   useEffect,
 } from 'react';
-import { throttle } from '../utils/helpers';
+import { throttle } from '../../utils/helpers';
 
 export interface IMediaChildren {
   width: number;
