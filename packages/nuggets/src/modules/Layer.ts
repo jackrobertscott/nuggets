@@ -12,7 +12,7 @@ export type ILayerStylesProps = IBackgroundColorDigester;
 export type ILayerEventsProps = IClickHappener;
 
 export type ILayerProps = {
-  node?: HTMLElement | null;
+  attach?: HTMLElement | null;
   children?: ReactElement<any> | Array<ReactElement<any>>;
 } & INuggie<ILayerStylesProps, ILayerEventsProps>;
 
@@ -20,9 +20,9 @@ export const Layer: FunctionComponent<ILayerProps> = ({
   children,
   ...options
 }) => {
-  const node: HTMLElement = options.node || document.createElement('div');
+  const node: HTMLElement = options.attach || document.createElement('div');
   useEffect(() => {
-    if (options.node) {
+    if (options.attach) {
       return;
     }
     document.body.appendChild(node);

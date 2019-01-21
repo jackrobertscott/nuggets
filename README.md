@@ -69,7 +69,7 @@ import { Layer } from 'nuggets';
 import { Modal } from './mycomponents';
 
 export default () => (
-  <Layer>
+  <Layer attach={document.getElementById('root')}>
     <Modal message="Hello nuggets!" />
   </Layer>
 );
