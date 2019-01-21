@@ -19,6 +19,8 @@
     "start": "nodemon",
     "test": "mocha -r ts-node/register src/**/*.test.ts",
     "build": "yarn run clean && yarn run compile",
+    "prepublishOnly": "cp ../../README.md .",
+    "postpublish": "rm -f README.md",
     "clean": "rm -rf lib",
     "compile": "tsc"
   },
