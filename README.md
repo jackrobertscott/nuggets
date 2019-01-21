@@ -10,7 +10,7 @@ In 1980, physicist Tim Berners-Lee proposed a new markup language called HTML. T
 
 Until now...
 
-```jsx
+```tsx
 import { Arrange, Square, Out } from 'nuggets';
 
 export default ({ textColor = 'blue', clickButton }) => (
@@ -32,11 +32,19 @@ export default ({ textColor = 'blue', clickButton }) => (
     >
       <Out value={'Hello world!'} />
     </Square>
+    <Circle
+      styles={{
+        shape: {
+          color: 'blue',
+          diameter: 100,
+        },
+      }}
+    />
   </Arrange>
 );
 ```
 
-Think less, build more.
+Nuggets helps you think less and build more.
 
 ## Install
 
@@ -54,7 +62,7 @@ yarn add nuggets react@next react-dom@next
 
 Then import the helper classes where needed.
 
-```jsx
+```tsx
 import { Canvas, Square, Linear } from 'nuggets';
 ```
 
@@ -64,7 +72,7 @@ import { Canvas, Square, Linear } from 'nuggets';
 
 The layer element prepares the browser window for a new level components. It fills the entire screen and acts similar layers which are use in design tools.
 
-```jsx
+```tsx
 import { Layer } from 'nuggets';
 import { Modal } from './mycomponents';
 
@@ -79,7 +87,7 @@ export default () => (
 
 This provides a component with 4 sides which may be styled.
 
-```jsx
+```tsx
 import { Square } from 'nuggets';
 
 export default ({ children, color = 'white' }) => (
@@ -114,7 +122,7 @@ export default ({ children, color = 'white' }) => (
 
 This provides a circular component which may be styled.
 
-```jsx
+```tsx
 import { Circle } from 'nuggets';
 
 export default ({ children, color = 'white' }) => (
@@ -145,7 +153,7 @@ export default ({ children, color = 'white' }) => (
 
 This determines the arrangement and spacing of all the components within this component.
 
-```jsx
+```tsx
 import { Arrange } from 'nuggets';
 import { PersonListItem } from './mycomponents';
 
@@ -162,7 +170,7 @@ export default ({ people }) => (
 
 This component is used to render and format text.
 
-```jsx
+```tsx
 import { Out } from 'nuggets';
 
 export default ({ color = 'black' }) => (
@@ -175,9 +183,9 @@ export default ({ color = 'black' }) => (
 
 ### `<In />`
 
-This is a simple interface for recording user keyboard input. Styles may be applied to the text created by this component (similar to `<Text />`).
+This is a simple interface for recording user keyboard input. Styles may be applied to the text created by this component (similar to `<Out />`).
 
-```jsx
+```tsx
 import { In } from 'nuggets';
 
 export default ({ value, change }) => (
@@ -196,7 +204,7 @@ export default ({ value, change }) => (
 
 This provides easy access to the width of the browser window.
 
-```jsx
+```tsx
 import { useMedia, Square, Out } from 'nuggets';
 
 export default () => {
@@ -219,20 +227,51 @@ export default () => {
 };
 ```
 
+### `useAddress()`
+
+This gives you access to the current url of the page.
+
+```tsx
+import { useAddress, Square, Out } from 'nuggets';
+
+export default () => {
+  const { change, backward, forward, pathname, search } = useAddress();
+  return (
+    <Arrange>
+      <Square
+        styles={{
+          texts: { color: 'blue' }
+        }}
+      >
+        <Out value={`Pathname and search: ${pathname} ${search}`} />
+      </Square>
+      <Square events={{ click: () => change('/hello-nuggets') }}>
+        <Out value={'Go to hello nuggets'} />
+      </Square>
+      <Square events={{ click: backward }}>
+        <Out value={'Go back'} />
+      </Square>
+      <Square events={{ click: forward }}>
+        <Out value={'Go forward'} />
+      </Square>
+    </Arrange>
+  );
+};
+```
+
 ### `useSimple()`
 
 This manages a simple value such as a number or string.
 
-```jsx
-import { useSimple, Square, Text, Insert } from 'nuggets';
+```tsx
+import { useSimple, Square, Out, In } from 'nuggets';
 import { NiceSquare } from './mycomponents';
 
 export default ({
   update,
-  name = 'address.city',
 }) => {
   const { value, change, format } = useSimple({
-    format: value => value.toUpperCase(),
+    format: value => Number(value),
     change: update,
   });
   return (
@@ -242,7 +281,9 @@ export default ({
         change={change}
         format={format}
       />
-      {issue && <Out>{issue}</Out>}
+      {/* validations */}
+      {value.length < 5 && <Out>Value is not long enough.</Out>}
+      {hasBadChars(value) && <Out>Value contains some bad characters.</Out>}
     </NiceSquare>
   );
 };
@@ -252,20 +293,20 @@ export default ({
 
 This manages a object with sub properties - similar to a form.
 
-```jsx
+```tsx
 import { useComplex } from 'nuggets';
 import { CustomButton, FieldText, FieldEmail, FieldPassword } from '../mycomponents';
 
 export default ({ person, change, savePerson }) => {
-  const { connection, value } = useComplex({
+  const { setter, value } = useComplex({
     value: person,
     change,
   });
   return (
     <Square value={updatedPerson} change={setPerson}>
-      <FieldText change={value => connection('password').change(value)} />
-      <FieldEmail change={connection('email').change} />
-      <FieldPassword {...connection('password')} />
+      <FieldText change={value => setter('password').change(value)} />
+      <FieldEmail change={setter('email').change} />
+      <FieldPassword {...setter('password')} />
       <CustomButton events={{ click: () => savePerson(value) }}>
         Save
       </CustomButton>
@@ -278,8 +319,8 @@ export default ({ person, change, savePerson }) => {
 
 This provides a set of state and state changers for managing a toggled value.
 
-```jsx
-import { useToggle, Text } from 'nuggets';
+```tsx
+import { useToggle, Circle } from 'nuggets';
 
 export default ({ value, change }) => {
   const { active, off, on } = useToggle({ value, change });
@@ -300,8 +341,8 @@ export default ({ value, change }) => {
 
 There is also a simple `toggle` property which makes it a little easier.
 
-```jsx
-import { useToggle, Text } from 'nuggets';
+```tsx
+import { useToggle, Circle } from 'nuggets';
 
 export default ({ value, change }) => {
   const { toggle, active } = useToggle({ value, change });
@@ -320,9 +361,9 @@ export default ({ value, change }) => {
 
 ### `useDatetime()`
 
-This provides an easy to use interface for recording datetimes.
+Manage a datetime by setting sub-properties.
 
-```jsx
+```tsx
 import { useDatetime, Square, In } from 'nuggets';
 
 export default ({ value, change }) => {
@@ -351,9 +392,9 @@ export default ({ value, change }) => {
 
 ### `useArray()`
 
-This is an interface for collecting an array of values.
+Manage an array of values.
 
-```jsx
+```tsx
 import { useArray, Square, Out } from 'nuggets';
 
 export default ({ value, change, listOfPeople = [] }) => {
@@ -378,7 +419,7 @@ export default ({ value, change, listOfPeople = [] }) => {
 
 There is also a simple `toggle` attribute which makes the above code a little easier.
 
-```jsx
+```tsx
 import { useArray, Square, Out } from 'nuggets';
 
 export default ({ value, change, listOfPeople = [] }) => {
@@ -395,6 +436,102 @@ export default ({ value, change, listOfPeople = [] }) => {
     >
       <Out value={name} />
     </Square>
+  );
+};
+```
+
+### `createStore()` & `useStore()`
+
+Share data across multiple components.
+
+```tsx
+import { createStore } from 'nuggets';
+
+export interface IAuthStore {
+  userId: string;
+}
+
+export const authStore = createStore<IAuthStore>({
+  defaults: {
+    userId: null,
+  },
+});
+```
+
+```tsx
+import { useStore, Square, Out } from 'nuggets';
+import { authStore } from './stores';
+
+export default () => {
+  const { value, change } = useStore({ store: authStore });
+  return (
+    <Arrange>
+      <Out value={`Auth id: ${value.userId}`} />
+      <Square events={{ click: () => change({ userId: null }) }}>
+        <Out value={'Reset your auth.'} />
+      </Square>
+    </Arrange>
+  );
+};
+```
+
+### `createConnection()` & `useConnection()`
+
+Easily connect to and manage external data sources.
+
+```tsx
+import { createConnection } from 'nuggets';
+import apollo from '../utils/apollo';
+
+export interface IQueryConnection {
+  query: string;
+  variables: {
+    [name: string]: string | number | boolean | undefined;
+  }
+}
+
+export const queryConnection = createConnection<IQueryConnection>({
+  handler: ({ query, variables }) => {
+    return apollo.query({ query, variables })
+      .then(({ data }) => data);
+  }
+});
+```
+
+```tsx
+import { useConnection, Square, Out } from 'nuggets';
+import { queryConnection } from './connections';
+
+interface IGetUser {
+  user: {
+    id: string;
+    name: string;
+  };
+}
+
+const query = `
+  query GetUser($id: String!) {
+    user(id: $id) {
+      id
+      name
+    }
+  }
+`;
+
+export default ({ id }) => {
+  const { value, error, execute, refresh } = useConnection<IGetUser>({
+    connection: queryConnection,
+    defaults: { query }
+  });
+  useEffect(() => execute({ variables: { id } }));
+  return (
+    <Arrange>
+      <Square styles={{ texts: { color: 'blue' } }}>
+        <Out value={`User name and id: ${value.user.name} ${value.user.id}`} />
+      </Square>
+      <ErrorHandler error={error} />
+      <SimpleButton click={refresh} />
+    </Arrange>
   );
 };
 ```
