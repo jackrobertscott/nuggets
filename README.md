@@ -277,6 +277,28 @@ export default () => {
 };
 ```
 
+### `useStyles()`
+
+Compile styles into css and attach to the document. It returns the class name which can be added to components which are not in the nuggets lib.
+
+```tsx
+import { useStyle } from 'nuggets';
+import { Editor } from 'some-code-editor';
+
+export default () => {
+  const { css, name } = useStyles({
+    shape: {
+      height: 100,
+      color: 'green',
+    },
+    texts: {
+      color: 'blue',
+    },
+  });
+  return <Editor className={name} />;
+};
+```
+
 ### `useSimple()`
 
 This manages a simple value such as a number or string.
