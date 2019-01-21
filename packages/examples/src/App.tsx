@@ -1,19 +1,16 @@
 import React, { Component } from 'react';
-import { Canvas, Square } from 'nuggets';
-import Button from './nuggets/Button';
+import { Layer, Square, Linear } from 'nuggets';
 
 export default class App extends Component {
   public render() {
     return (
-      <Canvas>
-        <Square outside={50}>
-          <Button />
-          <br />
-          <Button type="danger">Delete</Button>
-          <br />
-          <Button type="dark">Delete</Button>
-        </Square>
-      </Canvas>
+      <Layer>
+        <Linear direction="down" force="even">
+          <Square outside={20} height={50} color="green" />
+          <Square outside={20} height={50} color="blue" />
+          <Square outside={20} height={50} color="yellow" />
+        </Linear>
+      </Layer>
     );
   }
 }

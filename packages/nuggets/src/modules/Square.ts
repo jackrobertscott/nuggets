@@ -1,4 +1,4 @@
-import { FunctionComponent, ReactNode } from 'react';
+import { FunctionComponent, ReactElement } from 'react';
 import {
   digestSpace,
   digestShadow,
@@ -38,7 +38,7 @@ export type ISquareStylesProps = IBackgroundColorDigester &
 export type ISquareEventsProps = IClickHappener;
 
 export type ISquareProps = {
-  children?: ReactNode;
+  children?: ReactElement<any> | Array<ReactElement<any>>;
 } & INuggie<ISquareStylesProps, ISquareEventsProps>;
 
 export const Square: FunctionComponent<ISquareProps> = ({

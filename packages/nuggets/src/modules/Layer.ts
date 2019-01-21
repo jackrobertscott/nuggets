@@ -7,16 +7,16 @@ import {
 import { INuggie, createNuggie } from '../utils/nuggie';
 import { IClickHappener, happenClick } from '../utils/happen';
 
-export type ICanvasStylesProps = IBackgroundColorDigester;
+export type ILayerStylesProps = IBackgroundColorDigester;
 
-export type ICanvasEventsProps = IClickHappener;
+export type ILayerEventsProps = IClickHappener;
 
-export type ICanvasProps = {
+export type ILayerProps = {
   node?: HTMLElement | null;
   children?: ReactElement<any> | Array<ReactElement<any>>;
-} & INuggie<ICanvasStylesProps, ICanvasEventsProps>;
+} & INuggie<ILayerStylesProps, ILayerEventsProps>;
 
-export const Canvas: FunctionComponent<ICanvasProps> = ({
+export const Layer: FunctionComponent<ILayerProps> = ({
   children,
   ...options
 }) => {
@@ -31,7 +31,7 @@ export const Canvas: FunctionComponent<ICanvasProps> = ({
       node.remove();
     };
   }, []);
-  const InterCanvas = createNuggie<ICanvasStylesProps, ICanvasEventsProps>({
+  const InterLayer = createNuggie<ILayerStylesProps, ILayerEventsProps>({
     children,
     options,
     events: [happenClick()],
@@ -49,7 +49,7 @@ export const Canvas: FunctionComponent<ICanvasProps> = ({
       digestBackgroundColor,
     ],
   });
-  return createPortal(InterCanvas, node);
+  return createPortal(InterLayer, node);
 };
 
-Canvas.displayName = 'Canvas';
+Layer.displayName = 'Layer';

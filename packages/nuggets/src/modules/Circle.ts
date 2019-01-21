@@ -1,4 +1,4 @@
-import { FunctionComponent, ReactNode } from 'react';
+import { FunctionComponent, ReactNode, ReactElement } from 'react';
 import {
   digestShadow,
   digestBorder,
@@ -35,7 +35,7 @@ export type ICircleStylesProps = IBackgroundColorDigester &
 export type ICircleEventsProps = IClickHappener;
 
 export type ICircleProps = {
-  children?: ReactNode;
+  children?: ReactElement<any> | Array<ReactElement<any>>;
 } & INuggie<ICircleStylesProps, ICircleEventsProps>;
 
 export const Circle: FunctionComponent<ICircleProps> = ({
