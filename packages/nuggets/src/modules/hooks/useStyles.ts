@@ -1,18 +1,18 @@
 import { FunctionHook } from '../../utils/types';
 import { ICSSObject } from '../../utils/styles';
 
-export interface IuseStylesProps {
+export interface IuseStylesOptions {
   [name: string]: any;
 }
 
-export interface IuseStylesChildren {
+export interface IuseStylesProps {
   css: ICSSObject;
   name: string;
 }
 
 export const useStyles: FunctionHook<
-  IuseStylesProps,
-  IuseStylesChildren
+  IuseStylesOptions,
+  IuseStylesProps
 > = options => {
   return {
     css: {},

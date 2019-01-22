@@ -1,35 +1,30 @@
-import { ReactNode, useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { throttle } from '../../utils/helpers';
 import { FunctionHook } from '../../utils/types';
 
-export interface IuseMediaProps {
-  children: ({ width, height }: IuseMediaChildren) => ReactNode;
+export interface IuseMediaOptions {
   throttle?: number;
 }
 
-export interface IuseMediaChildren {
+export interface IuseMediaProps {
   width: number;
   height: number;
 }
 
 export const useMedia: FunctionHook<
-  IuseMediaProps,
-  IuseMediaChildren
+  IuseMediaOptions,
+  IuseMediaProps
 > = options => {
-  const [sizes, change] = useState<IuseMediaChildren>({
-    width: 0,
-    height: 0,
+  const setter = () => ({
+    width: window.innerWidth,
+    height: window.innerHeight,
   });
-  const update = throttle(options.throttle || 0, () => {
-    change({
-      width: window.innerWidth,
-      height: window.innerHeight,
-    });
-  });
+  const [sizes, update] = useState<IuseMediaProps>(setter());
+  const change = throttle(options.throttle || 0, () => update(setter()));
   useEffect(() => {
-    update();
-    window.addEventListener('resize', update);
-    return () => window.removeEventListener('resize', update);
-  });
+    change();
+    window.addEventListener('resize', change);
+    return () => window.removeEventListener('resize', change);
+  }, []);
   return sizes;
 };

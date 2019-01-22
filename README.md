@@ -284,7 +284,7 @@ export default () => {
 
 #### `const { ...properties } = useAddress();`
 
-Properties:
+Properties
 
 - `change(address: string)` change location to address.
 - `shift(entries: number)` move forward or backward in history.
@@ -319,7 +319,7 @@ export default () => {
 
 #### `const { ...properties } = useStyles({ ...styles });`
 
-Properties:
+Properties
 
 - `css: object` an object containing css properties.
 - `name: string` the class name associated with the css properties.
@@ -354,13 +354,13 @@ export default ({ valueChange }) => {
 
 #### `const { ...properties } = useString({ ...options });`
 
-Options:
+Options
 
 - `value: string` use this value to update override the current value.
 - `change(value: string)` this is run when the value changes.
 - `adjust(value: string): string` perform adjustments on the value before updating.
 
-Properties:
+Properties
 
 - `value: string` the current string value.
 - `change(value: string)` set a new string value.
@@ -394,13 +394,13 @@ export default ({ valueChange }) => {
 
 #### `const { ...properties } = useNumber({ ...options });`
 
-Options:
+Options
 
 - `value: number` use this value to update override the current value.
 - `change(value: number)` this is run when the value changes.
 - `adjust(value: number): number` perform adjustments on the value before updating.
 
-Properties:
+Properties
 
 - `value: number` the current number value.
 - `change(value: number)` set a new number value.
@@ -433,12 +433,12 @@ export default ({ person, valueChange, savePerson }) => {
 
 #### `const { ...properties } = useComplex({ ...options });`
 
-Options:
+Options
 
 - `value: object` use this value to update override the current value.
 - `change(value: object)` this is run when the value changes.
 
-Properties:
+Properties
 
 - `value: object` the current number value.
 - `operate(property: string)` get operators for changing a sub property.
@@ -489,6 +489,20 @@ export default ({ value, change }) => {
 };
 ```
 
+#### `const { ...properties } = useToggle({ ...options });`
+
+Options
+
+- `value: boolean` use this value to update override the current value.
+- `change(value: boolean)` this is run when the value changes.
+
+Properties
+
+- `active: boolean` the current toggle state.
+- `on()` set the state to `true`.
+- `off()` set the state to `false`.
+- `toggle()` toggle the current active state.
+
 ### `useDatetime()`
 
 Manage a datetime by setting sub-properties.
@@ -503,12 +517,10 @@ export default ({ value, change }) => {
       <In
         value={date.value}
         change={date.change}
-        adjust={date.adjust}
       />
       <In
         value={month.value}
         change={month.change}
-        adjust={month.adjust}
       />
       <In {...year} />
       <In {...hour} />
@@ -519,6 +531,24 @@ export default ({ value, change }) => {
   );
 };
 ```
+
+#### `const { ...properties } = useDatetime({ ...options });`
+
+Options
+
+- `value: Date` use this value to update override the current value.
+- `change(value: Date)` this is run when the value changes.
+
+Properties
+
+- `const { value, change } = date | month | year | ...etc;`
+  - `date`
+  - `month`
+  - `year`
+  - `hour`
+  - `minute`
+  - `second`
+  - `millisecond`
 
 ### `useArray()`
 
@@ -570,6 +600,20 @@ export default ({ value, change, listOfPeople = [] }) => {
 };
 ```
 
+#### `const { ...properties } = useArray({ ...options });`
+
+Options
+
+- `value: any[]` use this value to update override the current value.
+- `change(value: any[])` this is run when the value changes.
+
+Properties
+
+- `includes(value: any): boolean` detects whether an item is in the array.
+- `add(value: any)` add the item to the array.
+- `remove(value: any)` remove the value from the array.
+- `toggle(value: any)` toggle (add or remove) the value in the array.
+
 ### `createStore()` & `useStore()`
 
 Share data across multiple components.
@@ -604,6 +648,17 @@ export default () => {
   );
 };
 ```
+
+#### `const { ...properties } = useStore({ ...options });`
+
+Options
+
+- `store` a store - created using `createStore`.
+
+Properties
+
+- `value: object` the value of the store.
+- `change(value: object)` patch the store with new values.
 
 ### `createConnection()` & `useConnection()`
 

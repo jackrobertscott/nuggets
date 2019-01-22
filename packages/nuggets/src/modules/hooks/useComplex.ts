@@ -5,40 +5,40 @@ export interface IComplexValue {
   [name: string]: any;
 }
 
+export interface IuseComplexOptions {
+  value?: IComplexValue;
+  change?: (value: IComplexValue) => any;
+}
+
 export interface IuseComplexProps {
   value?: IComplexValue;
   change?: (value: IComplexValue) => any;
 }
 
-export interface IuseComplexChildren {
-  value?: IComplexValue;
-  change?: (value: IComplexValue) => any;
-}
-
 export const useComplex: FunctionHook<
-  IuseComplexProps,
-  IuseComplexChildren
+  IuseComplexOptions,
+  IuseComplexProps
 > = options => {
-  const [value, change] = useState<IComplexValue>(options.value || {});
-  useEffect(() => patch(options.value), [options.value]);
-  const update = (next?: any) => {
+  const [value, update] = useState<IComplexValue>(options.value || {});
+  useEffect(() => change(options.value), [options.value]);
+  const override = (next?: any) => {
     const data = next || {};
-    change(data);
+    update(data);
     if (options.change) {
       options.change(data);
     }
   };
-  const patch = (next?: IComplexValue) => {
-    update({ ...value, ...(next || {}) });
+  const change = (next?: IComplexValue) => {
+    override({ ...value, ...(next || {}) });
   };
   const operate = (name: string) => ({
     value: value[name],
-    change: (data: any) => patch({ [name]: data }),
+    change: (data: any) => change({ [name]: data }),
   });
   return {
     value,
-    change: patch,
+    change,
     operate,
-    override: update,
+    override,
   };
 };

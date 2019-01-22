@@ -1,17 +1,17 @@
 import { useState, useEffect } from 'react';
 import { FunctionHook } from '../../utils/types';
 
-export interface IuseDatetimeProps {
-  value?: Date;
-  change?: (value: Date) => any;
-}
-
 export interface IuseDatetimeOperate {
   value: number | string;
   change: (value: number | string) => any;
 }
 
-export interface IuseDatetimeChildren {
+export interface IuseDatetimeOptions {
+  value?: Date;
+  change?: (value: Date) => any;
+}
+
+export interface IuseDatetimeProps {
   year: IuseDatetimeOperate;
   month: IuseDatetimeOperate;
   date: IuseDatetimeOperate;
@@ -26,14 +26,14 @@ export interface IuseDatetimeChildren {
 }
 
 export const useDatetime: FunctionHook<
-  IuseDatetimeProps,
-  IuseDatetimeChildren
+  IuseDatetimeOptions,
+  IuseDatetimeProps
 > = options => {
-  const [value, change] = useState<Date>(options.value || new Date());
-  useEffect(() => update(options.value), [options.value]);
-  const update = (next?: Date) => {
+  const [value, update] = useState<Date>(options.value || new Date());
+  useEffect(() => change(options.value), [options.value]);
+  const change = (next?: Date) => {
     const data = next || new Date();
-    change(data);
+    update(data);
     if (options.change) {
       options.change(data);
     }
@@ -43,7 +43,7 @@ export const useDatetime: FunctionHook<
     adjust: (next: number | string) => Number(next),
     change: (next: number | string) => {
       (value as any)[`set${type}`](Number(next));
-      update(new Date(value.valueOf()));
+      change(new Date(value.valueOf()));
     },
   });
   return {
@@ -56,7 +56,7 @@ export const useDatetime: FunctionHook<
     milliseconds: operate('Milliseconds'),
     use: {
       value,
-      change: update,
+      change,
     },
   };
 };

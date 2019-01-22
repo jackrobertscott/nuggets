@@ -1,12 +1,12 @@
 import { useState, useEffect } from 'react';
 import { FunctionHook } from '../../utils/types';
 
-export interface IuseToggleProps {
+export interface IuseToggleOptions {
   value?: any;
-  change?: (value: any) => any;
+  change?: (value: boolean) => any;
 }
 
-export interface IuseToggleChildren {
+export interface IuseToggleProps {
   on: (...args: any[]) => any;
   off: (...args: any[]) => any;
   toggle: (override?: boolean, ...args: any[]) => any;
@@ -18,27 +18,31 @@ export interface IuseToggleChildren {
 }
 
 export const useToggle: FunctionHook<
-  IuseToggleProps,
-  IuseToggleChildren
+  IuseToggleOptions,
+  IuseToggleProps
 > = options => {
-  const [value, change] = useState<boolean>(options.value);
-  useEffect(() => update(options.value), [options.value]);
-  const update = (next: boolean) => {
-    const data = next || false;
-    change(data);
+  const [value, update] = useState<boolean>(!!options.value || false);
+  useEffect(() => change(options.value), [options.value]);
+  const change = (next: boolean) => {
+    const data = !!next || false;
+    update(data);
     if (options.change) {
       options.change(data);
     }
   };
+  const on = () => change(true);
+  const off = () => change(false);
+  const toggle = (override?: boolean) => {
+    change(typeof override === 'boolean' ? override : !value);
+  };
   return {
-    on: () => update(true),
-    off: () => update(false),
-    toggle: (override?: boolean) =>
-      update(typeof override === 'boolean' ? override : !value),
     active: value,
+    on,
+    off,
+    toggle,
     use: {
       value,
-      change: update,
+      change,
     },
   };
 };

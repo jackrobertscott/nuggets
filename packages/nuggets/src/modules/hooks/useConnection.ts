@@ -1,12 +1,12 @@
 import { FunctionHook } from '../../utils/types';
 
+export interface IuseConnectionOptions {}
+
 export interface IuseConnectionProps {}
 
-export interface IuseConnectionChildren {}
-
 export const useConnection: FunctionHook<
-  IuseConnectionProps,
-  IuseConnectionChildren
+  IuseConnectionOptions,
+  IuseConnectionProps
 > = options => {
   return {};
 };

@@ -2,8 +2,6 @@ import { useState, useEffect } from 'react';
 import { FunctionHook } from '../../utils/types';
 import history from '../../utils/history';
 
-export interface IuseAddressProps {}
-
 export interface IHistoryState {
   pathname: string;
   search: string;
@@ -11,7 +9,9 @@ export interface IHistoryState {
   entries: number;
 }
 
-export type IuseAddressChildren = IHistoryState & {
+export interface IuseAddressOptions {}
+
+export type IuseAddressProps = IHistoryState & {
   change: (address: string) => any;
   shift: (entries: number) => any;
   backward: () => any;
@@ -19,10 +19,10 @@ export type IuseAddressChildren = IHistoryState & {
 };
 
 export const useAddress: FunctionHook<
-  IuseAddressProps,
-  IuseAddressChildren
+  IuseAddressOptions,
+  IuseAddressProps
 > = options => {
-  const [value, change] = useState<IHistoryState>({
+  const [value, update] = useState<IHistoryState>({
     pathname: history.location.pathname,
     search: history.location.search,
     hash: history.location.hash,
@@ -30,15 +30,15 @@ export const useAddress: FunctionHook<
   });
   useEffect(() => {
     return history.listen(({ pathname, search, hash }) => {
-      change({ pathname, search, hash, entries: history.length });
+      update({ pathname, search, hash, entries: history.length });
     });
   }, []);
-  const move = (address: string) => history.push(address);
+  const change = (address: string) => history.push(address);
   const shift = (entries: number) => history.go(entries);
   const forward = () => history.goForward();
   const backward = () => history.goForward();
   return {
-    change: move,
+    change,
     shift,
     forward,
     backward,

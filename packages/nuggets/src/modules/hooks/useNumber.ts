@@ -1,31 +1,33 @@
 import { useState, useEffect } from 'react';
 import { FunctionHook } from '../../utils/types';
 
-export interface IuseNumberProps {
+export interface IuseNumberOptions {
   value?: any;
   change?: (value: number) => any;
+  adjust?: (value: number) => number;
 }
 
-export interface IuseNumberChildren {
+export interface IuseNumberProps {
   value: any;
   change: (value: any) => any;
 }
 
 export const useNumber: FunctionHook<
-  IuseNumberProps,
-  IuseNumberChildren
+  IuseNumberOptions,
+  IuseNumberProps
 > = options => {
-  const [value, change] = useState<number>(options.value);
-  useEffect(() => update(options.value), [options.value]);
-  const update = (next?: any) => {
-    const data = Number(next || '');
-    change(data);
+  const [value, update] = useState<number>(options.value || 0);
+  useEffect(() => change(options.value), [options.value]);
+  const change = (next?: any) => {
+    const nice = Number(next || 0);
+    const data = options.adjust ? options.adjust(nice) : nice;
+    update(data);
     if (options.change) {
       options.change(data);
     }
   };
   return {
     value,
-    change: update,
+    change,
   };
 };

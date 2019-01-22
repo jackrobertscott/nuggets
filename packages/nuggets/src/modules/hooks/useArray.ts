@@ -1,12 +1,12 @@
 import { useState, useEffect } from 'react';
 import { FunctionHook } from '../../utils/types';
 
-export interface IuseArrayProps {
+export interface IuseArrayOptions {
   value?: any[];
   change?: (value: any[]) => any;
 }
 
-export interface IuseArrayChildren {
+export interface IuseArrayProps {
   add: (item: any, ...args: any[]) => any;
   remove: (item: any | ((item: any) => any), ...args: any[]) => any;
   includes: (item: any | ((item: any) => any), ...args: any[]) => any;
@@ -18,24 +18,24 @@ export interface IuseArrayChildren {
 }
 
 export const useArray: FunctionHook<
-  IuseArrayProps,
-  IuseArrayChildren
+  IuseArrayOptions,
+  IuseArrayProps
 > = options => {
-  const [value, change] = useState<any[]>(options.value || []);
-  useEffect(() => update(options.value), [options.value]);
-  const update = (next?: any[]) => {
+  const [value, update] = useState<any[]>(options.value || []);
+  useEffect(() => change(options.value), [options.value]);
+  const change = (next?: any[]) => {
     const data = next || [];
-    change(data);
+    update(data);
     if (options.change) {
       options.change(data);
     }
   };
-  const add = (item: any) => update([...value, item]);
+  const add = (item: any) => change([...value, item]);
   const remove = (item: any) => {
     if (typeof item === 'function') {
-      update(value.filter(data => !item(data)));
+      change(value.filter(data => !item(data)));
     } else {
-      update(value.filter(data => item !== data));
+      change(value.filter(data => item !== data));
     }
   };
   const includes = (item: any) => {
@@ -58,7 +58,7 @@ export const useArray: FunctionHook<
     toggle,
     use: {
       value,
-      change: update,
+      change,
     },
   };
 };
