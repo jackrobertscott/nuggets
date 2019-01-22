@@ -282,18 +282,18 @@ export default () => {
 };
 ```
 
-#### Properties
+#### `const { ...properties } = useAddress();`
 
-`const { ...properties } = useAddress();`
+Properties:
 
-- `change(address: string)`: change location to path.
-- `shift(entries: number)`: move forward or backward in history.
-- `forward()`: move forward in history by one.
-- `backward()`: move backward in history by one.
-- `pathname: string`: the location path.
-- `search: string`: the query params of the location.
-- `hash: string`: the hash fragment in the location.
-- `entries: number`: the number of locations in the location history.
+- `change(address: string)` change location to address.
+- `shift(entries: number)` move forward or backward in history.
+- `forward()` move forward in history by one.
+- `backward()` move backward in history by one.
+- `pathname: string` the location path.
+- `search: string` the query params of the location.
+- `hash: string` the hash fragment in the location.
+- `entries: number` the number of locations in the location history.
 
 ### `useStyles()`
 
@@ -316,6 +316,13 @@ export default () => {
   return <Editor className={name} />;
 };
 ```
+
+#### `const { ...properties } = useStyles({ ...styles });`
+
+Properties:
+
+- `css: object` an object containing css properties.
+- `name: string` the class name associated with the css properties.
 
 ### `useString()`
 
@@ -345,6 +352,19 @@ export default ({ valueChange }) => {
 };
 ```
 
+#### `const { ...properties } = useString({ ...options });`
+
+Options:
+
+- `value: string` use this value to update override the current value.
+- `change(value: string)` this is run when the value changes.
+- `adjust(value: string): string` perform adjustments on the value before updating.
+
+Properties:
+
+- `value: string` the current string value.
+- `change(value: string)` set a new string value.
+
 ### `useNumber()`
 
 This manages a simple value such as a number or string.
@@ -354,7 +374,7 @@ import { useNumber, Square, Out, In } from 'nuggets';
 import { NiceSquare } from './mycomponents';
 
 export default ({ valueChange }) => {
-  const { value, change, adjust } = useNumber({
+  const { value, change } = useNumber({
     adjust: data => data % 100,
     change: valueChange,
   });
@@ -363,7 +383,6 @@ export default ({ valueChange }) => {
       <In
         value={value}
         change={change}
-        adjust={adjust}
       />
       {/* validations */}
       {value.length < 5 && <Out>Value is not long enough.</Out>}
@@ -372,6 +391,19 @@ export default ({ valueChange }) => {
   );
 };
 ```
+
+#### `const { ...properties } = useNumber({ ...options });`
+
+Options:
+
+- `value: number` use this value to update override the current value.
+- `change(value: number)` this is run when the value changes.
+- `adjust(value: number): number` perform adjustments on the value before updating.
+
+Properties:
+
+- `value: number` the current number value.
+- `change(value: number)` set a new number value.
 
 ### `useComplex()`
 
@@ -398,6 +430,20 @@ export default ({ person, valueChange, savePerson }) => {
   );
 };
 ```
+
+#### `const { ...properties } = useComplex({ ...options });`
+
+Options:
+
+- `value: object` use this value to update override the current value.
+- `change(value: object)` this is run when the value changes.
+
+Properties:
+
+- `value: object` the current number value.
+- `operate(property: string)` get operators for changing a sub property.
+- `change(value: object)` patch the entire object.
+- `override(value: object)` set the entire object.
 
 ### `useToggle()`
 
