@@ -1,16 +1,7 @@
-import React, { Component } from 'react';
-import { Layer, Square, Linear } from 'nuggets';
+import React from 'react';
+import { useStyles } from 'nuggets';
 
-export default class App extends Component {
-  public render() {
-    return (
-      <Layer>
-        <Linear direction="down" force="even">
-          <Square outside={20} height={50} color="green" />
-          <Square outside={20} height={50} color="blue" />
-          <Square outside={20} height={50} color="yellow" />
-        </Linear>
-      </Layer>
-    );
-  }
-}
+export default () => {
+  const { name } = useStyles({ backgroundColor: 'green' });
+  return <div className={name}>{name}</div>;
+};

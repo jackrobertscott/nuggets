@@ -1,5 +1,8 @@
+import { css as emotion } from '@emotion/core';
+import { StyleSheet } from '@emotion/sheet';
 import { FunctionHook } from '../../utils/types';
 import { ICSSObject } from '../../utils/styles';
+import { useEffect, useState } from 'react';
 
 export interface IuseStylesOptions {
   [name: string]: any;
@@ -7,15 +10,31 @@ export interface IuseStylesOptions {
 
 export interface IuseStylesProps {
   css: ICSSObject;
-  name: string;
+  name?: string;
+  styles?: string;
 }
 
 export const useStyles: FunctionHook<
   IuseStylesOptions,
   IuseStylesProps
-> = options => {
+> = styles => {
+  const [data, change] = useState<{ name?: string; styles?: string }>({});
+  const sheet = new StyleSheet({
+    key: '',
+    container: document.head,
+  });
+  const css = styles; // Todo: compile styles...
+  useEffect(
+    () => {
+      const things = emotion(css);
+      sheet.insert(`.${things.name} {${things.styles}}`);
+      change(things);
+      return () => sheet.flush();
+    },
+    [data.styles]
+  );
   return {
-    css: {},
-    name: '',
+    css,
+    ...data,
   };
 };
