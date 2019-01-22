@@ -13,37 +13,38 @@ However, since the creation of these libraries, our demands for functionality ha
 Until now...
 
 ```tsx
-import { Arrange, Square, Out } from 'nuggets';
+import { Arrange, Square, Out, useMedia } from 'nuggets';
 
-export default ({ textColor = 'blue', clickButton }) => (
-  <Arrange direction="down">
-    <Square
-      events={{
-        click: clickButton,
-      }}
-      styles={{
-        shape: {
-          color: 'green',
-          hover: { color: 'red' },
-          press: { color: 'yellow' },
-        },
-        texts: {
-          color: textColor,
-        }
-      }}
-    >
-      <Out value={'Hello world!'} />
-    </Square>
-    <Circle
-      styles={{
-        shape: {
-          color: 'blue',
-          diameter: 100,
-        },
-      }}
-    />
-  </Arrange>
-);
+export default ({ textColor = 'blue', clickButton }) => {
+  const { width } = useMedia();
+  return (
+    <Arrange>
+      <Square
+        events={{ click: clickButton }}
+        styles={{
+          shape: {
+            color: width > 500 ? 'green' : 'lime',
+          },
+          texts: {
+            color: textColor,
+            hover: { color: 'red' },
+            press: { color: 'yellow' },
+          }
+        }}
+      >
+        <Out value={'Hello world!'} />
+      </Square>
+      <Circle
+        styles={{
+          shape: {
+            color: 'blue',
+            diameter: 100,
+          },
+        }}
+      />
+    </Arrange>
+  );
+};
 ```
 
 Nuggets helps you think less and build more.
@@ -233,6 +234,13 @@ export default () => {
   );
 };
 ```
+
+#### `const { ...properties } = useMedia();`
+
+Properties
+
+- `width: number` the width of the window in pixels.
+- `height: number` the height of the window in pixels.
 
 ### `useAddress()`
 
