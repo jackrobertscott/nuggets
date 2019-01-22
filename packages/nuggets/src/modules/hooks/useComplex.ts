@@ -1,24 +1,26 @@
-import {
-  FunctionComponent,
-  useState,
-  createElement,
-  useEffect,
-  ReactNode,
-} from 'react';
-import { FormProvider, IFormContext, IFormValue } from '../../utils/form';
+import { useState, useEffect } from 'react';
+import { FunctionHook } from '../../utils/types';
 
-export interface IFormProps {
-  value?: IFormValue;
-  change?: (value: IFormValue) => any;
-  children?: ReactNode;
+export interface IComplexValue {
+  [name: string]: any;
 }
 
-export const Form: FunctionComponent<IFormProps> = ({
-  children,
-  ...options
-}) => {
-  const [value, change] = useState<IFormValue>(options.value || {});
-  useEffect(() => update(options.value), [options.value]);
+export interface IuseComplexProps {
+  value?: IComplexValue;
+  change?: (value: IComplexValue) => any;
+}
+
+export interface IuseComplexChildren {
+  value?: IComplexValue;
+  change?: (value: IComplexValue) => any;
+}
+
+export const useComplex: FunctionHook<
+  IuseComplexProps,
+  IuseComplexChildren
+> = options => {
+  const [value, change] = useState<IComplexValue>(options.value || {});
+  useEffect(() => patch(options.value), [options.value]);
   const update = (next?: any) => {
     const data = next || {};
     change(data);
@@ -26,17 +28,17 @@ export const Form: FunctionComponent<IFormProps> = ({
       options.change(data);
     }
   };
-  const context: IFormContext = {
-    value,
-    update: data => {
-      const state = { ...value, ...data };
-      change(state);
-      if (options.change) {
-        options.change(state);
-      }
-    },
+  const patch = (next?: IComplexValue) => {
+    update({ ...value, ...(next || {}) });
   };
-  return createElement(FormProvider, { value: context, children });
+  const operate = (name: string) => ({
+    value: value[name],
+    change: (data: any) => patch({ [name]: data }),
+  });
+  return {
+    value,
+    change: patch,
+    operate,
+    override: update,
+  };
 };
-
-Form.displayName = 'Form';

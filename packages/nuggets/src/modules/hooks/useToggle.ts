@@ -1,12 +1,12 @@
-import {
-  FunctionComponent,
-  ReactNode,
-  useState,
-  useEffect,
-  ReactElement,
-} from 'react';
+import { useState, useEffect } from 'react';
+import { FunctionHook } from '../../utils/types';
 
-export interface IToggleChildren {
+export interface IuseToggleProps {
+  value?: any;
+  change?: (value: any) => any;
+}
+
+export interface IuseToggleChildren {
   on: (...args: any[]) => any;
   off: (...args: any[]) => any;
   toggle: (override?: boolean, ...args: any[]) => any;
@@ -17,16 +17,10 @@ export interface IToggleChildren {
   };
 }
 
-export interface IToggleProps {
-  value?: any;
-  change?: (value: any) => any;
-  children: ({ on, off, toggle, use }: IToggleChildren) => ReactNode;
-}
-
-export const Toggle: FunctionComponent<IToggleProps> = ({
-  children,
-  ...options
-}) => {
+export const useToggle: FunctionHook<
+  IuseToggleProps,
+  IuseToggleChildren
+> = options => {
   const [value, change] = useState<boolean>(options.value);
   useEffect(() => update(options.value), [options.value]);
   const update = (next: boolean) => {
@@ -36,17 +30,15 @@ export const Toggle: FunctionComponent<IToggleProps> = ({
       options.change(data);
     }
   };
-  return children({
+  return {
     on: () => update(true),
     off: () => update(false),
-    toggle: override =>
+    toggle: (override?: boolean) =>
       update(typeof override === 'boolean' ? override : !value),
     active: value,
     use: {
       value,
       change: update,
     },
-  }) as ReactElement<any>;
+  };
 };
-
-Toggle.displayName = 'Toggle';

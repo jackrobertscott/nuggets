@@ -1,12 +1,12 @@
-import {
-  FunctionComponent,
-  ReactNode,
-  useState,
-  useEffect,
-  ReactElement,
-} from 'react';
+import { useState, useEffect } from 'react';
+import { FunctionHook } from '../../utils/types';
 
-export interface IMultipleChildren {
+export interface IuseArrayProps {
+  value?: any[];
+  change?: (value: any[]) => any;
+}
+
+export interface IuseArrayChildren {
   add: (item: any, ...args: any[]) => any;
   remove: (item: any | ((item: any) => any), ...args: any[]) => any;
   includes: (item: any | ((item: any) => any), ...args: any[]) => any;
@@ -17,18 +17,10 @@ export interface IMultipleChildren {
   };
 }
 
-export interface IMultipleProps {
-  value?: any[];
-  change?: (value: any[]) => any;
-  children: (
-    { add, remove, includes, toggle, use }: IMultipleChildren
-  ) => ReactNode;
-}
-
-export const Multiple: FunctionComponent<IMultipleProps> = ({
-  children,
-  ...options
-}) => {
+export const useArray: FunctionHook<
+  IuseArrayProps,
+  IuseArrayChildren
+> = options => {
   const [value, change] = useState<any[]>(options.value || []);
   useEffect(() => update(options.value), [options.value]);
   const update = (next?: any[]) => {
@@ -59,7 +51,7 @@ export const Multiple: FunctionComponent<IMultipleProps> = ({
       add(item);
     }
   };
-  return children({
+  return {
     add,
     remove,
     includes,
@@ -68,7 +60,5 @@ export const Multiple: FunctionComponent<IMultipleProps> = ({
       value,
       change: update,
     },
-  }) as ReactElement<any>;
+  };
 };
-
-Multiple.displayName = 'Multiple';

@@ -1,40 +1,34 @@
-import {
-  FunctionComponent,
-  ReactNode,
-  useState,
-  useEffect,
-  ReactElement,
-} from 'react';
+import { useState, useEffect } from 'react';
+import { FunctionHook } from '../../utils/types';
 
-export interface IDatetimeChildrenChanger {
+export interface IuseDatetimeProps {
+  value?: Date;
+  change?: (value: Date) => any;
+}
+
+export interface IuseDatetimeOperate {
   value: number | string;
   change: (value: number | string) => any;
 }
 
-export interface IDatetimeChildren {
-  year: IDatetimeChildrenChanger;
-  month: IDatetimeChildrenChanger;
-  date: IDatetimeChildrenChanger;
-  hours: IDatetimeChildrenChanger;
-  minutes: IDatetimeChildrenChanger;
-  seconds: IDatetimeChildrenChanger;
-  milliseconds: IDatetimeChildrenChanger;
+export interface IuseDatetimeChildren {
+  year: IuseDatetimeOperate;
+  month: IuseDatetimeOperate;
+  date: IuseDatetimeOperate;
+  hours: IuseDatetimeOperate;
+  minutes: IuseDatetimeOperate;
+  seconds: IuseDatetimeOperate;
+  milliseconds: IuseDatetimeOperate;
   use: {
     value: Date;
     change: (value: Date) => any;
   };
 }
 
-export interface IDatetimeProps {
-  value?: Date;
-  change?: (value: Date) => any;
-  children: ({ use }: IDatetimeChildren) => ReactNode;
-}
-
-export const Datetime: FunctionComponent<IDatetimeProps> = ({
-  children,
-  ...options
-}) => {
+export const useDatetime: FunctionHook<
+  IuseDatetimeProps,
+  IuseDatetimeChildren
+> = options => {
   const [value, change] = useState<Date>(options.value || new Date());
   useEffect(() => update(options.value), [options.value]);
   const update = (next?: Date) => {
@@ -44,27 +38,25 @@ export const Datetime: FunctionComponent<IDatetimeProps> = ({
       options.change(data);
     }
   };
-  const make = (type: string) => ({
+  const operate = (type: string) => ({
     value: (value as any)[`get${type}`](),
-    format: (next: number | string) => Number(next),
+    adjust: (next: number | string) => Number(next),
     change: (next: number | string) => {
       (value as any)[`set${type}`](Number(next));
       update(new Date(value.valueOf()));
     },
   });
-  return children({
-    year: make('Year'),
-    month: make('Month'),
-    date: make('Date'),
-    hours: make('Hours'),
-    minutes: make('Minutes'),
-    seconds: make('Seconds'),
-    milliseconds: make('Milliseconds'),
+  return {
+    year: operate('Year'),
+    month: operate('Month'),
+    date: operate('Date'),
+    hours: operate('Hours'),
+    minutes: operate('Minutes'),
+    seconds: operate('Seconds'),
+    milliseconds: operate('Milliseconds'),
     use: {
       value,
       change: update,
     },
-  }) as ReactElement<any>;
+  };
 };
-
-Datetime.displayName = 'Datetime';

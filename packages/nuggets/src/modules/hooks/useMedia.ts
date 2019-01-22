@@ -1,27 +1,22 @@
-import {
-  FunctionComponent,
-  ReactNode,
-  useState,
-  ReactElement,
-  useEffect,
-} from 'react';
+import { ReactNode, useState, useEffect } from 'react';
 import { throttle } from '../../utils/helpers';
+import { FunctionHook } from '../../utils/types';
 
-export interface IMediaChildren {
+export interface IuseMediaProps {
+  children: ({ width, height }: IuseMediaChildren) => ReactNode;
+  throttle?: number;
+}
+
+export interface IuseMediaChildren {
   width: number;
   height: number;
 }
 
-export interface IMediaProps {
-  children: ({ width, height }: IMediaChildren) => ReactNode;
-  throttle?: number;
-}
-
-export const Media: FunctionComponent<IMediaProps> = ({
-  children,
-  ...options
-}) => {
-  const [sizes, change] = useState<IMediaChildren>({
+export const useMedia: FunctionHook<
+  IuseMediaProps,
+  IuseMediaChildren
+> = options => {
+  const [sizes, change] = useState<IuseMediaChildren>({
     width: 0,
     height: 0,
   });
@@ -36,7 +31,5 @@ export const Media: FunctionComponent<IMediaProps> = ({
     window.addEventListener('resize', update);
     return () => window.removeEventListener('resize', update);
   });
-  return children(sizes) as ReactElement<any>;
+  return sizes;
 };
-
-Media.displayName = 'Media';

@@ -158,7 +158,12 @@ import { Arrange } from 'nuggets';
 import { PersonListItem } from './mycomponents';
 
 export default ({ people }) => (
-  <Arrange styles={{ direction: 'right' }}>
+  <Arrange
+    structure={{
+      direction: 'right',
+      space: 10,
+    }}
+  >
     {people.map(({ name }) => (
       <PersonListItem value={name} />
     ))}
@@ -168,7 +173,7 @@ export default ({ people }) => (
 
 ### `<Out />`
 
-This component is used to render and format text.
+This component is used to render and adjust text.
 
 ```tsx
 import { Out } from 'nuggets';
@@ -176,7 +181,7 @@ import { Out } from 'nuggets';
 export default ({ color = 'black' }) => (
   <Out
     value={'Hello nuggets!'}
-    format={value => value.toUpperCase()}
+    adjust={value => value.toUpperCase()}
   />
 );
 ```
@@ -193,7 +198,7 @@ export default ({ value, change }) => (
     wrap={true}
     value={value}
     change={change}
-    format={value => stringToLowerCase(value)}
+    adjust={value => stringToLowerCase(value)}
   />
 );
 ```
@@ -277,6 +282,19 @@ export default () => {
 };
 ```
 
+#### Properties
+
+`const { ...properties } = useAddress();`
+
+- `change(address: string)`: change location to path.
+- `shift(entries: number)`: move forward or backward in history.
+- `forward()`: move forward in history by one.
+- `backward()`: move backward in history by one.
+- `pathname: string`: the location path.
+- `search: string`: the query params of the location.
+- `hash: string`: the hash fragment in the location.
+- `entries: number`: the number of locations in the location history.
+
 ### `useStyles()`
 
 Compile styles into css and attach to the document. It returns the class name which can be added to components which are not in the nuggets lib.
@@ -299,17 +317,17 @@ export default () => {
 };
 ```
 
-### `useSimple()`
+### `useString()`
 
 This manages a simple value such as a number or string.
 
 ```tsx
-import { useSimple, Square, Out, In } from 'nuggets';
+import { useString, Square, Out, In } from 'nuggets';
 import { NiceSquare } from './mycomponents';
 
 export default ({ valueChange }) => {
-  const { value, change, format } = useSimple({
-    format: data => Number(data),
+  const { value, change, adjust } = useString({
+    adjust: data => data.toUpperCase(),
     change: valueChange,
   });
   return (
@@ -317,7 +335,35 @@ export default ({ valueChange }) => {
       <In
         value={value}
         change={change}
-        format={format}
+        adjust={adjust}
+      />
+      {/* validations */}
+      {value.length < 5 && <Out>Value is not long enough.</Out>}
+      {hasBadChars(value) && <Out>Value contains some bad characters.</Out>}
+    </NiceSquare>
+  );
+};
+```
+
+### `useNumber()`
+
+This manages a simple value such as a number or string.
+
+```tsx
+import { useNumber, Square, Out, In } from 'nuggets';
+import { NiceSquare } from './mycomponents';
+
+export default ({ valueChange }) => {
+  const { value, change, adjust } = useNumber({
+    adjust: data => data % 100,
+    change: valueChange,
+  });
+  return (
+    <NiceSquare>
+      <In
+        value={value}
+        change={change}
+        adjust={adjust}
       />
       {/* validations */}
       {value.length < 5 && <Out>Value is not long enough.</Out>}
@@ -336,15 +382,15 @@ import { useComplex } from 'nuggets';
 import { CustomButton, FieldText, FieldEmail, FieldPassword } from './mycomponents';
 
 export default ({ person, valueChange, savePerson }) => {
-  const { setter, value } = useComplex({
+  const { operate, value } = useComplex({
     value: person,
     change: valueChange,
   });
   return (
     <Square>
-      <FieldText change={data => setter('password').change(data)} />
-      <FieldEmail change={setter('email').change} />
-      <FieldPassword {...setter('password')} />
+      <FieldText change={data => operate('password').change(data)} />
+      <FieldEmail change={operate('email').change} />
+      <FieldPassword {...operate('password')} />
       <CustomButton events={{ click: () => savePerson(value) }}>
         Save
       </CustomButton>
@@ -411,12 +457,12 @@ export default ({ value, change }) => {
       <In
         value={date.value}
         change={date.change}
-        format={date.format}
+        adjust={date.adjust}
       />
       <In
         value={month.value}
         change={month.change}
-        format={month.format}
+        adjust={month.adjust}
       />
       <In {...year} />
       <In {...hour} />
