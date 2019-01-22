@@ -6,7 +6,9 @@ A collection of essential components which compose modern web experiences.
 
 ## Overview
 
-In 1980, physicist Tim Berners-Lee proposed a new markup language called HTML. Then in 1997 and 1998 they brought out CSS2 and CSS3 respectively. Both are powerful languages. However, since their creation, our demands for more intricate functionality has increased without seeing a similar improvement of the technologies. Although there has been movement in the area of web development tooling, there leaves a lot to be desired.
+In 1980, physicist Tim Berners-Lee proposed a new markup language called HTML. Later, they brought out CSS3 in 1998. Both are powerful languages.
+
+However, since the creation of these libraries, our demands for functionality has increased and we have not seen a similar improvement in these technologies to meet this demand. A lot has been left to be desired.
 
 Until now...
 
@@ -720,6 +722,20 @@ export default ({ id }) => {
   );
 };
 ```
+
+#### `const { ...properties } = useConnection({ ...options });`
+
+Options
+
+- `connection` a connection - created using `createConnection`.
+- `defaults: object` the default values passed to the connection.
+
+Properties
+
+- `value: object` the latest value provided by the connection.
+- `error: object` an error caught by the connection.
+- `execute(variables: object)` call the connection handler.
+- `refresh()` call the connection handler with the same values as the last call.
 
 ## Authors
 
