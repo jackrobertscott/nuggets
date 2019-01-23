@@ -22,18 +22,25 @@ export const useConnection: FunctionHook<
   IuseConnectionProps
 > = options => {
   const [value, update] = useState<IConnectionValue>({});
-  const [error, catche] = useState<IConnectionError | undefined>(undefined);
+  const [error, updateError] = useState<IConnectionError | undefined>(
+    undefined
+  );
+  const [loading, updateLoading] = useState<boolean>(false);
   const [execute, refresh, ...unwatch] = options.connection({
     defaults: options.defaults,
-    data: (data: IConnectionValue) => update(data),
-    error: (issue: IConnectionError) => catche(issue),
+    data: update,
+    error: updateError,
+    loading: updateLoading,
   });
-  useEffect(() => {
-    return () => unwatch.forEach(run => run());
-  });
+  /**
+   * The double function is for accessing the "unmount" hook.
+   * () => () => unmount()
+   */
+  useEffect(() => () => unwatch.forEach(run => run()));
   return {
     value,
     error,
+    loading,
     execute,
     refresh,
   };

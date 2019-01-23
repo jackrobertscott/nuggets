@@ -4,10 +4,12 @@ export interface IConnectionValue {
   [name: string]: any;
 }
 
-export interface IConnectionError {
-  thrown?: Error;
-  message?: string;
-}
+export type IConnectionError =
+  | {
+      thrown?: Error;
+      message?: string;
+    }
+  | undefined;
 
 export interface IcreateConnectionOptions {
   handler: (value: IConnectionValue) => Promise<IConnectionValue>;
@@ -17,6 +19,7 @@ export interface IConnectionCallbacks {
   defaults?: any;
   data: (data: IConnectionValue) => any;
   error: (error: IConnectionError) => any;
+  loading: (loading: boolean) => any;
 }
 
 export type IConnection = (
@@ -29,11 +32,22 @@ export const createConnection = ({
   let previous: any;
   const dataDispatcher = createDispatcher<IConnectionValue>();
   const errorDispatcher = createDispatcher<IConnectionError>();
-  return ({ defaults, data, error }) => {
+  const loadingDispatcher = createDispatcher<boolean>();
+  return ({ defaults, ...executors }) => {
     const runner = (value: any) => {
+      loadingDispatcher.dispatch(true);
       handler(value)
-        .then(data)
-        .catch(thrown => ({ thrown, message: thrown.message }));
+        .then(data => {
+          dataDispatcher.dispatch(data);
+          loadingDispatcher.dispatch(false);
+        })
+        .catch(error => {
+          errorDispatcher.dispatch({
+            thrown: error,
+            message: error.message,
+          });
+          loadingDispatcher.dispatch(false);
+        });
     };
     const execute = (value?: any) => {
       previous = {
@@ -46,8 +60,9 @@ export const createConnection = ({
     return [
       execute,
       refresh,
-      dataDispatcher.watch(data),
-      errorDispatcher.watch(error),
+      dataDispatcher.watch(executors.data),
+      errorDispatcher.watch(executors.error),
+      loadingDispatcher.watch(executors.loading),
     ];
   };
 };

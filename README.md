@@ -742,6 +742,7 @@ Properties
 
 - `value: object` the latest value provided by the connection.
 - `error: object` an error caught by the connection.
+- `loading: boolean` whether the app connection is currently loading.
 - `execute(variables: object)` call the connection handler.
 - `refresh()` call the connection handler with the same values as the last call.
 

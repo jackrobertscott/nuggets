@@ -1,5 +1,10 @@
 import * as deep from 'deepmerge';
 
+export const formatValue = (
+  value: string | number,
+  type: string = 'px'
+): string => (typeof value === 'string' ? value : `${value}${type}`);
+
 export interface ICSSObject {
   [name: string]: string | number | ICSSObject | undefined;
 }
