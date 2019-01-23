@@ -19,7 +19,7 @@ import {
   ITransformDigester,
   ITextDigester,
 } from '../../utils/digests';
-import { INuggie, createNuggie } from '../../utils/nuggie';
+import { INuggie, createNuggie } from '../../utils/dom';
 import { happenClick, IClickHappener } from '../../utils/happen';
 
 export type ICircleStylesProps = IBackgroundColorDigester &

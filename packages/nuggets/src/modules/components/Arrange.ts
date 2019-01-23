@@ -1,6 +1,6 @@
 import { FunctionComponent, ReactElement } from 'react';
 import { digestFlex, IFlexDigester } from '../../utils/digests';
-import { createNuggie, INuggie } from '../../utils/nuggie';
+import { createNuggie, INuggie } from '../../utils/dom';
 import { happenClick, IClickHappener } from '../../utils/happen';
 
 export type IArrangeStylesProps = IFlexDigester;
