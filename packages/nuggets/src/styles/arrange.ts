@@ -1,4 +1,4 @@
-import { ICSSObject, IDigester } from '../utils/styles';
+import { ICSS, IDigester } from '../utils/types';
 
 export interface IArrangeDigester {
   direction?: 'right' | 'left' | 'up' | 'down';
@@ -9,7 +9,7 @@ export const digestArrange: IDigester<IArrangeDigester> = ({
   direction,
   force,
 }) => {
-  const css: ICSSObject = {
+  const css: ICSS = {
     flexGrow: 1,
     display: 'flex',
     overflow: 'auto',

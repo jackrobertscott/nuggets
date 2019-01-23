@@ -1,7 +1,6 @@
 import { css as emotion } from '@emotion/core';
 import { StyleSheet } from '@emotion/sheet';
-import { FunctionHook } from '../../utils/types';
-import { ICSSObject } from '../../utils/styles';
+import { FunctionHook, ICSS } from '../../utils/types';
 import { useEffect, useState } from 'react';
 
 export interface IuseStylesOptions {
@@ -9,7 +8,7 @@ export interface IuseStylesOptions {
 }
 
 export interface IuseStylesProps {
-  css: ICSSObject;
+  css: ICSS;
   name?: string;
   styles?: string;
 }

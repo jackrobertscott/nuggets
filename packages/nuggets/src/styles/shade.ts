@@ -1,4 +1,4 @@
-import { IDigester, ICSSObject } from '../utils/styles';
+import { IDigester, ICSS } from '../utils/types';
 
 export interface IShadeDigester {
   color?: string;
@@ -15,7 +15,7 @@ export const digestShade: IDigester<IShadeDigester> = ({
   down = 0,
   across = 0,
 }) => {
-  const css: ICSSObject = {};
+  const css: ICSS = {};
   css.boxShadow = `${across}px ${down}px ${blur}px ${grow}px ${color}`;
   return css;
 };

@@ -1,21 +1,17 @@
 import { FunctionComponent, ReactText } from 'react';
-import { INuggie, createNuggie } from '../../utils/dom';
-import { happenClick, IClickHappener } from '../../utils/happen';
+import { INuggieProps, createNuggie } from '../../utils/dom';
 
-export type IOutEventsProps = IClickHappener;
-
-export type IOutProps = {
+export type IOutProps = INuggieProps & {
   value?: ReactText | ReactText[];
-  format?: (value: ReactText | ReactText[]) => ReactText | ReactText[];
-} & INuggie<{}, IOutEventsProps>;
+  adjust?: (value: ReactText | ReactText[]) => ReactText | ReactText[];
+};
 
-export const Out: FunctionComponent<IOutProps> = ({ format, ...options }) => {
+export const Out: FunctionComponent<IOutProps> = ({ adjust, ...options }) => {
   const value = String(options.value || '');
-  return createNuggie<{}, IOutEventsProps>({
-    children: typeof format === 'function' ? format(value) : value,
-    options,
-    events: [happenClick()],
-    styles: [],
+  const children = typeof adjust === 'function' ? adjust(value) : value;
+  return createNuggie({
+    children,
+    ...options,
   });
 };
 

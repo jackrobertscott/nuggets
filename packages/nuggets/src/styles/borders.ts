@@ -1,4 +1,5 @@
-import { ICSSObject, IDigester, stringsAndPixels } from '../utils/styles';
+import { ICSS, IDigester } from '../utils/types';
+import { stringsAndPixels } from '../utils/helpers';
 
 export interface IBordersDigester {
   color?: string;
@@ -26,7 +27,7 @@ export const digestBorders: IDigester<IBordersDigester> = ({
   style = 'solid',
   sides = [],
 }) => {
-  let css: ICSSObject = {};
+  let css: ICSS = {};
   if (sides && !sides.length) {
     css.border = `${stringsAndPixels(thickness)} ${style} ${color}`;
   } else {

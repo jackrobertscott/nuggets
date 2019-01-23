@@ -1,62 +1,17 @@
-import { FunctionComponent, ReactNode, ReactElement } from 'react';
-import {
-  digestShadow,
-  digestBorder,
-  digestBackgroundColor,
-  digestDiameter,
-  digestSpace,
-  digestTransform,
-  digestTransition,
-  digestCursor,
-  digestText,
-  IBorderDigester,
-  IShadowDigester,
-  IDiameterDigester,
-  IBackgroundColorDigester,
-  ISpaceDigester,
-  ICursorDigester,
-  ITransitionDigester,
-  ITransformDigester,
-  ITextDigester,
-} from '../../utils/digests';
-import { INuggie, createNuggie } from '../../utils/dom';
-import { happenClick, IClickHappener } from '../../utils/happen';
+import { FunctionComponent, ReactElement } from 'react';
+import { INuggieProps, createNuggie } from '../../utils/dom';
 
-export type ICircleStylesProps = IBackgroundColorDigester &
-  IBorderDigester &
-  IShadowDigester &
-  IDiameterDigester &
-  ISpaceDigester &
-  ICursorDigester &
-  ITransitionDigester &
-  ITransformDigester &
-  ITextDigester;
-
-export type ICircleEventsProps = IClickHappener;
-
-export type ICircleProps = {
+export type ICircleProps = INuggieProps & {
   children?: ReactElement<any> | Array<ReactElement<any>>;
-} & INuggie<ICircleStylesProps, ICircleEventsProps>;
+};
 
 export const Circle: FunctionComponent<ICircleProps> = ({
   children,
   ...options
 }) => {
-  return createNuggie<ICircleStylesProps, ICircleEventsProps>({
+  return createNuggie({
     children,
-    options,
-    events: [happenClick()],
-    styles: [
-      digestBackgroundColor,
-      digestBorder,
-      digestShadow,
-      digestSpace,
-      digestDiameter,
-      digestCursor,
-      digestTransition,
-      digestTransform,
-      digestText,
-    ],
+    ...options,
   });
 };
 

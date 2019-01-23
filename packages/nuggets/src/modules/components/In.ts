@@ -1,37 +1,34 @@
 import { FunctionComponent, useState, useEffect } from 'react';
-import { INuggie, createNuggie } from '../../utils/dom';
-import {
-  happenClick,
-  happenChange,
-  IClickHappener,
-  IChangeHappener,
-} from '../../utils/happen';
+import { INuggieProps, createNuggie } from '../../utils/dom';
+import { IEventsExecuter } from '../../utils/types';
 
-export type IInEventsProps = IClickHappener & IChangeHappener<string | number>;
+export type IInProps = INuggieProps & {
+  value?: string | number;
+  change?: IEventsExecuter<string | number>;
+  wrap?: number;
+};
 
-export type IInProps = INuggie<{}, IInEventsProps>;
-
-export const In: FunctionComponent<IInProps> = ({ children, ...options }) => {
-  const [value, change] = useState<string>(String(options.value || ''));
-  useEffect(() => update(options.value), [options.value]);
-  const update = (next?: string | number) => {
+export const In: FunctionComponent<IInProps> = ({
+  children,
+  css,
+  wrap,
+  ...options
+}) => {
+  const [value, update] = useState<string>(String(options.value || ''));
+  useEffect(() => change(options.value), [options.value]);
+  const change = (next?: string | number) => {
     const data = String(next || '');
-    change(data);
+    update(data);
     if (options.change) {
       options.change(data, {});
     }
   };
-  return createNuggie<{}, IInEventsProps>({
-    type: 'input',
+  return createNuggie({
+    type: wrap ? 'textarea' : 'input',
     children,
-    options,
-    extras: { value },
-    events: [happenClick(), happenChange(change)],
-    styles: [
-      () => ({
-        width: '100%',
-      }),
-    ],
+    css: { width: '100%', ...css },
+    extras: { value, rows: wrap },
+    ...options,
   });
 };
 

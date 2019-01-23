@@ -1,23 +1,16 @@
 import { FunctionComponent, ReactElement, useEffect } from 'react';
 import { createPortal } from 'react-dom';
-import {
-  digestBackgroundColor,
-  IBackgroundColorDigester,
-} from '../../utils/digests';
-import { INuggie, createNuggie } from '../../utils/dom';
-import { IClickHappener, happenClick } from '../../utils/happen';
+import { INuggieProps, createNuggie } from '../../utils/dom';
+import { ensure } from '../../utils/helpers';
 
-export type ILayerStylesProps = IBackgroundColorDigester;
-
-export type ILayerEventsProps = IClickHappener;
-
-export type ILayerProps = {
+export type ILayerProps = INuggieProps & {
   attach?: HTMLElement | null;
   children?: ReactElement<any> | Array<ReactElement<any>>;
-} & INuggie<ILayerStylesProps, ILayerEventsProps>;
+};
 
 export const Layer: FunctionComponent<ILayerProps> = ({
   children,
+  css,
   ...options
 }) => {
   const node: HTMLElement = options.attach || document.createElement('div');
@@ -31,23 +24,20 @@ export const Layer: FunctionComponent<ILayerProps> = ({
       node.remove();
     };
   }, []);
-  const InterLayer = createNuggie<ILayerStylesProps, ILayerEventsProps>({
+  const InterLayer = createNuggie({
     children,
-    options,
-    events: [happenClick()],
-    styles: [
-      () => ({
-        display: 'flex',
-        flexDirection: 'column',
-        overflow: 'auto',
-        position: 'fixed',
-        top: 0,
-        left: 0,
-        bottom: 0,
-        right: 0,
-      }),
-      digestBackgroundColor,
-    ],
+    css: {
+      display: 'flex',
+      flexDirection: 'column',
+      overflow: 'auto',
+      position: 'fixed',
+      top: 0,
+      left: 0,
+      bottom: 0,
+      right: 0,
+      ...ensure(css),
+    },
+    ...options,
   });
   return createPortal(InterLayer, node);
 };

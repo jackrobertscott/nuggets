@@ -1,4 +1,5 @@
-import { ICSSObject, stringsAndPixels, IDigester } from '../utils/styles';
+import { ICSS, IDigester } from '../utils/types';
+import { stringsAndPixels } from '../utils/helpers';
 
 export interface ISizeOptions {
   use?: number | string;
@@ -30,7 +31,7 @@ export const digestShape: IDigester<IShapeDigester> = ({
   width,
   space,
 }) => {
-  const css: ICSSObject = {};
+  const css: ICSS = {};
   if (color !== undefined) {
     css.backgroundColor = color;
   }

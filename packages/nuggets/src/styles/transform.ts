@@ -1,4 +1,4 @@
-import { IDigester } from '../utils/styles';
+import { IDigester } from '../utils/types';
 
 export interface ITransform3dOptions {
   x?: number | string;

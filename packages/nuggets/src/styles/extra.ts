@@ -1,4 +1,5 @@
-import { stringsAndPixels, ICSSObject, IDigester } from '../utils/styles';
+import { ICSS, IDigester } from '../utils/types';
+import { stringsAndPixels } from '../utils/helpers';
 
 export interface IExtraDigester {
   transition?: number;
@@ -9,7 +10,7 @@ export const digestExtra: IDigester<IExtraDigester> = ({
   transition,
   cursor,
 }) => {
-  const css: ICSSObject = {};
+  const css: ICSS = {};
   if (transition !== undefined) {
     css.transition = stringsAndPixels(transition, 'ms');
   }

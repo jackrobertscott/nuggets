@@ -1,8 +1,6 @@
-import React, { FunctionComponent } from 'react';
-import { Square, In, Out } from 'nuggets';
 import colors from '../colors';
 
-const action = {
+export const action = {
   surface: {
     color: colors.marine,
     border: {
@@ -27,7 +25,7 @@ const action = {
   },
 };
 
-const danger = {
+export const danger = {
   surface: {
     color: colors.danger,
     border: {
@@ -52,7 +50,7 @@ const danger = {
   },
 };
 
-const dark = {
+export const dark = {
   surface: {
     color: colors.night,
     border: {
@@ -71,35 +69,3 @@ const dark = {
     },
   },
 };
-
-export interface IButtonProps {
-  children?: string;
-  type?: string;
-}
-
-const Button: FunctionComponent<IButtonProps> = ({
-  children = 'Submit',
-  type = 'primary',
-}) => {
-  let style: any = [action.surface, action.words];
-  if (type === 'danger') {
-    style = [danger.surface, danger.words];
-  }
-  if (type === 'dark') {
-    style = [dark.surface, dark.words];
-  }
-  return (
-    <Square
-      cursor="pointer"
-      corners={4}
-      transition={200}
-      inside={{ sides: 15, verts: 11 }}
-      style={style}
-    >
-      <Out value={children} format={value => String(value).toUpperCase()} />
-      <In value={children} change={console.log} />
-    </Square>
-  );
-};
-
-export default Button;

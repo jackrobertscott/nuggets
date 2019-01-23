@@ -1,48 +1,55 @@
+import * as deep from 'deepmerge';
 import { jsx, css as emotion } from '@emotion/core';
 import { StyleSheet } from '@emotion/sheet';
-import { IStylesDigesterArray, IStylesProps, createAwesomeCSS } from './styles';
-import { IEventsProps, IEventsDigesterArray, createEvents } from './events';
+import { IEventsOptions, createEvents } from './events';
+import { IStylesOptions, createCSSFromStyles } from './awesome';
+import { ensure } from './helpers';
+import { ICSS } from './types';
 import clean from './clean';
-
-export interface INuggieProps {
-  into?: { [name: string]: any };
-}
-
-export type INuggie<S, E> = INuggieProps & IStylesProps<S> & IEventsProps<E>;
-
-export interface INuggieConfig<S, E> {
-  type?: string;
-  children?: any;
-  options: INuggie<S, E>;
-  styles?: IStylesDigesterArray<S>;
-  events?: IEventsDigesterArray<E>;
-  extras?: { [name: string]: any };
-}
 
 const nuggie = 'nuggie';
 const sheet = new StyleSheet({ key: 'clean', container: document.head });
 sheet.insert(`.${nuggie} {${clean}}`);
 
-export const createNuggie = <S, E>({
+export interface IRandom {
+  [name: string]: any;
+}
+
+export interface INuggieProps {
+  css?: ICSS;
+  into?: IRandom;
+}
+
+export type INuggieOptions = INuggieProps & {
+  type?: string;
+  children?: any;
+  css?: ICSS;
+  into?: IRandom;
+  styles?: IStylesOptions;
+  events?: IEventsOptions;
+  extras?: IRandom;
+};
+
+export const createNuggie = ({
   type = 'div',
   children,
-  options,
-  styles = [],
-  events = [],
+  css = {},
+  into = {},
+  styles = {},
+  events = {},
   extras = {},
-}: INuggieConfig<S, E>) => {
-  const css = createAwesomeCSS(options, styles);
-  const attrs = createEvents(options, events);
-  const into = options.into || {};
+}: INuggieOptions) => {
+  const emote = createCSSFromStyles(styles);
+  const attrs = createEvents(events);
   const props = {
-    ...attrs,
-    ...into,
-    ...extras,
+    ...ensure(attrs),
+    ...ensure(into),
+    ...ensure(extras),
   };
   return jsx(type, {
     ...props,
     children,
     className: [props.className || '', nuggie].join(' ').trim(),
-    css: emotion(css),
+    css: emotion(deep.all([emote, css]) as ICSS),
   });
 };
