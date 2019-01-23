@@ -1,21 +1,20 @@
 import { useState, useEffect } from 'react';
-import { FunctionHook } from '../../utils/types';
+import { FunctionHook, IOptional } from '../../utils/types';
 
-export interface IuseStringOptions {
+export type IuseStringOptions = IOptional<{
   value?: any;
   change?: (value: string) => any;
   adjust?: (value: string) => string;
-}
+}>;
 
 export interface IuseStringProps {
   value: any;
   change: (value: any) => any;
 }
 
-export const useString: FunctionHook<
-  IuseStringOptions,
-  IuseStringProps
-> = options => {
+export const useString: FunctionHook<IuseStringOptions, IuseStringProps> = (
+  options = {}
+) => {
   const [value, update] = useState<string>(options.value);
   useEffect(() => change(options.value), [options.value]);
   const change = (next?: any) => {

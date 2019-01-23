@@ -16,23 +16,27 @@ export interface IuseStylesProps {
 export const useStyles: FunctionHook<
   IuseStylesOptions,
   IuseStylesProps
-> = styles => {
-  const [data, change] = useState<{ name?: string; styles?: string }>({});
+> = options => {
+  const [{ styles, name }, change] = useState<{
+    name?: string;
+    styles?: string;
+  }>({});
   const sheet = new StyleSheet({
     key: '',
     container: document.head,
   });
   useEffect(
     () => {
-      const css = createCSSFromStyles(styles);
+      const css = createCSSFromStyles(options);
       const things = emotion(css);
       sheet.insert(`.${things.name} {${things.styles}}`);
       change(things);
       return () => sheet.flush();
     },
-    [data.styles]
+    [styles]
   );
   return {
-    ...data,
+    styles,
+    name,
   };
 };

@@ -1,10 +1,10 @@
 import { useState, useEffect } from 'react';
-import { FunctionHook } from '../../utils/types';
+import { FunctionHook, IOptional } from '../../utils/types';
 
-export interface IuseArrayOptions {
+export type IuseArrayOptions = IOptional<{
   value?: any[];
   change?: (value: any[]) => any;
-}
+}>;
 
 export interface IuseArrayProps {
   add: (item: any, ...args: any[]) => any;
@@ -17,10 +17,9 @@ export interface IuseArrayProps {
   };
 }
 
-export const useArray: FunctionHook<
-  IuseArrayOptions,
-  IuseArrayProps
-> = options => {
+export const useArray: FunctionHook<IuseArrayOptions, IuseArrayProps> = (
+  options = {}
+) => {
   const [value, update] = useState<any[]>(options.value || []);
   useEffect(() => change(options.value), [options.value]);
   const change = (next?: any[]) => {

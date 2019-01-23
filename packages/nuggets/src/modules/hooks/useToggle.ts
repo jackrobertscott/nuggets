@@ -1,10 +1,10 @@
 import { useState, useEffect } from 'react';
-import { FunctionHook } from '../../utils/types';
+import { FunctionHook, IOptional } from '../../utils/types';
 
-export interface IuseToggleOptions {
+export type IuseToggleOptions = IOptional<{
   value?: any;
   change?: (value: boolean) => any;
-}
+}>;
 
 export interface IuseToggleProps {
   on: (...args: any[]) => any;
@@ -17,10 +17,9 @@ export interface IuseToggleProps {
   };
 }
 
-export const useToggle: FunctionHook<
-  IuseToggleOptions,
-  IuseToggleProps
-> = options => {
+export const useToggle: FunctionHook<IuseToggleOptions, IuseToggleProps> = (
+  options = {}
+) => {
   const [value, update] = useState<boolean>(!!options.value || false);
   useEffect(() => change(options.value), [options.value]);
   const change = (next: boolean) => {

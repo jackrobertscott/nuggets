@@ -1,24 +1,23 @@
 import { useState, useEffect } from 'react';
-import { FunctionHook } from '../../utils/types';
+import { FunctionHook, IOptional } from '../../utils/types';
 
 export interface IComplexValue {
   [name: string]: any;
 }
 
-export interface IuseComplexOptions {
+export type IuseComplexOptions = IOptional<{
   value?: IComplexValue;
   change?: (value: IComplexValue) => any;
-}
+}>;
 
 export interface IuseComplexProps {
   value?: IComplexValue;
   change?: (value: IComplexValue) => any;
 }
 
-export const useComplex: FunctionHook<
-  IuseComplexOptions,
-  IuseComplexProps
-> = options => {
+export const useComplex: FunctionHook<IuseComplexOptions, IuseComplexProps> = (
+  options = {}
+) => {
   const [value, update] = useState<IComplexValue>(options.value || {});
   useEffect(() => change(options.value), [options.value]);
   const override = (next?: any) => {
