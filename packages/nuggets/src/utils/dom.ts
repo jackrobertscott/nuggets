@@ -2,7 +2,7 @@ import * as deep from 'deepmerge';
 import { jsx, css as emotion } from '@emotion/core';
 import { StyleSheet } from '@emotion/sheet';
 import { IEventsOptions, createEvents } from './events';
-import { IStylesOptions, createCSSFromStyles } from './awesome';
+import { IStylesOptions, createCSSFromStyles } from './styles';
 import { ensure } from './helpers';
 import { ICSS } from './types';
 import clean from './clean';

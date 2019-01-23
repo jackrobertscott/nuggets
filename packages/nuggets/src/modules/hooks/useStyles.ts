@@ -1,14 +1,14 @@
 import { css as emotion } from '@emotion/core';
 import { StyleSheet } from '@emotion/sheet';
-import { FunctionHook, ICSS } from '../../utils/types';
+import { FunctionHook } from '../../utils/types';
 import { useEffect, useState } from 'react';
+import { createCSSFromStyles } from '../../utils/styles';
 
 export interface IuseStylesOptions {
   [name: string]: any;
 }
 
 export interface IuseStylesProps {
-  css: ICSS;
   name?: string;
   styles?: string;
 }
@@ -22,9 +22,9 @@ export const useStyles: FunctionHook<
     key: '',
     container: document.head,
   });
-  const css = styles; // Todo: compile styles...
   useEffect(
     () => {
+      const css = createCSSFromStyles(styles);
       const things = emotion(css);
       sheet.insert(`.${things.name} {${things.styles}}`);
       change(things);
@@ -33,7 +33,6 @@ export const useStyles: FunctionHook<
     [data.styles]
   );
   return {
-    css,
     ...data,
   };
 };
