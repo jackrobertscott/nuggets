@@ -18,15 +18,13 @@ export interface IRandom {
 export interface INuggieProps {
   css?: ICSS;
   into?: IRandom;
+  styles?: IStylesOptions;
+  events?: IEventsOptions;
 }
 
 export type INuggieOptions = INuggieProps & {
   type?: string;
-  children?: any;
-  css?: ICSS;
-  into?: IRandom;
-  styles?: IStylesOptions;
-  events?: IEventsOptions;
+  children?: unknown;
   extras?: IRandom;
 };
 
