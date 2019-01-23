@@ -152,28 +152,6 @@ export default ({ children, color = 'white' }) => (
 );
 ```
 
-### `<Arrange />`
-
-This determines the arrangement and spacing of all the components within this component.
-
-```tsx
-import { Arrange } from 'nuggets';
-import { PersonListItem } from './mycomponents';
-
-export default ({ people }) => (
-  <Arrange
-    structure={{
-      direction: 'right',
-      space: 10,
-    }}
-  >
-    {people.map(({ name }) => (
-      <PersonListItem value={name} />
-    ))}
-  </Arrange>
-);
-```
-
 ### `<Out />`
 
 This component is used to render and adjust text.

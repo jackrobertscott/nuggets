@@ -4,7 +4,6 @@
 export * from './modules/components/Circle';
 export * from './modules/components/In';
 export * from './modules/components/Layer';
-export * from './modules/components/Arrange';
 export * from './modules/components/Out';
 export * from './modules/components/Square';
 
