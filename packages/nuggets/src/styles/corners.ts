@@ -1,22 +1,13 @@
-import { ICSSObject } from '../utils/styles';
+import { ICSSObject, IDigester, stringsAndPixels } from '../utils/styles';
 
-export interface ICornersObjectDigester {
+export interface ICornersDigester {
   radius: number;
 }
 
-export interface ICornersDigester {
-  corners?: number | ICornersObjectDigester;
-}
-
-export const digestCorners = ({ corners }: ICornersDigester) => {
+export const digestCorners: IDigester<ICornersDigester> = ({ radius = 0 }) => {
   const css: ICSSObject = {};
-  if (corners !== undefined) {
-    if (typeof corners === 'number') {
-      css.borderRadius = `${corners}px`;
-    } else {
-      const { radius = 0 } = corners;
-      css.borderRadius = `${radius}px`;
-    }
+  if (radius !== undefined) {
+    css.borderRadius = stringsAndPixels(radius);
   }
   return css;
 };

@@ -1,4 +1,6 @@
-export interface IShadowObjectDigester {
+import { IDigester, ICSSObject } from '../utils/styles';
+
+export interface IShadeDigester {
   color?: string;
   blur?: number;
   grow?: number;
@@ -6,22 +8,14 @@ export interface IShadowObjectDigester {
   across?: number;
 }
 
-export interface IShadowDigester {
-  shadow?: IShadowObjectDigester | IShadowObjectDigester[];
-}
-
-export const digestShadow = ({ shadow }: IShadowDigester) => {
-  if (shadow === undefined) {
-    return {};
-  }
-  const shadows = Array.isArray(shadow) ? shadow : [shadow];
-  const shade = shadows
-    .map((item: IShadowObjectDigester) => {
-      const { color = '#000', blur = 0, grow = 0, down = 0, across = 0 } = item;
-      return `${across}px ${down}px ${blur}px ${grow}px ${color}`;
-    })
-    .join(', ');
-  return {
-    boxShadow: shade,
-  };
+export const digestShade: IDigester<IShadeDigester> = ({
+  color = '#000',
+  blur = 0,
+  grow = 0,
+  down = 0,
+  across = 0,
+}) => {
+  const css: ICSSObject = {};
+  css.boxShadow = `${across}px ${down}px ${blur}px ${grow}px ${color}`;
+  return css;
 };

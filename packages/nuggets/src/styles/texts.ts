@@ -1,6 +1,6 @@
-import { ICSSObject } from '../utils/styles';
+import { ICSSObject, IDigester, stringsAndPixels } from '../utils/styles';
 
-export interface ITextObjectDigester {
+export interface ITextsDigester {
   size?: number;
   color?: string;
   align?: 'left' | 'center' | 'right' | 'justify';
@@ -20,11 +20,7 @@ export interface ITextObjectDigester {
   };
 }
 
-export interface ITextDigester {
-  text?: ITextObjectDigester;
-}
-
-export const digestObjectText = ({
+export const digestTexts: IDigester<ITextsDigester> = ({
   size,
   color,
   align,
@@ -34,7 +30,7 @@ export const digestObjectText = ({
   italic,
   divide,
   decoration,
-}: ITextObjectDigester) => {
+}) => {
   const css: ICSSObject = {};
   if (size !== undefined) {
     css.fontSize = `${size}px`;
@@ -59,17 +55,9 @@ export const digestObjectText = ({
     const delines = Array.isArray(lines) ? lines : [lines];
     css.textDecoration = `${[...delines, style, decolor].join(' ')}`;
   }
-  /**
-   * Numbers will be multiplied against the font size.
-   * @see https://developer.mozilla.org/en-US/docs/Web/CSS/line-height
-   */
   if (height !== undefined) {
-    css.lineHeight = `${height}em`;
+    css.lineHeight = stringsAndPixels(height, 'em');
   }
-  /**
-   * CSS Fonts work between 100 and 900.
-   * @see https://developer.mozilla.org/en-US/docs/Web/CSS/font-weight#Values
-   */
   if (boldness !== undefined) {
     const min = 100;
     const max = 900;
@@ -80,8 +68,4 @@ export const digestObjectText = ({
     css.fontWeight = boldness;
   }
   return css;
-};
-
-export const digestText = ({ text }: ITextDigester) => {
-  return digestObjectText(text || {});
 };

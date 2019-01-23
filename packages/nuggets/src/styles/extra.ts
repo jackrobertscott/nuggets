@@ -1,21 +1,20 @@
-export interface ITransitionDigester {
+import { stringsAndPixels, ICSSObject, IDigester } from '../utils/styles';
+
+export interface IExtraDigester {
   transition?: number;
-}
-
-export const digestTransition = ({ transition }: ITransitionDigester) => {
-  if (transition === undefined) {
-    return {};
-  }
-  return { transition: `${transition}ms` };
-};
-
-export interface ICursorDigester {
   cursor?: string;
 }
 
-export const digestCursor = ({ cursor }: ICursorDigester) => {
-  if (cursor === undefined) {
-    return {};
+export const digestExtra: IDigester<IExtraDigester> = ({
+  transition,
+  cursor,
+}) => {
+  const css: ICSSObject = {};
+  if (transition !== undefined) {
+    css.transition = stringsAndPixels(transition, 'ms');
   }
-  return { cursor };
+  if (cursor !== undefined) {
+    css.cursor = cursor;
+  }
+  return css;
 };

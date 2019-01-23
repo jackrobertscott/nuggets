@@ -1,13 +1,15 @@
 import * as deep from 'deepmerge';
 
-export const formatValue = (
-  value: string | number,
+export const stringsAndPixels = (
+  value: string | number | undefined = 0,
   type: string = 'px'
 ): string => (typeof value === 'string' ? value : `${value}${type}`);
 
 export interface ICSSObject {
   [name: string]: string | number | ICSSObject | undefined;
 }
+
+export type IDigester<M> = (options: M) => ICSSObject;
 
 export type IStylesProps<S> = S & {
   style?: IStylesProps<S> | Array<IStylesProps<S>>;

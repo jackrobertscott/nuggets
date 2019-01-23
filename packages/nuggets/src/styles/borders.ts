@@ -1,6 +1,6 @@
-import { ICSSObject } from '../utils/styles';
+import { ICSSObject, IDigester, stringsAndPixels } from '../utils/styles';
 
-export interface IBorderObjectDigester {
+export interface IBordersDigester {
   color?: string;
   thickness?: number;
   style?:
@@ -20,62 +20,45 @@ export interface IBorderObjectDigester {
     | Array<'top' | 'left' | 'bottom' | 'right'>;
 }
 
-export interface IBorderDigester {
-  border?: IBorderObjectDigester | IBorderObjectDigester[];
-}
-
-const createBorder = (border: IBorderObjectDigester) => {
+export const digestBorders: IDigester<IBordersDigester> = ({
+  color = '#000',
+  thickness = 1,
+  style = 'solid',
+  sides = [],
+}) => {
   let css: ICSSObject = {};
-  if (border !== undefined) {
-    const {
-      color = '#000',
-      thickness = 1,
-      style = 'solid',
-      sides = [],
-    } = border;
-    if (!sides.length) {
-      css.border = `${thickness}px ${style} ${color}`;
-    } else {
-      const bordersides = Array.isArray(sides) ? sides : [sides];
-      css = bordersides
-        .filter(exists => exists)
-        .map(side => (side as string).toLowerCase())
-        .reduce((accum: any, side) => {
-          let upperSide;
-          switch (side) {
-            case 'top':
-              upperSide = 'Top';
-              break;
-            case 'bottom':
-              upperSide = 'Bottom';
-              break;
-            case 'left':
-              upperSide = 'Left';
-              break;
-            case 'right':
-              upperSide = 'Right';
-              break;
-            default:
-              break;
-          }
-          return {
-            ...accum,
-            [`border${upperSide}`]: `${thickness}px ${style} ${color}`,
-          };
-        }, {});
-    }
-  }
-  return css;
-};
-
-export const digestBorder = ({ border }: IBorderDigester) => {
-  let css: ICSSObject = {};
-  if (border !== undefined) {
-    css = Array.isArray(border)
-      ? border
-          .map(createBorder)
-          .reduce((accum, data) => ({ ...accum, ...data }), {})
-      : createBorder(border);
+  if (sides && !sides.length) {
+    css.border = `${stringsAndPixels(thickness)} ${style} ${color}`;
+  } else {
+    const bordersides = Array.isArray(sides) ? sides : [sides];
+    css = bordersides
+      .filter(exists => exists)
+      .map(side => (side as string).toLowerCase())
+      .reduce((accum: any, side) => {
+        let upperSide;
+        switch (side) {
+          case 'top':
+            upperSide = 'Top';
+            break;
+          case 'bottom':
+            upperSide = 'Bottom';
+            break;
+          case 'left':
+            upperSide = 'Left';
+            break;
+          case 'right':
+            upperSide = 'Right';
+            break;
+          default:
+            break;
+        }
+        return {
+          ...accum,
+          [`border${upperSide}`]: `${stringsAndPixels(
+            thickness
+          )} ${style} ${color}`,
+        };
+      }, {});
   }
   return css;
 };

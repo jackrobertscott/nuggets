@@ -1,78 +1,12 @@
-import { ICSSObject, formatValue } from '../utils/styles';
+import { ICSSObject, stringsAndPixels, IDigester } from '../utils/styles';
 
-export interface IBackgroundColorDigester {
-  color?: string;
-}
-
-export const digestBackgroundColor = ({ color }: IBackgroundColorDigester) => {
-  if (color === undefined) {
-    return {};
-  }
-  return { backgroundColor: color };
-};
-
-export interface IDiameterDigester {
-  diameter?: number;
-}
-
-export const digestDiameter = ({ diameter }: IDiameterDigester) => {
-  if (diameter === undefined) {
-    return {};
-  }
-  return {
-    borderRadius: '50%',
-    height: `${diameter}px`,
-    width: `${diameter}px`,
-  };
-};
-
-export interface ISizeObjectDigester {
+export interface ISizeOptions {
   use?: number | string;
   min?: number | string;
   max?: number | string;
 }
 
-export interface ISizeDigester {
-  width?: number | string | ISizeObjectDigester;
-  height?: number | string | ISizeObjectDigester;
-}
-
-export const digestSize = ({ height, width }: ISizeDigester) => {
-  const css: ICSSObject = {};
-  if (width !== undefined) {
-    if (typeof width === 'number' || typeof width === 'string') {
-      css.width = formatValue(width);
-    } else {
-      if (width.min) {
-        css.minWidth = formatValue(width.min);
-      }
-      if (width.max) {
-        css.maxWidth = formatValue(width.max);
-      }
-      if (width.use) {
-        css.width = formatValue(width.use);
-      }
-    }
-  }
-  if (height !== undefined) {
-    if (typeof height === 'number' || typeof height === 'string') {
-      css.height = formatValue(height);
-    } else {
-      if (height.min) {
-        css.minHeight = formatValue(height.min);
-      }
-      if (height.max) {
-        css.maxHeight = formatValue(height.max);
-      }
-      if (height.use) {
-        css.height = formatValue(height.use);
-      }
-    }
-  }
-  return css;
-};
-
-export interface ISpaceObjectDigester {
+export interface ISpaceOptions {
   top?: number;
   bottom?: number;
   left?: number;
@@ -81,20 +15,74 @@ export interface ISpaceObjectDigester {
   verts?: number;
 }
 
-export interface ISpaceDigester {
-  inside?: number | ISpaceObjectDigester;
+export interface IShapeDigester {
+  color?: string;
+  diameter?: number;
+  width?: number | string | ISizeOptions;
+  height?: number | string | ISizeOptions;
+  space?: number | ISpaceOptions;
 }
 
-export const digestSpace = ({ inside }: ISpaceDigester) => {
+export const digestShape: IDigester<IShapeDigester> = ({
+  color,
+  diameter,
+  height,
+  width,
+  space,
+}) => {
   const css: ICSSObject = {};
-  if (inside !== undefined) {
-    if (typeof inside === 'number') {
-      css.padding = `${inside}px`;
+  if (color !== undefined) {
+    css.backgroundColor = color;
+  }
+  if (diameter !== undefined) {
+    css.borderRadius = '50%';
+    css.height = stringsAndPixels(diameter);
+    css.width = stringsAndPixels(diameter);
+  }
+  if (width !== undefined) {
+    if (typeof width === 'number' || typeof width === 'string') {
+      css.width = stringsAndPixels(width);
     } else {
-      const { top, right, bottom, left, sides, verts } = inside;
-      css.padding = `${top || verts || 0}px ${right || sides || 0}px ${bottom ||
-        verts ||
-        0}px ${left || sides || 0}px`;
+      const { min, max, use } = width as ISizeOptions;
+      if (min) {
+        css.minWidth = stringsAndPixels(min);
+      }
+      if (max) {
+        css.maxWidth = stringsAndPixels(max);
+      }
+      if (use) {
+        css.width = stringsAndPixels(use);
+      }
+    }
+  }
+  if (height !== undefined) {
+    if (typeof height === 'number' || typeof height === 'string') {
+      css.height = stringsAndPixels(height);
+    } else {
+      const { min, max, use } = height as ISizeOptions;
+      if (min) {
+        css.minHeight = stringsAndPixels(min);
+      }
+      if (max) {
+        css.maxHeight = stringsAndPixels(max);
+      }
+      if (use) {
+        css.height = stringsAndPixels(use);
+      }
+    }
+  }
+  if (space !== undefined) {
+    if (typeof space === 'number') {
+      css.padding = stringsAndPixels(space);
+    } else {
+      const { top, right, bottom, left, sides, verts } = space;
+      const sizes = {
+        top: stringsAndPixels(top || verts || 0),
+        right: stringsAndPixels(right || sides || 0),
+        bottom: stringsAndPixels(bottom || verts || 0),
+        left: stringsAndPixels(left || sides || 0),
+      };
+      css.padding = `${sizes.top} ${sizes.right} ${sizes.bottom} ${sizes.left}`;
     }
   }
   return css;
