@@ -1,10 +1,10 @@
 /**
  * Components.
  */
-export * from './modules/components/Frame';
 export * from './modules/components/In';
 export * from './modules/components/Layer';
 export * from './modules/components/Out';
+export * from './modules/components/Piece';
 
 /**
  * Helpers.

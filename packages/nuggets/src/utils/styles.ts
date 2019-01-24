@@ -1,10 +1,7 @@
 import * as deep from 'deepmerge';
 
-import { IArrangeDigester, digestArrange } from '../styles/arrange';
-import { IBordersDigester, digestBorders } from '../styles/borders';
-import { ICornersDigester, digestCorners } from '../styles/corners';
+import { IFrameDigester, digestFrame } from '../styles/frame';
 import { IExtraDigester, digestExtra } from '../styles/extra';
-import { IShadeDigester, digestShade } from '../styles/shade';
 import { IShapeDigester, digestShape } from '../styles/shape';
 import { ITextsDigester, digestTexts } from '../styles/texts';
 import { ITransformDigester, digestTransform } from '../styles/transform';
@@ -18,11 +15,8 @@ export type IStatefulStyles<S> = S & {
 };
 
 export interface IStylesOptions {
-  arrange?: IStatefulStyles<IArrangeDigester>;
-  borders?: IStatefulStyles<IBordersDigester>;
-  corners?: IStatefulStyles<ICornersDigester>;
+  frame?: IStatefulStyles<IFrameDigester>;
   extra?: IStatefulStyles<IExtraDigester>;
-  shade?: IStatefulStyles<IShadeDigester>;
   shape?: IStatefulStyles<IShapeDigester>;
   texts?: IStatefulStyles<ITextsDigester>;
   transform?: IStatefulStyles<ITransformDigester>;
@@ -31,22 +25,10 @@ export interface IStylesOptions {
 export type IcreateCSSFromStyles = (options: IStylesOptions) => ICSS;
 
 export const createCSSFromStyles: IcreateCSSFromStyles = styles => {
-  const {
-    arrange,
-    borders,
-    corners,
-    extra,
-    shade,
-    shape,
-    texts,
-    transform,
-  } = styles;
+  const { frame, extra, shape, texts, transform } = styles;
   const options = [
-    arrange ? renderCSSFromProp<IArrangeDigester>(arrange, digestArrange) : {},
-    borders ? renderCSSFromProp<IBordersDigester>(borders, digestBorders) : {},
-    corners ? renderCSSFromProp<ICornersDigester>(corners, digestCorners) : {},
+    frame ? renderCSSFromProp<IFrameDigester>(frame, digestFrame) : {},
     extra ? renderCSSFromProp<IExtraDigester>(extra, digestExtra) : {},
-    shade ? renderCSSFromProp<IShadeDigester>(shade, digestShade) : {},
     shape ? renderCSSFromProp<IShapeDigester>(shape, digestShape) : {},
     texts ? renderCSSFromProp<ITextsDigester>(texts, digestTexts) : {},
     transform
@@ -64,14 +46,17 @@ export type IrenderCSSFromProp = <S>(
 const renderCSSFromProp: IrenderCSSFromProp = (data, digester) => {
   const { hover, press, known, ...options } = ensure(data);
   const css = digester(options);
+  const merge = {
+    arrayMerge: (_: any[], source: any[]) => source,
+  };
   if (hover) {
-    css['&:hover'] = digester(hover);
+    css['&:hover'] = digester(deep(options, hover, merge));
   }
   if (press) {
-    css['&:active'] = digester(press);
+    css['&:active'] = digester(deep(options, press, merge));
   }
   if (known) {
-    css['&:visited'] = digester(known);
+    css['&:visited'] = digester(deep(options, known, merge));
   }
   return css;
 };

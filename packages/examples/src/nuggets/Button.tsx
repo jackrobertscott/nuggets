@@ -1,34 +1,44 @@
 import React from 'react';
-import { Frame, Out, useToggle } from 'nuggets';
+import { Piece, Out, useToggle } from 'nuggets';
 
 export const Button = () => {
   const { on, off, active } = useToggle();
   return (
-    <Frame
+    <Piece
       events={{
         click: () => console.log('you'),
         mouseEnter: on,
         mouseLeave: off,
       }}
       styles={{
+        frame: {
+          space: 30,
+        },
         shape: {
           color: 'green',
-          space: 30,
+          borders: {
+            color: 'red',
+            thickness: 5,
+            sides: ['south'],
+          },
+          corners: {
+            radius: 20,
+            points: ['south'],
+          },
           hover: {
-            color: 'yellow',
+            color: 'blue',
+            corners: {
+              radius: 20,
+              points: ['north'],
+            },
+            borders: {
+              thickness: 5,
+              sides: ['north'],
+            },
           },
         },
         texts: {
           color: 'white',
-        },
-        borders: {
-          color: 'red',
-          thickness: 5,
-          sides: ['south'],
-        },
-        corners: {
-          radius: 20,
-          points: ['south'],
         },
         extra: {
           transition: 200,
@@ -36,6 +46,6 @@ export const Button = () => {
       }}
     >
       <Out value={String(active)} />
-    </Frame>
+    </Piece>
   );
 };

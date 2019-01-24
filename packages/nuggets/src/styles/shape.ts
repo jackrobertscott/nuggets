@@ -1,4 +1,9 @@
-import { ICSS, IDigester } from '../utils/types';
+import {
+  ICSS,
+  IDigester,
+  IDirections,
+  IDirectionsDiagonals,
+} from '../utils/types';
 import { stringsAndPixels } from '../utils/helpers';
 
 export interface ISizeOptions {
@@ -7,13 +12,32 @@ export interface ISizeOptions {
   max?: number | string;
 }
 
-export interface ISpaceOptions {
-  top?: number;
-  bottom?: number;
-  left?: number;
-  right?: number;
-  sides?: number;
-  verts?: number;
+export interface IShadeOptions {
+  color?: string;
+  blur?: number;
+  grow?: number;
+  down?: number;
+  across?: number;
+}
+
+export interface IBordersOptions {
+  color?: string;
+  thickness?: number;
+  style?:
+    | 'dotted'
+    | 'dashed'
+    | 'solid'
+    | 'double'
+    | 'groove'
+    | 'ridge'
+    | 'inset'
+    | 'outset';
+  sides?: IDirections[];
+}
+
+export interface ICornersOptions {
+  radius?: number;
+  points?: Array<IDirections | IDirectionsDiagonals>;
 }
 
 export interface IShapeDigester {
@@ -21,7 +45,9 @@ export interface IShapeDigester {
   diameter?: number;
   width?: number | string | ISizeOptions;
   height?: number | string | ISizeOptions;
-  space?: number | ISpaceOptions;
+  shade?: IShadeOptions;
+  corners?: ICornersOptions;
+  borders?: IBordersOptions;
 }
 
 export const digestShape: IDigester<IShapeDigester> = ({
@@ -29,7 +55,9 @@ export const digestShape: IDigester<IShapeDigester> = ({
   diameter,
   height,
   width,
-  space,
+  shade,
+  corners,
+  borders,
 }) => {
   const css: ICSS = {};
   if (color !== undefined) {
@@ -72,18 +100,91 @@ export const digestShape: IDigester<IShapeDigester> = ({
       }
     }
   }
-  if (space !== undefined) {
-    if (typeof space === 'number') {
-      css.padding = stringsAndPixels(space);
+  if (shade !== undefined) {
+    const {
+      blur = 0,
+      grow = 0,
+      down = 0,
+      across = 0,
+      color: shadeColor = '#000',
+    } = shade;
+    css.boxShadow = [
+      stringsAndPixels(across),
+      stringsAndPixels(down),
+      stringsAndPixels(blur),
+      stringsAndPixels(grow),
+      shadeColor,
+    ].join(' ');
+  }
+  if (corners !== undefined) {
+    const { radius = 0, points = [] } = corners;
+    if (points.length) {
+      css.borderRadius = stringsAndPixels(0);
+      points
+        .filter(exists => exists)
+        .forEach(side => {
+          const size = stringsAndPixels(radius);
+          switch ((side as string).toLowerCase()) {
+            case 'north':
+              css.borderTopRightRadius = size;
+              css.borderTopLeftRadius = size;
+              break;
+            case 'east':
+              css.borderTopRightRadius = size;
+              css.borderBottomRightRadius = size;
+              break;
+            case 'south':
+              css.borderBottomRightRadius = size;
+              css.borderBottomLeftRadius = size;
+              break;
+            case 'west':
+              css.borderTopLeftRadius = size;
+              css.borderBottomLeftRadius = size;
+              break;
+            case 'northeast':
+              css.borderTopRightRadius = size;
+              break;
+            case 'northwest':
+              css.borderTopLeftRadius = size;
+              break;
+            case 'southeast':
+              css.borderBottomRightRadius = size;
+              break;
+            case 'southwest':
+              css.borderBottomLeftRadius = size;
+              break;
+          }
+        });
     } else {
-      const { top, right, bottom, left, sides, verts } = space;
-      const sizes = {
-        top: stringsAndPixels(top || verts || 0),
-        right: stringsAndPixels(right || sides || 0),
-        bottom: stringsAndPixels(bottom || verts || 0),
-        left: stringsAndPixels(left || sides || 0),
-      };
-      css.padding = `${sizes.top} ${sizes.right} ${sizes.bottom} ${sizes.left}`;
+      css.borderRadius = stringsAndPixels(radius);
+    }
+  }
+  if (borders !== undefined) {
+    css.borderColor = borders.color || '#000';
+    css.borderStyle = borders.style || 'solid';
+    if (borders.sides) {
+      css.borderWidth = stringsAndPixels(0);
+      borders.sides
+        .filter(exists => exists)
+        .forEach(side => {
+          const size = stringsAndPixels(borders.thickness || 1);
+          switch ((side as string).toLowerCase()) {
+            case 'north':
+              css.borderTopWidth = size;
+              break;
+            case 'east':
+              css.borderRightWidth = size;
+              break;
+            case 'south':
+              css.borderBottomWidth = size;
+              break;
+            case 'west':
+              css.borderLeftWidth = size;
+              break;
+          }
+        });
+    } else {
+      css.borderWidth = stringsAndPixels(borders.thickness || 1);
     }
   }
   return css;
