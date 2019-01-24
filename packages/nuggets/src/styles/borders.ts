@@ -1,4 +1,4 @@
-import { ICSS, IDigester } from '../utils/types';
+import { ICSS, IDigester, IDirections } from '../utils/types';
 import { stringsAndPixels } from '../utils/helpers';
 
 export interface IBordersDigester {
@@ -13,12 +13,7 @@ export interface IBordersDigester {
     | 'ridge'
     | 'inset'
     | 'outset';
-  sides?:
-    | 'top'
-    | 'left'
-    | 'bottom'
-    | 'right'
-    | Array<'top' | 'left' | 'bottom' | 'right'>;
+  sides?: IDirections[];
 }
 
 export const digestBorders: IDigester<IBordersDigester> = ({
@@ -27,39 +22,44 @@ export const digestBorders: IDigester<IBordersDigester> = ({
   style = 'solid',
   sides = [],
 }) => {
-  let css: ICSS = {};
-  if (sides && !sides.length) {
-    css.border = `${stringsAndPixels(thickness)} ${style} ${color}`;
-  } else {
-    const bordersides = Array.isArray(sides) ? sides : [sides];
-    css = bordersides
+  const css: ICSS = {};
+  if (sides.length) {
+    const cssSides = sides
       .filter(exists => exists)
       .map(side => (side as string).toLowerCase())
       .reduce((accum: any, side) => {
-        let upperSide;
+        let props;
+        const effects = `${stringsAndPixels(thickness)} ${style} ${color}`;
         switch (side) {
-          case 'top':
-            upperSide = 'Top';
+          case 'north':
+            props = {
+              'border-top': effects,
+            };
             break;
-          case 'bottom':
-            upperSide = 'Bottom';
+          case 'east':
+            props = {
+              'border-right': effects,
+            };
             break;
-          case 'left':
-            upperSide = 'Left';
+          case 'south':
+            props = {
+              'border-bottom': effects,
+            };
             break;
-          case 'right':
-            upperSide = 'Right';
-            break;
-          default:
+          case 'west':
+            props = {
+              'border-left': effects,
+            };
             break;
         }
         return {
           ...accum,
-          [`border${upperSide}`]: `${stringsAndPixels(
-            thickness
-          )} ${style} ${color}`,
+          ...props,
         };
       }, {});
+    Object.assign(css, cssSides);
+  } else {
+    css.border = `${stringsAndPixels(thickness)} ${style} ${color}`;
   }
   return css;
 };

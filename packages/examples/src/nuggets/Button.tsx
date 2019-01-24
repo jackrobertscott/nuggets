@@ -24,7 +24,11 @@ export const Button = () => {
         borders: {
           color: 'red',
           thickness: 5,
-          sides: ['bottom'],
+          sides: ['south'],
+        },
+        corners: {
+          radius: 20,
+          points: ['south'],
         },
         extra: {
           transition: 200,

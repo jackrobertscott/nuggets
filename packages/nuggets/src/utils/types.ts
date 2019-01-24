@@ -9,3 +9,11 @@ export type FunctionHook<P, R> = (...args: P[]) => R;
 export type IEventsExecuter<T> = (value: T, event?: any) => any;
 
 export type IOptional<T> = undefined | T;
+
+export type IDirections = 'north' | 'east' | 'south' | 'west';
+
+export type IDirectionsDiagonals =
+  | 'northeast'
+  | 'northwest'
+  | 'southeast'
+  | 'southwest';
