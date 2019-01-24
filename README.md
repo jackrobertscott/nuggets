@@ -13,13 +13,13 @@ However, since the creation of these libraries, our demands for functionality ha
 Until now...
 
 ```tsx
-import { Arrange, Square, Out, useMedia } from 'nuggets';
+import { Frame, Out, useMedia } from 'nuggets';
 
 export default ({ textColor = 'blue', clickButton }) => {
   const { width } = useMedia();
   return (
-    <Arrange>
-      <Square
+    <Frame>
+      <Frame
         events={{ click: clickButton }}
         styles={{
           shape: {
@@ -33,8 +33,8 @@ export default ({ textColor = 'blue', clickButton }) => {
         }}
       >
         <Out value={'Hello world!'} />
-      </Square>
-      <Circle
+      </Frame>
+      <Frame
         styles={{
           shape: {
             color: 'blue',
@@ -42,7 +42,7 @@ export default ({ textColor = 'blue', clickButton }) => {
           },
         }}
       />
-    </Arrange>
+    </Frame>
   );
 };
 ```
@@ -66,7 +66,7 @@ yarn add nuggets react@next react-dom@next
 Then import the helper classes where needed.
 
 ```tsx
-import { Canvas, Square, Linear } from 'nuggets';
+import { Layer, Frame, useMedia, useAddress } from 'nuggets';
 ```
 
 ## Components
@@ -86,15 +86,15 @@ export default () => (
 );
 ```
 
-### `<Square />`
+### `<Frame />`
 
-This provides a component with 4 sides which may be styled.
+This provides a component which is used to create shapes.
 
 ```tsx
-import { Square } from 'nuggets';
+import { Frame } from 'nuggets';
 
 export default ({ children, color = 'white' }) => (
-  <Square
+  <Frame
     events={{
       click: () => console.log('clicked!'),
     }}
@@ -117,38 +117,7 @@ export default ({ children, color = 'white' }) => (
     }}
   >
     {children}
-  </Square>
-);
-```
-
-### `<Circle />`
-
-This provides a circular component which may be styled.
-
-```tsx
-import { Circle } from 'nuggets';
-
-export default ({ children, color = 'white' }) => (
-  <Circle
-    events={{
-      click: () => console.log('clicked!'),
-    }}
-    styles={{
-      shape: {
-        color,
-        diameter: 100,
-      },
-      shade: {
-        color: 'black',
-        blur: 10,
-        down: 3,
-        hover: { color: 'yellow' },
-        press: { color: 'blue' }
-      },
-    }}
-  >
-    {children}
-  </Circle>
+  </Frame>
 );
 ```
 
@@ -191,12 +160,12 @@ export default ({ value, change }) => (
 This provides easy access to the width of the browser window.
 
 ```tsx
-import { useMedia, Square, Out } from 'nuggets';
+import { useMedia, Frame, Out } from 'nuggets';
 
 export default () => {
   const { width, height } = useMedia();
   return (
-    <Square
+    <Frame
       styles={{
         shape: {
           color: width > 600 ? 'green' : 'blue',
@@ -208,7 +177,7 @@ export default () => {
       }}
     >
       <Out value={'This text changes color with the size of the window.'} />
-    </Square>
+    </Frame>
   );
 };
 ```
@@ -225,29 +194,29 @@ Properties
 This gives you access to the current url of the page.
 
 ```tsx
-import { useAddress, Square, Out } from 'nuggets';
+import { useAddress, Frame, Out } from 'nuggets';
 
 export default () => {
   const { change, backward, forward, pathname, search } = useAddress();
   return (
-    <Arrange>
-      <Square
+    <Frame>
+      <Frame
         styles={{
           texts: { color: 'blue' }
         }}
       >
         <Out value={`Pathname and search: ${pathname} ${search}`} />
-      </Square>
-      <Square events={{ click: () => change('/hello-nuggets') }}>
+      </Frame>
+      <Frame events={{ click: () => change('/hello-nuggets') }}>
         <Out value={'Go to hello nuggets'} />
-      </Square>
-      <Square events={{ click: backward }}>
+      </Frame>
+      <Frame events={{ click: backward }}>
         <Out value={'Go back'} />
-      </Square>
-      <Square events={{ click: forward }}>
+      </Frame>
+      <Frame events={{ click: forward }}>
         <Out value={'Go forward'} />
-      </Square>
-    </Arrange>
+      </Frame>
+    </Frame>
   );
 };
 ```
@@ -317,8 +286,8 @@ Properties
 This manages a simple value such as a number or string.
 
 ```tsx
-import { useString, Square, Out, In } from 'nuggets';
-import { NiceSquare } from './mycomponents';
+import { useString, Frame, Out, In } from 'nuggets';
+import { NiceFrame } from './mycomponents';
 
 export default ({ valueChange }) => {
   const { value, change, adjust } = useString({
@@ -326,7 +295,7 @@ export default ({ valueChange }) => {
     change: valueChange,
   });
   return (
-    <NiceSquare>
+    <NiceFrame>
       <In
         value={value}
         change={change}
@@ -335,7 +304,7 @@ export default ({ valueChange }) => {
       {/* validations */}
       {value.length < 5 && <Out>Value is not long enough.</Out>}
       {hasBadChars(value) && <Out>Value contains some bad characters.</Out>}
-    </NiceSquare>
+    </NiceFrame>
   );
 };
 ```
@@ -358,8 +327,8 @@ Properties
 This manages a simple value such as a number or string.
 
 ```tsx
-import { useNumber, Square, Out, In } from 'nuggets';
-import { NiceSquare } from './mycomponents';
+import { useNumber, Frame, Out, In } from 'nuggets';
+import { NiceFrame } from './mycomponents';
 
 export default ({ valueChange }) => {
   const { value, change } = useNumber({
@@ -367,7 +336,7 @@ export default ({ valueChange }) => {
     change: valueChange,
   });
   return (
-    <NiceSquare>
+    <NiceFrame>
       <In
         value={value}
         change={change}
@@ -375,7 +344,7 @@ export default ({ valueChange }) => {
       {/* validations */}
       {value.length < 5 && <Out>Value is not long enough.</Out>}
       {hasBadChars(value) && <Out>Value contains some bad characters.</Out>}
-    </NiceSquare>
+    </NiceFrame>
   );
 };
 ```
@@ -407,14 +376,14 @@ export default ({ person, valueChange, savePerson }) => {
     change: valueChange,
   });
   return (
-    <Square>
+    <Frame>
       <FieldText change={data => operate('password').change(data)} />
       <FieldEmail change={operate('email').change} />
       <FieldPassword {...operate('password')} />
       <CustomButton events={{ click: () => savePerson(value) }}>
         Save
       </CustomButton>
-    </Square>
+    </Frame>
   );
 };
 ```
@@ -438,12 +407,12 @@ Properties
 This provides a set of state and state changers for managing a toggled value.
 
 ```tsx
-import { useToggle, Circle } from 'nuggets';
+import { useToggle, Frame } from 'nuggets';
 
 export default ({ value, change }) => {
   const { active, off, on } = useToggle({ value, change });
   return (
-    <Circle
+    <Frame
       events={{
         click: active ? off : on,
       }}
@@ -460,12 +429,12 @@ export default ({ value, change }) => {
 There is also a simple `toggle` property which makes it a little easier.
 
 ```tsx
-import { useToggle, Circle } from 'nuggets';
+import { useToggle, Frame } from 'nuggets';
 
 export default ({ value, change }) => {
   const { toggle, active } = useToggle({ value, change });
   return (
-    <Circle
+    <Frame
       events={{ click: toggle }}
       styles={{
         shape: {
@@ -496,12 +465,12 @@ Properties
 Manage a datetime by setting sub-properties.
 
 ```tsx
-import { useDatetime, Square, In } from 'nuggets';
+import { useDatetime, Frame, In } from 'nuggets';
 
 export default ({ value, change }) => {
   const { date, month, year, hour, minute, second, millisecond } = useDatetime({ value, change });
   return (
-    <Square>
+    <Frame>
       <In
         value={date.value}
         change={date.change}
@@ -515,7 +484,7 @@ export default ({ value, change }) => {
       <In {...minute} />
       <In {...second} />
       <In {...millisecond} />
-    </Square>
+    </Frame>
   );
 };
 ```
@@ -543,12 +512,12 @@ Properties
 Manage an array of values.
 
 ```tsx
-import { useArray, Square, Out } from 'nuggets';
+import { useArray, Frame, Out } from 'nuggets';
 
 export default ({ value, change, listOfPeople = [] }) => {
   const { includes, add, remove } = useArray({ value, change });
   return listOfPeople.map(({ id, name }) => (
-    <Square
+    <Frame
       key={id}
       events={{
         click: () => includes(id) ? add(id) : remove(id),
@@ -560,7 +529,7 @@ export default ({ value, change, listOfPeople = [] }) => {
       }}
     >
       <Out value={name} />
-    </Square>
+    </Frame>
   );
 };
 ```
@@ -568,12 +537,12 @@ export default ({ value, change, listOfPeople = [] }) => {
 There is also a simple `toggle` attribute which makes the above code a little easier.
 
 ```tsx
-import { useArray, Square, Out } from 'nuggets';
+import { useArray, Frame, Out } from 'nuggets';
 
 export default ({ value, change, listOfPeople = [] }) => {
   const { includes, toggle } = useArray({ value, change });
   return listOfPeople.map(({ id, name }) => (
-    <Square
+    <Frame
       key={id}
       events={{ click: () => toggle(id) }}
       styles={{
@@ -583,7 +552,7 @@ export default ({ value, change, listOfPeople = [] }) => {
       }}
     >
       <Out value={name} />
-    </Square>
+    </Frame>
   );
 };
 ```
@@ -621,18 +590,18 @@ export const authStore = createStore<IAuthStore>({
 ```
 
 ```tsx
-import { useStore, Square, Out } from 'nuggets';
+import { useStore, Frame, Out } from 'nuggets';
 import { authStore } from './stores';
 
 export default () => {
   const { value, change } = useStore({ store: authStore });
   return (
-    <Arrange>
+    <Frame>
       <Out value={`Auth id: ${value.userId}`} />
-      <Square events={{ click: () => change({ userId: null }) }}>
+      <Frame events={{ click: () => change({ userId: null }) }}>
         <Out value={'Reset your auth.'} />
-      </Square>
-    </Arrange>
+      </Frame>
+    </Frame>
   );
 };
 ```
@@ -672,7 +641,7 @@ export const queryConnection = createConnection<IQueryConnection>({
 ```
 
 ```tsx
-import { useConnection, Square, Out } from 'nuggets';
+import { useConnection, Frame, Out } from 'nuggets';
 import { queryConnection } from './connections';
 
 interface IGetUser {
@@ -698,13 +667,13 @@ export default ({ id }) => {
   });
   useEffect(() => execute({ variables: { id } }));
   return (
-    <Arrange>
-      <Square styles={{ texts: { color: 'blue' } }}>
+    <Frame>
+      <Frame styles={{ texts: { color: 'blue' } }}>
         <Out value={`User name and id: ${value.user.name} ${value.user.id}`} />
-      </Square>
+      </Frame>
       <ErrorHandler error={error} />
       <SimpleButton click={refresh} />
-    </Arrange>
+    </Frame>
   );
 };
 ```

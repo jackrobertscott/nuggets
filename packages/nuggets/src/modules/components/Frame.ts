@@ -1,11 +1,11 @@
 import { FunctionComponent, ReactElement } from 'react';
 import { INuggieProps, createNuggie } from '../../utils/dom';
 
-export type ISquareProps = INuggieProps & {
+export type IFrameProps = INuggieProps & {
   children?: ReactElement<any> | Array<ReactElement<any>>;
 };
 
-export const Square: FunctionComponent<ISquareProps> = ({
+export const Frame: FunctionComponent<IFrameProps> = ({
   children,
   ...options
 }) => {
@@ -15,4 +15,4 @@ export const Square: FunctionComponent<ISquareProps> = ({
   });
 };
 
-Square.displayName = 'Square';
+Frame.displayName = 'Frame';

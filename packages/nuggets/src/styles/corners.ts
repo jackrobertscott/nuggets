@@ -2,7 +2,7 @@ import { ICSS, IDigester } from '../utils/types';
 import { stringsAndPixels } from '../utils/helpers';
 
 export interface ICornersDigester {
-  radius: number;
+  radius?: number;
 }
 
 export const digestCorners: IDigester<ICornersDigester> = ({ radius = 0 }) => {

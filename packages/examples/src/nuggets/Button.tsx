@@ -1,10 +1,10 @@
 import React from 'react';
-import { Square, Out, useToggle } from 'nuggets';
+import { Frame, Out, useToggle } from 'nuggets';
 
 export const Button = () => {
   const { on, off, active } = useToggle();
   return (
-    <Square
+    <Frame
       events={{
         click: () => console.log('you'),
         mouseEnter: on,
@@ -32,6 +32,6 @@ export const Button = () => {
       }}
     >
       <Out value={String(active)} />
-    </Square>
+    </Frame>
   );
 };
