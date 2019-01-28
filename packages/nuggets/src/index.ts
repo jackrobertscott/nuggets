@@ -4,7 +4,7 @@
 export * from './modules/components/In';
 export * from './modules/components/Layer';
 export * from './modules/components/Out';
-export * from './modules/components/Piece';
+export * from './modules/components/Frame';
 
 /**
  * Helpers.
@@ -20,9 +20,10 @@ export * from './modules/hooks/useArray';
 export * from './modules/hooks/useComplex';
 export * from './modules/hooks/useConnection';
 export * from './modules/hooks/useDatetime';
+export * from './modules/hooks/useFrame';
 export * from './modules/hooks/useMedia';
 export * from './modules/hooks/useNumber';
 export * from './modules/hooks/useStore';
 export * from './modules/hooks/useString';
-export * from './modules/hooks/useStyles';
+export * from './modules/hooks/useTexts';
 export * from './modules/hooks/useToggle';

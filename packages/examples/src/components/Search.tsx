@@ -1,5 +1,5 @@
 import React, { FunctionComponent } from 'react';
-import { Piece, In } from 'nuggets';
+import { Frame, In } from 'nuggets';
 
 export interface ISearchProps {
   value?: string;
@@ -8,45 +8,42 @@ export interface ISearchProps {
 
 export const Search: FunctionComponent<ISearchProps> = ({ ...inputs }) => {
   return (
-    <Piece
+    <Frame
       styles={{
-        frame: {
-          space: {
-            north: 30,
-            west: 30,
-          },
+        space: {
+          north: 30,
+          west: 30,
         },
       }}
     >
-      <Piece
+      <Frame
         styles={{
-          frame: {
-            space: {
-              verts: 15,
-              sides: 20,
-            },
+          space: {
+            verts: 15,
+            sides: 20,
           },
-          shape: {
-            gradient: {
-              angle: 45,
-              color: ['#9365ff', '#360f90'],
-            },
-            corners: {
-              radius: 10,
-              points: ['northwest', 'southwest'],
-            },
+          gradient: {
+            angle: 45,
+            color: ['#9365ff', '#360f90'],
           },
-          texts: {
+          corners: {
+            radius: 10,
+            points: ['northwest', 'southwest'],
+          },
+        }}
+      >
+        <In
+          placeholder="Search"
+          styles={{
             size: 16,
             color: 'white',
             placeholder: {
               color: 'rgba(255, 255, 255, 0.3)',
             },
-          },
-        }}
-      >
-        <In placeholder="Search" {...inputs} />
-      </Piece>
-    </Piece>
+          }}
+          {...inputs}
+        />
+      </Frame>
+    </Frame>
   );
 };

@@ -73,7 +73,7 @@ export const digestTexts: IDigester<ITextsDigester> = ({
     css.fontWeight = thickness;
   }
   if (placeholder !== undefined) {
-    css['& > *::placeholder'] = { color: placeholder.color };
+    css['&::placeholder'] = { color: placeholder.color };
   }
   return css;
 };

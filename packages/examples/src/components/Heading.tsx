@@ -1,5 +1,5 @@
 import React, { FunctionComponent, ReactElement } from 'react';
-import { Piece, Out } from 'nuggets';
+import { Frame, Out } from 'nuggets';
 
 export interface IHeadingProps {
   value: string;
@@ -11,34 +11,32 @@ export const Heading: FunctionComponent<IHeadingProps> = ({
   children,
 }) => {
   return (
-    <Piece
+    <Frame
       styles={{
-        frame: {
-          space: {
-            north: 30,
-            west: 30,
-          },
-        },
-        texts: {
-          size: 20,
-          color: 'white',
-          thickness: 700,
+        space: {
+          north: 30,
+          west: 30,
         },
       }}
     >
-      <Piece
+      <Frame
         styles={{
-          frame: {
-            space: {
-              south: 10,
-              west: 10,
-            },
+          space: {
+            south: 10,
+            west: 10,
           },
         }}
       >
-        <Out value={value} />
-      </Piece>
-      <Piece>{children}</Piece>
-    </Piece>
+        <Out
+          value={value}
+          styles={{
+            size: 20,
+            color: 'white',
+            thickness: 700,
+          }}
+        />
+      </Frame>
+      <Frame>{children}</Frame>
+    </Frame>
   );
 };

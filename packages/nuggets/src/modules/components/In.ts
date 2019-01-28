@@ -1,8 +1,10 @@
 import { FunctionComponent, useState, useEffect } from 'react';
-import { INuggieProps, createNuggie } from '../../utils/dom';
 import { IEventsExecuter } from '../../utils/types';
+import { createNuggie, INuggieProps } from '../../utils/dom';
+import { digestTexts, ITextsDigester } from '../../styles/texts';
+import { createCSSFromProps } from '../../utils/styles';
 
-export type IInProps = INuggieProps & {
+export type IInProps = INuggieProps<ITextsDigester> & {
   value?: string | number;
   change?: IEventsExecuter<string | number>;
   placeholder?: string | number;
@@ -12,6 +14,7 @@ export type IInProps = INuggieProps & {
 export const In: FunctionComponent<IInProps> = ({
   children,
   placeholder,
+  styles = {},
   wrap,
   ...options
 }) => {
@@ -34,6 +37,7 @@ export const In: FunctionComponent<IInProps> = ({
     precss,
     extras: { value, rows: wrap, placeholder },
     events: { change },
+    emote: createCSSFromProps(styles, digestTexts),
     ...options,
   });
 };

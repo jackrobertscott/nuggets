@@ -1,5 +1,5 @@
 import React, { FunctionComponent, ReactElement } from 'react';
-import { Piece } from 'nuggets';
+import { Frame } from 'nuggets';
 
 export interface ISidebarProps {
   children: ReactElement<any> | Array<ReactElement<any>>;
@@ -7,96 +7,66 @@ export interface ISidebarProps {
 
 export const Sidebar: FunctionComponent<ISidebarProps> = ({ children }) => {
   return (
-    <Piece
+    <Frame
       styles={{
-        frame: {
-          direction: 'east',
-          grow: true,
-        },
-        shape: {
-          color: '#000000',
-        },
+        direction: 'east',
+        grow: true,
+        color: '#000000',
       }}
     >
-      <Piece
+      <Frame
         styles={{
-          frame: {
-            space: 20,
-            between: 100,
-          },
-          shape: {
-            color: '#5700E3',
-            gradient: {
-              angle: 45,
-              color: ['#000000', '#5700E3'],
-            },
+          space: 20,
+          between: 100,
+          color: '#5700E3',
+          gradient: {
+            angle: 45,
+            color: ['#000000', '#5700E3'],
           },
         }}
       >
-        <Piece
+        <Frame
           styles={{
-            frame: {
-              diameter: 30,
-            },
-            shape: {
-              color: 'white',
-            },
+            diameter: 30,
+            color: 'white',
           }}
         />
-        <Piece
+        <Frame
           styles={{
-            frame: {
-              between: 10,
-            },
+            between: 10,
           }}
         >
-          <Piece
+          <Frame
             styles={{
-              frame: {
-                diameter: 30,
-              },
-              shape: {
-                color: 'white',
-              },
+              diameter: 30,
+              color: 'white',
             }}
           />
-          <Piece
+          <Frame
             styles={{
-              frame: {
-                diameter: 30,
-              },
-              shape: {
-                color: 'white',
-              },
+              diameter: 30,
+              color: 'white',
             }}
           />
-          <Piece
+          <Frame
             styles={{
-              frame: {
-                diameter: 30,
-              },
-              shape: {
-                color: 'white',
-              },
+              diameter: 30,
+              color: 'white',
             }}
           />
-        </Piece>
-      </Piece>
-      <Piece
+        </Frame>
+      </Frame>
+      <Frame
         styles={{
-          frame: {
-            grow: true,
-          },
-          shape: {
-            gradient: {
-              angle: -45,
-              color: ['#000000', '#292431'],
-            },
+          grow: true,
+          gradient: {
+            angle: -45,
+            color: ['#000000', '#292431'],
           },
         }}
       >
         {children}
-      </Piece>
-    </Piece>
+      </Frame>
+    </Frame>
   );
 };

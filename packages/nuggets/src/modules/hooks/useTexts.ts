@@ -1,21 +1,22 @@
+import { useEffect, useState } from 'react';
 import { css as emotion } from '@emotion/core';
 import { StyleSheet } from '@emotion/sheet';
 import { FunctionHook } from '../../utils/types';
-import { useEffect, useState } from 'react';
-import { createCSSFromStyles } from '../../utils/styles';
+import { createCSSFromProps } from '../../utils/styles';
+import { digestTexts, ITextsDigester } from '../../styles/texts';
 
-export interface IuseStylesOptions {
-  [name: string]: any;
+export interface IuseTextsOptions {
+  [property: string]: any;
 }
 
-export interface IuseStylesProps {
+export interface IuseTextsProps {
   name?: string;
   styles?: string;
 }
 
-export const useStyles: FunctionHook<
-  IuseStylesOptions,
-  IuseStylesProps
+export const useTexts: FunctionHook<
+  IuseTextsOptions,
+  IuseTextsProps
 > = options => {
   const [{ styles, name }, change] = useState<{
     name?: string;
@@ -27,7 +28,7 @@ export const useStyles: FunctionHook<
   });
   useEffect(
     () => {
-      const css = createCSSFromStyles(options);
+      const css = createCSSFromProps<ITextsDigester>(options, digestTexts);
       const things = emotion(css);
       sheet.insert(`.${things.name} {${things.styles}}`);
       change(things);

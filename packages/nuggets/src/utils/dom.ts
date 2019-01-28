@@ -2,7 +2,6 @@ import * as deep from 'deepmerge';
 import { jsx, css as emotion } from '@emotion/core';
 import { StyleSheet } from '@emotion/sheet';
 import { IEventsOptions, createEvents } from './events';
-import { IStylesOptions, createCSSFromStyles } from './styles';
 import { ensure } from './helpers';
 import { ICSS } from './types';
 import clean from './clean';
@@ -15,19 +14,23 @@ export interface IRandom {
   [name: string]: any;
 }
 
-export interface INuggieProps {
-  precss?: ICSS;
+export interface INuggieProps<S> {
   css?: ICSS;
   into?: IRandom;
-  styles?: IStylesOptions;
   events?: IEventsOptions;
+  styles?: S;
 }
 
-export type INuggieOptions = INuggieProps & {
+export interface INuggieOptions {
+  css?: ICSS;
+  into?: IRandom;
+  events?: IEventsOptions;
+  precss?: ICSS;
   type?: string;
+  emote?: ICSS;
   children?: unknown;
   extras?: IRandom;
-};
+}
 
 export const createNuggie = ({
   type = 'div',
@@ -35,11 +38,10 @@ export const createNuggie = ({
   precss = {},
   css = {},
   into = {},
-  styles = {},
+  emote = {},
   events = {},
   extras = {},
 }: INuggieOptions) => {
-  const emote = createCSSFromStyles(styles);
   const attrs = createEvents(events);
   const props = {
     ...ensure(attrs),

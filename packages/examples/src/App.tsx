@@ -1,5 +1,5 @@
 import React from 'react';
-import { Layer, Piece } from 'nuggets';
+import { Layer, Frame } from 'nuggets';
 import { Sidebar } from './components/Sidebar';
 import { Search } from './components/Search';
 import { Heading } from './components/Heading';
@@ -13,46 +13,43 @@ export default () => (
     <Sidebar>
       <Search />
       <Heading value="Results">
-        <Piece
+        <Frame
           styles={{
-            frame: {
-              direction: 'east',
-              between: 15,
-            },
+            direction: 'east',
+            between: 15,
+            overflow: 'auto',
           }}
         >
           {[1, 2, 3, 4, 5].map(num => (
             <Code key={num} />
           ))}
-        </Piece>
+        </Frame>
       </Heading>
       <Heading value="Albums">
-        <Piece
+        <Frame
           styles={{
-            frame: {
-              direction: 'east',
-              between: 15,
-            },
+            direction: 'east',
+            between: 15,
+            overflow: 'auto',
           }}
         >
           {[1, 2, 3, 4, 5].map(num => (
             <Code key={num} />
           ))}
-        </Piece>
+        </Frame>
       </Heading>
       <Heading value="Snippets">
-        <Piece
+        <Frame
           styles={{
-            frame: {
-              direction: 'east',
-              between: 15,
-            },
+            direction: 'east',
+            between: 15,
+            overflow: 'auto',
           }}
         >
           {[1, 2, 3, 4, 5].map(num => (
             <Code key={num} />
           ))}
-        </Piece>
+        </Frame>
       </Heading>
     </Sidebar>
   </Layer>
