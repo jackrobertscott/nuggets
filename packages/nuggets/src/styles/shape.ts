@@ -294,8 +294,9 @@ export const digestShape: IDigester<IShapeDigester> = ({
     css.flexGrow = grow ? 1 : 0;
   }
   if (width !== undefined) {
-    css.flexGrow = 0;
-    if (typeof width === 'number' || typeof width === 'string') {
+    if (width === 'collapse') {
+      css.width = 'fit-content';
+    } else if (typeof width === 'number' || typeof width === 'string') {
       css.width = stringsAndPixels(width);
     } else {
       const { min, max, use } = width as ISizeOptions;

@@ -1,46 +1,36 @@
 import { FunctionComponent, ReactElement, useEffect } from 'react';
 import { createPortal } from 'react-dom';
 import { INuggieProps, createNuggie } from '../../utils/dom';
-import { ensure } from '../../utils/helpers';
 
 export type ILayerProps = INuggieProps<{}> & {
-  node?: HTMLElement | null;
   children?: ReactElement<any> | Array<ReactElement<any>>;
+  node?: HTMLElement | null;
+  id?: string;
 };
 
 export const Layer: FunctionComponent<ILayerProps> = ({
   children,
   node,
-  css,
+  id,
   ...options
 }) => {
-  const attach: HTMLElement = node || document.createElement('div');
-  useEffect(() => {
-    if (node) {
-      return;
-    }
-    document.body.appendChild(attach);
-    return () => {
-      document.body.removeChild(attach);
-      attach.remove();
-    };
-  }, []);
+  const item = node || document.getElementById(id || 'root');
+  const precss = {
+    display: 'flex',
+    overflow: 'hidden',
+    position: 'fixed',
+    pointerEvents: 'none',
+    top: 0,
+    left: 0,
+    bottom: 0,
+    right: 0,
+  };
   const InterLayer = createNuggie({
     children,
-    css: {
-      display: 'flex',
-      flexDirection: 'column',
-      overflow: 'hidden',
-      position: 'fixed',
-      top: 0,
-      left: 0,
-      bottom: 0,
-      right: 0,
-      ...ensure(css),
-    },
+    precss,
     ...options,
   });
-  return createPortal(InterLayer, attach);
+  return item && createPortal(InterLayer, item);
 };
 
 Layer.displayName = 'Layer';

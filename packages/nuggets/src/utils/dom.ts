@@ -6,7 +6,7 @@ import { ensure } from './helpers';
 import { ICSS } from './types';
 import clean from './clean';
 
-const nuggie = 'nuggie';
+const nuggie = 'nug';
 const sheet = new StyleSheet({ key: 'clean', container: document.head });
 sheet.insert(`.${nuggie} {${clean}}`);
 

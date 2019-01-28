@@ -120,6 +120,7 @@ export default `
   page-break-inside: auto;
   perspective: none;
   perspective-origin: 50% 50%;
+  pointer-events: auto;
   position: static;
   right: auto;
   tab-size: 8;

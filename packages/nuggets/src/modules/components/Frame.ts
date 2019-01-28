@@ -15,6 +15,7 @@ export const Frame: FunctionComponent<IFrameProps> = ({
   const precss = {
     display: 'flex',
     position: 'relative',
+    transition: '200ms',
   };
   return createNuggie({
     children,

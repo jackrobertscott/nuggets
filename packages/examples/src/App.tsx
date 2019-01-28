@@ -9,7 +9,7 @@ import { Code } from './components/Code';
  * Hooks don't work on the root component...
  */
 export default () => (
-  <Layer>
+  <Layer id="root">
     <Sidebar>
       <Search />
       <Heading value="Results">
