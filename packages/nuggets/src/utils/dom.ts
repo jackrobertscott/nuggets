@@ -16,6 +16,7 @@ export interface IRandom {
 }
 
 export interface INuggieProps {
+  precss?: ICSS;
   css?: ICSS;
   into?: IRandom;
   styles?: IStylesOptions;
@@ -31,6 +32,7 @@ export type INuggieOptions = INuggieProps & {
 export const createNuggie = ({
   type = 'div',
   children,
+  precss = {},
   css = {},
   into = {},
   styles = {},
@@ -48,6 +50,6 @@ export const createNuggie = ({
     ...props,
     children,
     className: [props.className || '', nuggie].join(' ').trim(),
-    css: emotion(deep.all([emote, css]) as ICSS),
+    css: emotion(deep.all([precss, emote, css]) as ICSS),
   });
 };

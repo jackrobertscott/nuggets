@@ -6,12 +6,6 @@ import {
 } from '../utils/types';
 import { stringsAndPixels } from '../utils/helpers';
 
-export interface ISizeOptions {
-  use?: number | string;
-  min?: number | string;
-  max?: number | string;
-}
-
 export interface IShadeOptions {
   color?: string;
   blur?: number;
@@ -40,11 +34,15 @@ export interface ICornersOptions {
   points?: Array<IDirections | IDirectionsDiagonals>;
 }
 
+export interface IGradientOptions {
+  angle?: number;
+  color?: Array<string | number>;
+}
+
 export interface IShapeDigester {
   color?: string;
-  diameter?: number;
-  width?: number | string | ISizeOptions;
-  height?: number | string | ISizeOptions;
+  alpha?: number;
+  gradient?: IGradientOptions;
   shade?: IShadeOptions;
   corners?: ICornersOptions;
   borders?: IBordersOptions;
@@ -52,9 +50,8 @@ export interface IShapeDigester {
 
 export const digestShape: IDigester<IShapeDigester> = ({
   color,
-  diameter,
-  height,
-  width,
+  gradient,
+  alpha,
   shade,
   corners,
   borders,
@@ -63,56 +60,25 @@ export const digestShape: IDigester<IShapeDigester> = ({
   if (color !== undefined) {
     css.backgroundColor = color;
   }
-  if (diameter !== undefined) {
-    css.borderRadius = '50%';
-    css.height = stringsAndPixels(diameter);
-    css.width = stringsAndPixels(diameter);
-  }
-  if (width !== undefined) {
-    if (typeof width === 'number' || typeof width === 'string') {
-      css.width = stringsAndPixels(width);
-    } else {
-      const { min, max, use } = width as ISizeOptions;
-      if (min) {
-        css.minWidth = stringsAndPixels(min);
-      }
-      if (max) {
-        css.maxWidth = stringsAndPixels(max);
-      }
-      if (use) {
-        css.width = stringsAndPixels(use);
-      }
+  if (alpha !== undefined) {
+    if (alpha > 1 || alpha < 0) {
+      const message = `The "shape.alpha" property must be between 0 and 1 inclusive, but got "${alpha}".`;
+      throw new Error(message);
     }
+    css.opacity = alpha;
   }
-  if (height !== undefined) {
-    if (typeof height === 'number' || typeof height === 'string') {
-      css.height = stringsAndPixels(height);
-    } else {
-      const { min, max, use } = height as ISizeOptions;
-      if (min) {
-        css.minHeight = stringsAndPixels(min);
-      }
-      if (max) {
-        css.maxHeight = stringsAndPixels(max);
-      }
-      if (use) {
-        css.height = stringsAndPixels(use);
-      }
-    }
+  if (gradient !== undefined) {
+    const angle = gradient.angle || 10;
+    const colors = gradient.color || [];
+    css.background = `linear-gradient(${angle}deg, ${colors.join(', ')})`;
   }
   if (shade !== undefined) {
-    const {
-      blur = 0,
-      grow = 0,
-      down = 0,
-      across = 0,
-      color: shadeColor = '#000',
-    } = shade;
+    const shadeColor = shade.color || '#000';
     css.boxShadow = [
-      stringsAndPixels(across),
-      stringsAndPixels(down),
-      stringsAndPixels(blur),
-      stringsAndPixels(grow),
+      stringsAndPixels(shade.across),
+      stringsAndPixels(shade.down),
+      stringsAndPixels(shade.blur),
+      stringsAndPixels(shade.grow),
       shadeColor,
     ].join(' ');
   }

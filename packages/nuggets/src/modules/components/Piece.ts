@@ -9,8 +9,14 @@ export const Piece: FunctionComponent<IPieceProps> = ({
   children,
   ...options
 }) => {
+  const precss = {
+    display: 'flex',
+    overflow: 'auto',
+    position: 'relative',
+  };
   return createNuggie({
     children,
+    precss,
     ...options,
   });
 };

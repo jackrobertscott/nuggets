@@ -1,31 +1,43 @@
 import { ICSS, IDigester, IDirections } from '../utils/types';
 import { stringsAndPixels } from '../utils/helpers';
 
+export interface ISizeOptions {
+  use?: number | string;
+  min?: number | string;
+  max?: number | string;
+}
+
 export interface ISpaceOptions {
+  sides?: number;
+  verts?: number;
   north?: number;
   south?: number;
   east?: number;
   west?: number;
-  sides?: number;
-  verts?: number;
 }
 
 export interface IFrameDigester {
   direction?: IDirections;
-  force?: 'start' | 'end' | 'center' | 'stretch' | 'between' | 'even';
+  align?: 'start' | 'end' | 'center' | 'stretch' | 'between' | 'even';
   space?: number | ISpaceOptions;
+  between?: number | string;
+  diameter?: number;
+  width?: number | string | ISizeOptions;
+  height?: number | string | ISizeOptions;
+  grow?: boolean;
 }
 
 export const digestFrame: IDigester<IFrameDigester> = ({
   direction,
-  force,
+  between,
+  align,
   space,
+  diameter,
+  height,
+  width,
+  grow,
 }) => {
-  const css: ICSS = {
-    flexGrow: 1,
-    display: 'flex',
-    overflow: 'auto',
-  };
+  const css: ICSS = {};
   if (direction !== undefined) {
     switch (direction) {
       default:
@@ -43,12 +55,25 @@ export const digestFrame: IDigester<IFrameDigester> = ({
         break;
     }
   }
-  if (force !== undefined) {
-    switch (force) {
+  if (between !== undefined) {
+    const side =
+      !direction || direction === 'south'
+        ? 'Bottom'
+        : direction === 'east'
+        ? 'Right'
+        : direction === 'north'
+        ? 'Top'
+        : 'Left';
+    css['& > *'] = {
+      [`margin${side}`]: stringsAndPixels(between),
+      [':last-child']: {
+        [`margin${side}`]: 0,
+      },
+    };
+  }
+  if (align !== undefined) {
+    switch (align) {
       default:
-      case 'stretch':
-        css.justifyContent = 'stretch';
-        break;
       case 'start':
         css.justifyContent = 'flex-start';
         break;
@@ -63,6 +88,9 @@ export const digestFrame: IDigester<IFrameDigester> = ({
         break;
       case 'even':
         css.justifyContent = 'space-evenly';
+        break;
+      case 'stretch':
+        css.justifyContent = 'stretch';
         break;
     }
   }
@@ -86,10 +114,51 @@ export const digestFrame: IDigester<IFrameDigester> = ({
         css.paddingRight = stringsAndPixels(east);
       }
       if (south) {
-        css.paddingSouth = stringsAndPixels(south);
+        css.paddingBottom = stringsAndPixels(south);
       }
       if (west) {
         css.paddingLeft = stringsAndPixels(west);
+      }
+    }
+  }
+  if (diameter !== undefined) {
+    css.borderRadius = '50%';
+    css.height = stringsAndPixels(diameter);
+    css.width = stringsAndPixels(diameter);
+  }
+  if (grow !== undefined) {
+    css.flexGrow = grow ? 1 : 0;
+  }
+  if (width !== undefined) {
+    css.flexGrow = 0;
+    if (typeof width === 'number' || typeof width === 'string') {
+      css.width = stringsAndPixels(width);
+    } else {
+      const { min, max, use } = width as ISizeOptions;
+      if (min) {
+        css.minWidth = stringsAndPixels(min);
+      }
+      if (max) {
+        css.maxWidth = stringsAndPixels(max);
+      }
+      if (use) {
+        css.width = stringsAndPixels(use);
+      }
+    }
+  }
+  if (height !== undefined) {
+    if (typeof height === 'number' || typeof height === 'string') {
+      css.height = stringsAndPixels(height);
+    } else {
+      const { min, max, use } = height as ISizeOptions;
+      if (min) {
+        css.minHeight = stringsAndPixels(min);
+      }
+      if (max) {
+        css.maxHeight = stringsAndPixels(max);
+      }
+      if (use) {
+        css.height = stringsAndPixels(use);
       }
     }
   }

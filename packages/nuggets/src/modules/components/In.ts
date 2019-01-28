@@ -5,12 +5,13 @@ import { IEventsExecuter } from '../../utils/types';
 export type IInProps = INuggieProps & {
   value?: string | number;
   change?: IEventsExecuter<string | number>;
+  placeholder?: string | number;
   wrap?: number;
 };
 
 export const In: FunctionComponent<IInProps> = ({
   children,
-  css,
+  placeholder,
   wrap,
   ...options
 }) => {
@@ -23,11 +24,16 @@ export const In: FunctionComponent<IInProps> = ({
       options.change(data, {});
     }
   };
+  const precss = {
+    flexGrow: 1,
+    width: '100%',
+  };
   return createNuggie({
     type: wrap ? 'textarea' : 'input',
     children,
-    css: { width: '100%', ...css },
-    extras: { value, rows: wrap },
+    precss,
+    extras: { value, rows: wrap, placeholder },
+    events: { change },
     ...options,
   });
 };

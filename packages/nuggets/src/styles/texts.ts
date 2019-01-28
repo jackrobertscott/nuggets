@@ -7,7 +7,7 @@ export interface ITextsDigester {
   align?: 'left' | 'center' | 'right' | 'justify';
   family?: string;
   height?: number;
-  boldness?: number;
+  thickness?: number;
   italic?: boolean;
   divide?: number;
   decoration?: {
@@ -19,6 +19,9 @@ export interface ITextsDigester {
       | 'line-through'
       | Array<'underline' | 'overline' | 'line-through'>;
   };
+  placeholder?: {
+    color?: string;
+  };
 }
 
 export const digestTexts: IDigester<ITextsDigester> = ({
@@ -27,10 +30,11 @@ export const digestTexts: IDigester<ITextsDigester> = ({
   align,
   family,
   height,
-  boldness,
+  thickness,
   italic,
   divide,
   decoration,
+  placeholder,
 }) => {
   const css: ICSS = {};
   if (size !== undefined) {
@@ -59,14 +63,17 @@ export const digestTexts: IDigester<ITextsDigester> = ({
   if (height !== undefined) {
     css.lineHeight = stringsAndPixels(height, 'em');
   }
-  if (boldness !== undefined) {
+  if (thickness !== undefined) {
     const min = 100;
     const max = 900;
-    if (boldness < min || boldness > max) {
-      const message = `In "<Text boldness={number} />": number must be between ${min} and ${max} inclusive but got "${boldness}".`;
+    if (thickness < min || thickness > max) {
+      const message = `In "<Text thickness={number} />": number must be between ${min} and ${max} inclusive but got "${thickness}".`;
       throw new Error(message);
     }
-    css.fontWeight = boldness;
+    css.fontWeight = thickness;
+  }
+  if (placeholder !== undefined) {
+    css['& > *::placeholder'] = { color: placeholder.color };
   }
   return css;
 };
