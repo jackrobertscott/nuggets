@@ -68,13 +68,17 @@ export interface IShapeDigester {
   corners?: ICornersOptions;
   borders?: IBordersOptions;
   direction?: IDirections;
-  align?: 'start' | 'end' | 'center' | 'stretch' | 'between' | 'even';
-  space?: number | ISpaceOptions;
+  force?: 'start' | 'end' | 'center' | 'stretch' | 'between' | 'even';
+  align?: 'start' | 'end' | 'center' | 'stretch';
+  space?: number | string | ISpaceOptions;
+  absolute?: number | string | ISpaceOptions;
   between?: number | string;
-  diameter?: number;
+  circle?: boolean;
+  size?: number | string;
   width?: number | string | ISizeOptions;
   height?: number | string | ISizeOptions;
   grow?: boolean;
+  collapse?: boolean;
   transition?: number;
   cursor?: string;
   overflow?: string;
@@ -92,12 +96,16 @@ export const digestShape: IDigester<IShapeDigester> = ({
   borders,
   direction,
   between,
+  force,
   align,
   space,
-  diameter,
+  absolute,
+  circle,
+  size,
   height,
   width,
   grow,
+  collapse,
   transition,
   cursor,
   overflow,
@@ -138,35 +146,35 @@ export const digestShape: IDigester<IShapeDigester> = ({
       points
         .filter(exists => exists)
         .forEach(side => {
-          const size = stringsAndPixels(radius);
+          const radiusSize = stringsAndPixels(radius);
           switch ((side as string).toLowerCase()) {
             case 'north':
-              css.borderTopRightRadius = size;
-              css.borderTopLeftRadius = size;
+              css.borderTopRightRadius = radiusSize;
+              css.borderTopLeftRadius = radiusSize;
               break;
             case 'east':
-              css.borderTopRightRadius = size;
-              css.borderBottomRightRadius = size;
+              css.borderTopRightRadius = radiusSize;
+              css.borderBottomRightRadius = radiusSize;
               break;
             case 'south':
-              css.borderBottomRightRadius = size;
-              css.borderBottomLeftRadius = size;
+              css.borderBottomRightRadius = radiusSize;
+              css.borderBottomLeftRadius = radiusSize;
               break;
             case 'west':
-              css.borderTopLeftRadius = size;
-              css.borderBottomLeftRadius = size;
+              css.borderTopLeftRadius = radiusSize;
+              css.borderBottomLeftRadius = radiusSize;
               break;
             case 'northeast':
-              css.borderTopRightRadius = size;
+              css.borderTopRightRadius = radiusSize;
               break;
             case 'northwest':
-              css.borderTopLeftRadius = size;
+              css.borderTopLeftRadius = radiusSize;
               break;
             case 'southeast':
-              css.borderBottomRightRadius = size;
+              css.borderBottomRightRadius = radiusSize;
               break;
             case 'southwest':
-              css.borderBottomLeftRadius = size;
+              css.borderBottomLeftRadius = radiusSize;
               break;
           }
         });
@@ -182,19 +190,19 @@ export const digestShape: IDigester<IShapeDigester> = ({
       borders.sides
         .filter(exists => exists)
         .forEach(side => {
-          const size = stringsAndPixels(borders.thickness || 1);
+          const borderSize = stringsAndPixels(borders.thickness || 1);
           switch ((side as string).toLowerCase()) {
             case 'north':
-              css.borderTopWidth = size;
+              css.borderTopWidth = borderSize;
               break;
             case 'east':
-              css.borderRightWidth = size;
+              css.borderRightWidth = borderSize;
               break;
             case 'south':
-              css.borderBottomWidth = size;
+              css.borderBottomWidth = borderSize;
               break;
             case 'west':
-              css.borderLeftWidth = size;
+              css.borderLeftWidth = borderSize;
               break;
           }
         });
@@ -235,8 +243,8 @@ export const digestShape: IDigester<IShapeDigester> = ({
       },
     };
   }
-  if (align !== undefined) {
-    switch (align) {
+  if (force !== undefined) {
+    switch (force) {
       default:
       case 'start':
         css.justifyContent = 'flex-start';
@@ -258,8 +266,25 @@ export const digestShape: IDigester<IShapeDigester> = ({
         break;
     }
   }
+  if (align !== undefined) {
+    switch (align) {
+      default:
+      case 'start':
+        css.alignItems = 'flex-start';
+        break;
+      case 'end':
+        css.alignItems = 'flex-end';
+        break;
+      case 'center':
+        css.alignItems = 'center';
+        break;
+      case 'stretch':
+        css.alignItems = 'stretch';
+        break;
+    }
+  }
   if (space !== undefined) {
-    if (typeof space === 'number') {
+    if (typeof space === 'number' || typeof space === 'string') {
       css.padding = stringsAndPixels(space);
     } else {
       const { north, east, south, west, sides, verts } = space;
@@ -285,18 +310,21 @@ export const digestShape: IDigester<IShapeDigester> = ({
       }
     }
   }
-  if (diameter !== undefined) {
+  if (circle === true) {
     css.borderRadius = '50%';
-    css.height = stringsAndPixels(diameter);
-    css.width = stringsAndPixels(diameter);
+  }
+  if (size !== undefined) {
+    css.height = stringsAndPixels(size);
+    css.width = stringsAndPixels(size);
   }
   if (grow !== undefined) {
     css.flexGrow = grow ? 1 : 0;
   }
+  if (collapse !== undefined) {
+    css.width = 'fit-content';
+  }
   if (width !== undefined) {
-    if (width === 'collapse') {
-      css.width = 'fit-content';
-    } else if (typeof width === 'number' || typeof width === 'string') {
+    if (typeof width === 'number' || typeof width === 'string') {
       css.width = stringsAndPixels(width);
     } else {
       const { min, max, use } = width as ISizeOptions;
@@ -351,6 +379,38 @@ export const digestShape: IDigester<IShapeDigester> = ({
       .filter(exists => exists)
       .join(' ')
       .trim();
+  }
+  if (absolute !== undefined) {
+    css.position = 'absolute';
+    css.margin = 0;
+    if (typeof absolute === 'number' || typeof absolute === 'string') {
+      css.top = stringsAndPixels(absolute);
+      css.right = stringsAndPixels(absolute);
+      css.bottom = stringsAndPixels(absolute);
+      css.left = stringsAndPixels(absolute);
+    } else {
+      const { north, east, south, west, sides, verts } = absolute;
+      if (verts) {
+        css.top = stringsAndPixels(verts);
+        css.bottom = stringsAndPixels(verts);
+      }
+      if (sides) {
+        css.right = stringsAndPixels(sides);
+        css.left = stringsAndPixels(sides);
+      }
+      if (north) {
+        css.top = stringsAndPixels(north);
+      }
+      if (east) {
+        css.right = stringsAndPixels(east);
+      }
+      if (south) {
+        css.bottom = stringsAndPixels(south);
+      }
+      if (west) {
+        css.left = stringsAndPixels(west);
+      }
+    }
   }
   return css;
 };

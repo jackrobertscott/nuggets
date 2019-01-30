@@ -1,3 +1,5 @@
+import { ReactElement } from 'react';
+
 export interface ICSS {
   [name: string]: string | number | ICSS | undefined;
 }
@@ -17,3 +19,7 @@ export type IDirectionsDiagonals =
   | 'northwest'
   | 'southeast'
   | 'southwest';
+
+export type INonText = ReactElement<any> | number | boolean;
+
+export type INonTextChildren = INonText | INonText[];

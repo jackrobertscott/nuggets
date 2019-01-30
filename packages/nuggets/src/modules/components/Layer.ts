@@ -1,9 +1,10 @@
-import { FunctionComponent, ReactElement, useEffect } from 'react';
+import { FunctionComponent } from 'react';
 import { createPortal } from 'react-dom';
 import { INuggieProps, createNuggie } from '../../utils/dom';
+import { INonTextChildren } from '../../utils/types';
 
 export type ILayerProps = INuggieProps<{}> & {
-  children?: ReactElement<any> | Array<ReactElement<any>>;
+  children?: INonTextChildren;
   node?: HTMLElement | null;
   id?: string;
 };

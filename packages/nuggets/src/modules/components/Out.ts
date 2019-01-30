@@ -5,18 +5,19 @@ import { createCSSFromProps } from '../../utils/styles';
 
 export type IOutProps = INuggieProps<ITextsDigester> & {
   value?: ReactText | ReactText[];
-  adjust?: (value: ReactText | ReactText[]) => ReactText | ReactText[];
 };
 
 export const Out: FunctionComponent<IOutProps> = ({
-  adjust,
   styles = {},
   ...options
 }) => {
-  const value = String(options.value || '');
-  const children = typeof adjust === 'function' ? adjust(value) : value;
+  const children = String(options.value || '');
+  const precss = {
+    position: 'relative',
+  };
   return createNuggie({
     children,
+    precss,
     emote: createCSSFromProps(styles, digestTexts),
     ...options,
   });

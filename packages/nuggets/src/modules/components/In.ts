@@ -28,7 +28,7 @@ export const In: FunctionComponent<IInProps> = ({
     }
   };
   const precss = {
-    flexGrow: 1,
+    position: 'relative',
     width: '100%',
   };
   return createNuggie({

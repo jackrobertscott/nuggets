@@ -1,90 +1,122 @@
-import React, { FunctionComponent, ReactElement } from 'react';
-import { Frame, useToggle, Layer, Out } from 'nuggets';
+import React, {
+  FunctionComponent,
+  ReactElement,
+  useState,
+  useEffect,
+} from 'react';
+import { Frame, Layer, useToggle, Out } from 'nuggets';
+import colors from '../colors';
 
-export interface ISidebarProps {
-  children: ReactElement<any> | Array<ReactElement<any>>;
+export interface IItemProps {
+  title: string;
+  active: boolean;
 }
 
-export const Sidebar: FunctionComponent<ISidebarProps> = ({ children }) => {
-  const { active, on, off } = useToggle();
+export const Item: FunctionComponent<IItemProps> = ({ title, active }) => {
+  const [on, change] = useState<boolean>(false);
+  useEffect(
+    () => {
+      let start: number | undefined;
+      if (on !== active) {
+        if (active) {
+          start = Date.now();
+          setTimeout(() => {
+            if (start) {
+              change(active);
+              start = undefined;
+            }
+          }, 1000);
+        } else {
+          change(active);
+        }
+      }
+    },
+    [active]
+  );
   return (
     <Frame
       styles={{
         direction: 'east',
-        grow: true,
-        color: '#000000',
+        align: 'center',
+        space: 15,
+        between: 30,
+        cursor: 'pointer',
+        hover: {
+          gradient: {
+            color: [colors.noticeTint, colors.strong],
+            angle: 125,
+          },
+        },
       }}
     >
-      <Layer id="modals">
+      <Frame
+        styles={{
+          color: colors.white,
+          circle: true,
+          size: 30,
+        }}
+      />
+      {on && (
         <Frame
-          events={{
-            mouseEnter: on,
-            mouseLeave: off,
-          }}
           styles={{
-            grow: true,
-            width: 'collapse',
-            space: {
-              verts: 20,
-              sides: 20,
-            },
-            between: 100,
-            color: '#5700E3',
-            gradient: {
-              angle: 45,
-              color: ['#000000', '#5700E3'],
-            },
+            width: 160,
+          }}
+        >
+          <Out
+            value={title}
+            styles={{
+              color: colors.white,
+              thickness: 600,
+            }}
+          />
+        </Frame>
+      )}
+    </Frame>
+  );
+};
+
+export interface ISidebarProps {
+  children?: ReactElement<any>;
+}
+
+export const Sidebar: FunctionComponent<ISidebarProps> = ({ children }) => {
+  const { on, off, active } = useToggle();
+  return (
+    <Layer id="modals">
+      <Frame
+        events={{
+          mouseEnter: on,
+          mouseLeave: off,
+        }}
+        styles={{
+          grow: true,
+          collapse: true,
+          between: 150,
+          gradient: {
+            color: [colors.noticeTint, colors.notice],
+            angle: 125,
+          },
+        }}
+      >
+        <Frame
+          styles={{
+            space: 15,
           }}
         >
           <Frame
             styles={{
-              diameter: 30,
-              color: 'white',
+              color: colors.white,
+              circle: true,
+              size: 30,
             }}
           />
-          <Frame
-            styles={{
-              between: 10,
-            }}
-          >
-            <Frame
-              styles={{
-                diameter: 30,
-                width: active ? 100 : undefined,
-                color: 'white',
-              }}
-            />
-            <Frame
-              styles={{
-                diameter: 30,
-                width: active ? 100 : undefined,
-                color: 'white',
-              }}
-            />
-            <Frame
-              styles={{
-                diameter: 30,
-                width: active ? 100 : undefined,
-                color: 'white',
-              }}
-            />
-          </Frame>
         </Frame>
-      </Layer>
-      <Frame
-        styles={{
-          grow: true,
-          space: {
-            west: 80,
-          },
-          gradient: {
-            angle: -45,
-            color: ['#000000', '#292431'],
-          },
-        }}
-      >
-        {children}
+        <Frame>
+          <Item title="Search" active={active} />
+          <Item title="Imports" active={active} />
+          <Item title="Settings" active={active} />
+        </Frame>
       </Frame>
-    </Frame>
+    </Layer>
   );
 };

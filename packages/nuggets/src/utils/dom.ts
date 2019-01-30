@@ -48,10 +48,11 @@ export const createNuggie = ({
     ...ensure(into),
     ...ensure(extras),
   };
+  const styles = deep.all([precss, emote, css]) as ICSS;
   return jsx(type, {
     ...props,
     children,
     className: [props.className || '', nuggie].join(' ').trim(),
-    css: emotion(deep.all([precss, emote, css]) as ICSS),
+    css: emotion(styles),
   });
 };
