@@ -20,6 +20,8 @@ export type IDirectionsDiagonals =
   | 'southeast'
   | 'southwest';
 
+export type IDirectionsAll = IDirections | IDirectionsDiagonals;
+
 export type INonText = ReactElement<any> | number | boolean;
 
 export type INonTextChildren = INonText | INonText[];

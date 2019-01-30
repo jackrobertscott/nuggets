@@ -9,16 +9,10 @@ export const Center: FunctionComponent<ICenterProps> = ({ children }) => (
   <Frame
     styles={{
       align: 'center',
+      force: 'center',
       grow: true,
     }}
   >
-    <Frame
-      styles={{
-        align: 'center',
-        direction: 'east',
-      }}
-    >
-      {children}
-    </Frame>
+    {children}
   </Frame>
 );

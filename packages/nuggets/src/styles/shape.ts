@@ -1,9 +1,4 @@
-import {
-  ICSS,
-  IDigester,
-  IDirections,
-  IDirectionsDiagonals,
-} from '../utils/types';
+import { ICSS, IDigester, IDirections, IDirectionsAll } from '../utils/types';
 import { stringsAndPixels } from '../utils/helpers';
 
 export interface ITransform3dOptions {
@@ -35,10 +30,7 @@ export interface IBordersOptions {
   sides?: IDirections[];
 }
 
-export interface ICornersOptions {
-  radius?: number;
-  points?: Array<IDirections | IDirectionsDiagonals>;
-}
+export type ICornersOptions = { [sides in IDirectionsAll]?: number | string };
 
 export interface IGradientOptions {
   angle?: number;
@@ -65,7 +57,7 @@ export interface IShapeDigester {
   alpha?: number;
   gradient?: IGradientOptions;
   shade?: IShadeOptions;
-  corners?: ICornersOptions;
+  corners?: number | string | ICornersOptions;
   borders?: IBordersOptions;
   direction?: IDirections;
   force?: 'start' | 'end' | 'center' | 'stretch' | 'between' | 'even';
@@ -140,13 +132,13 @@ export const digestShape: IDigester<IShapeDigester> = ({
     ].join(' ');
   }
   if (corners !== undefined) {
-    const { radius = 0, points = [] } = corners;
-    if (points.length) {
-      css.borderRadius = stringsAndPixels(0);
-      points
+    if (typeof corners === 'number' || typeof corners === 'string') {
+      css.borderRadius = stringsAndPixels(corners);
+    } else {
+      Object.keys(corners)
         .filter(exists => exists)
         .forEach(side => {
-          const radiusSize = stringsAndPixels(radius);
+          const radiusSize = stringsAndPixels((corners as any)[side]);
           switch ((side as string).toLowerCase()) {
             case 'north':
               css.borderTopRightRadius = radiusSize;
@@ -178,8 +170,6 @@ export const digestShape: IDigester<IShapeDigester> = ({
               break;
           }
         });
-    } else {
-      css.borderRadius = stringsAndPixels(radius);
     }
   }
   if (borders !== undefined) {

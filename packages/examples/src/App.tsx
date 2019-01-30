@@ -1,7 +1,7 @@
 import React from 'react';
-import { Layer } from 'nuggets';
+import { Layer, Frame } from 'nuggets';
 import { Center } from './components/Center';
-import { Sidebar } from './components/Sidebar';
+import { Box } from './components/Box';
 
 /**
  * Hooks don't work on the root component...
@@ -9,7 +9,9 @@ import { Sidebar } from './components/Sidebar';
 export default () => (
   <Layer id="root">
     <Center>
-      <Sidebar />
+      <Box>
+        <Frame styles={{ size: 30 }} />
+      </Box>
     </Center>
   </Layer>
 );
