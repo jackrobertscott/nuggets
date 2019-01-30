@@ -15,7 +15,7 @@ export default {
    * Purpleish.
    */
   strong: '#8F48FF',
-  stringTint: '#630FEA',
+  strongTint: '#630FEA',
   /**
    * Blackish.
    */

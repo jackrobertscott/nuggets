@@ -8,20 +8,50 @@ export interface IBoxProps {
     [name: string]: unknown;
   };
   shade?: string;
+  hover?: boolean;
 }
 
 export const Box: FunctionComponent<IBoxProps> = ({
   children,
   styles,
+  shade,
+  hover,
   ...options
 }) => {
+  let boxColor;
+  let hoverColor;
+  switch (shade) {
+    default:
+    case 'notice':
+      hoverColor = colors.notice;
+      boxColor = colors.noticeTint;
+      break;
+    case 'electric':
+      hoverColor = colors.electric;
+      boxColor = colors.electricTint;
+      break;
+    case 'strong':
+      hoverColor = colors.strong;
+      boxColor = colors.strongTint;
+      break;
+  }
   return (
     <Frame
       styles={{
-        color: colors.noticeTint,
-        corners: {
-          bottomLeft: 5,
+        color: boxColor,
+        corners: 10,
+        transition: 200,
+        shade: {
+          color: 'rgba(0, 0, 0, 0.3)',
+          blur: 10,
+          down: 3,
         },
+        hover: hover
+          ? {
+              cursor: 'pointer',
+              color: hoverColor,
+            }
+          : {},
         ...styles,
       }}
       {...options}
