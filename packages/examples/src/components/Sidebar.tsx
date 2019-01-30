@@ -54,6 +54,7 @@ export const Item: FunctionComponent<IItemProps> = ({ title, active }) => {
           color: colors.white,
           circle: true,
           size: 30,
+          transition: 1000,
         }}
       />
       {on && (

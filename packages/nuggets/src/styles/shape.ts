@@ -44,12 +44,12 @@ export interface ISizeOptions {
 }
 
 export interface ISpaceOptions {
-  sides?: number;
-  verts?: number;
-  north?: number;
-  south?: number;
-  east?: number;
-  west?: number;
+  sides?: number | string;
+  verts?: number | string;
+  north?: number | string;
+  south?: number | string;
+  east?: number | string;
+  west?: number | string;
 }
 
 export interface IShapeDigester {
