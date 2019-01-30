@@ -1,23 +1,31 @@
-import { ICSS, IDigester, IDirections, IDirectionsAll } from '../utils/types';
-import { stringsAndPixels } from '../utils/helpers';
+import {
+  ICSS,
+  IDigester,
+  ISides,
+  ISidesAndDiagonals,
+  IUnit,
+  IDirections,
+  IDiagonals,
+} from '../utils/types';
+import { formatUnits } from '../utils/helpers';
 
 export interface ITransform3dOptions {
-  x?: number | string;
-  y?: number | string;
-  z?: number | string;
+  x?: IUnit;
+  y?: IUnit;
+  z?: IUnit;
 }
 
 export interface IShadeOptions {
   color?: string;
-  blur?: number;
-  grow?: number;
-  down?: number;
-  across?: number;
+  blur?: IUnit;
+  grow?: IUnit;
+  down?: IUnit;
+  across?: IUnit;
 }
 
 export interface IBordersOptions {
   color?: string;
-  thickness?: number;
+  thickness?: IUnit;
   style?:
     | 'dotted'
     | 'dashed'
@@ -27,29 +35,29 @@ export interface IBordersOptions {
     | 'ridge'
     | 'inset'
     | 'outset';
-  sides?: IDirections[];
+  sides?: ISides[];
 }
 
-export type ICornersOptions = { [sides in IDirectionsAll]?: number | string };
+export type ICornersOptions = { [sides in IDiagonals]?: IUnit };
 
 export interface IGradientOptions {
   angle?: number;
-  color?: Array<string | number>;
+  color?: string[];
 }
 
 export interface ISizeOptions {
-  use?: number | string;
-  min?: number | string;
-  max?: number | string;
+  use?: IUnit;
+  min?: IUnit;
+  max?: IUnit;
 }
 
 export interface ISpaceOptions {
-  sides?: number | string;
-  verts?: number | string;
-  north?: number | string;
-  south?: number | string;
-  east?: number | string;
-  west?: number | string;
+  sides?: IUnit;
+  verts?: IUnit;
+  top?: IUnit;
+  bottom?: IUnit;
+  right?: IUnit;
+  left?: IUnit;
 }
 
 export interface IShapeDigester {
@@ -57,26 +65,26 @@ export interface IShapeDigester {
   alpha?: number;
   gradient?: IGradientOptions;
   shade?: IShadeOptions;
-  corners?: number | string | ICornersOptions;
+  corners?: IUnit | ICornersOptions;
   borders?: IBordersOptions;
   direction?: IDirections;
   force?: 'start' | 'end' | 'center' | 'stretch' | 'between' | 'even';
   align?: 'start' | 'end' | 'center' | 'stretch';
-  space?: number | string | ISpaceOptions;
-  absolute?: number | string | ISpaceOptions;
-  between?: number | string;
+  space?: IUnit | ISpaceOptions;
+  absolute?: IUnit | ISpaceOptions;
+  between?: IUnit;
   circle?: boolean;
-  size?: number | string;
-  width?: number | string | ISizeOptions;
-  height?: number | string | ISizeOptions;
+  size?: IUnit;
+  width?: IUnit | ISizeOptions;
+  height?: IUnit | ISizeOptions;
   grow?: boolean;
   collapse?: boolean;
-  transition?: number;
+  transition?: IUnit;
   cursor?: string;
   overflow?: string;
-  rotate?: number | string | ITransform3dOptions;
+  rotate?: IUnit | ITransform3dOptions;
   scale?: number | ITransform3dOptions;
-  translate?: number | ITransform3dOptions;
+  translate?: IUnit | ITransform3dOptions;
 }
 
 export const digestShape: IDigester<IShapeDigester> = ({
@@ -124,48 +132,48 @@ export const digestShape: IDigester<IShapeDigester> = ({
   if (shade !== undefined) {
     const shadeColor = shade.color || '#000';
     css.boxShadow = [
-      stringsAndPixels(shade.across),
-      stringsAndPixels(shade.down),
-      stringsAndPixels(shade.blur),
-      stringsAndPixels(shade.grow),
+      formatUnits(shade.across),
+      formatUnits(shade.down),
+      formatUnits(shade.blur),
+      formatUnits(shade.grow),
       shadeColor,
     ].join(' ');
   }
   if (corners !== undefined) {
     if (typeof corners === 'number' || typeof corners === 'string') {
-      css.borderRadius = stringsAndPixels(corners);
+      css.borderRadius = formatUnits(corners);
     } else {
       Object.keys(corners)
         .filter(exists => exists)
         .forEach(side => {
-          const radiusSize = stringsAndPixels((corners as any)[side]);
-          switch ((side as string).toLowerCase()) {
-            case 'north':
+          const radiusSize = formatUnits((corners as any)[side]);
+          switch (side) {
+            case 'top':
               css.borderTopRightRadius = radiusSize;
               css.borderTopLeftRadius = radiusSize;
               break;
-            case 'east':
+            case 'right':
               css.borderTopRightRadius = radiusSize;
               css.borderBottomRightRadius = radiusSize;
               break;
-            case 'south':
+            case 'bottom':
               css.borderBottomRightRadius = radiusSize;
               css.borderBottomLeftRadius = radiusSize;
               break;
-            case 'west':
+            case 'left':
               css.borderTopLeftRadius = radiusSize;
               css.borderBottomLeftRadius = radiusSize;
               break;
-            case 'northeast':
+            case 'topRight':
               css.borderTopRightRadius = radiusSize;
               break;
-            case 'northwest':
+            case 'topLeft':
               css.borderTopLeftRadius = radiusSize;
               break;
-            case 'southeast':
+            case 'bottomRight':
               css.borderBottomRightRadius = radiusSize;
               break;
-            case 'southwest':
+            case 'bottomLeft':
               css.borderBottomLeftRadius = radiusSize;
               break;
           }
@@ -176,58 +184,58 @@ export const digestShape: IDigester<IShapeDigester> = ({
     css.borderColor = borders.color || '#000';
     css.borderStyle = borders.style || 'solid';
     if (borders.sides) {
-      css.borderWidth = stringsAndPixels(0);
+      css.borderWidth = formatUnits(0);
       borders.sides
         .filter(exists => exists)
         .forEach(side => {
-          const borderSize = stringsAndPixels(borders.thickness || 1);
-          switch ((side as string).toLowerCase()) {
-            case 'north':
+          const borderSize = formatUnits(borders.thickness || 1);
+          switch (side) {
+            case 'top':
               css.borderTopWidth = borderSize;
               break;
-            case 'east':
+            case 'right':
               css.borderRightWidth = borderSize;
               break;
-            case 'south':
+            case 'bottom':
               css.borderBottomWidth = borderSize;
               break;
-            case 'west':
+            case 'left':
               css.borderLeftWidth = borderSize;
               break;
           }
         });
     } else {
-      css.borderWidth = stringsAndPixels(borders.thickness || 1);
+      css.borderWidth = formatUnits(borders.thickness || 1);
     }
   }
   if (direction !== undefined) {
     switch (direction) {
       default:
-      case 'south':
+      case 'down':
         css.flexDirection = 'column';
         break;
-      case 'north':
+      case 'up':
         css.flexDirection = 'column-reverse';
         break;
-      case 'east':
+      case 'right':
         css.flexDirection = 'row';
         break;
-      case 'west':
+      case 'left':
         css.flexDirection = 'row-reverse';
         break;
     }
   }
   if (between !== undefined) {
     const side =
-      !direction || direction === 'south'
-        ? 'Bottom'
-        : direction === 'east'
+      direction === 'left'
+        ? 'Left'
+        : direction === 'right'
         ? 'Right'
-        : direction === 'north'
+        : direction === 'up'
         ? 'Top'
-        : 'Left';
+        : 'Bottom';
     css['& > *'] = {
-      [`margin${side}`]: stringsAndPixels(between),
+      [`margin${side}`]: formatUnits(between),
       [':last-child']: {
         [`margin${side}`]: 0,
       },
@@ -275,28 +283,28 @@ export const digestShape: IDigester<IShapeDigester> = ({
   }
   if (space !== undefined) {
     if (typeof space === 'number' || typeof space === 'string') {
-      css.padding = stringsAndPixels(space);
+      css.padding = formatUnits(space);
     } else {
-      const { north, east, south, west, sides, verts } = space;
+      const { top, right, bottom, left, sides, verts } = space;
       if (verts) {
-        css.paddingTop = stringsAndPixels(verts);
-        css.paddingBottom = stringsAndPixels(verts);
+        css.paddingTop = formatUnits(verts);
+        css.paddingBottom = formatUnits(verts);
       }
       if (sides) {
-        css.paddingRight = stringsAndPixels(sides);
-        css.paddingLeft = stringsAndPixels(sides);
+        css.paddingRight = formatUnits(sides);
+        css.paddingLeft = formatUnits(sides);
       }
-      if (north) {
-        css.paddingTop = stringsAndPixels(north);
+      if (top) {
+        css.paddingTop = formatUnits(top);
       }
-      if (east) {
-        css.paddingRight = stringsAndPixels(east);
+      if (right) {
+        css.paddingRight = formatUnits(right);
       }
-      if (south) {
-        css.paddingBottom = stringsAndPixels(south);
+      if (bottom) {
+        css.paddingBottom = formatUnits(bottom);
       }
-      if (west) {
-        css.paddingLeft = stringsAndPixels(west);
+      if (left) {
+        css.paddingLeft = formatUnits(left);
       }
     }
   }
@@ -304,8 +312,8 @@ export const digestShape: IDigester<IShapeDigester> = ({
     css.borderRadius = '50%';
   }
   if (size !== undefined) {
-    css.height = stringsAndPixels(size);
-    css.width = stringsAndPixels(size);
+    css.height = formatUnits(size);
+    css.width = formatUnits(size);
   }
   if (grow !== undefined) {
     css.flexGrow = grow ? 1 : 0;
@@ -315,38 +323,38 @@ export const digestShape: IDigester<IShapeDigester> = ({
   }
   if (width !== undefined) {
     if (typeof width === 'number' || typeof width === 'string') {
-      css.width = stringsAndPixels(width);
+      css.width = formatUnits(width);
     } else {
       const { min, max, use } = width as ISizeOptions;
       if (min) {
-        css.minWidth = stringsAndPixels(min);
+        css.minWidth = formatUnits(min);
       }
       if (max) {
-        css.maxWidth = stringsAndPixels(max);
+        css.maxWidth = formatUnits(max);
       }
       if (use) {
-        css.width = stringsAndPixels(use);
+        css.width = formatUnits(use);
       }
     }
   }
   if (height !== undefined) {
     if (typeof height === 'number' || typeof height === 'string') {
-      css.height = stringsAndPixels(height);
+      css.height = formatUnits(height);
     } else {
       const { min, max, use } = height as ISizeOptions;
       if (min) {
-        css.minHeight = stringsAndPixels(min);
+        css.minHeight = formatUnits(min);
       }
       if (max) {
-        css.maxHeight = stringsAndPixels(max);
+        css.maxHeight = formatUnits(max);
       }
       if (use) {
-        css.height = stringsAndPixels(use);
+        css.height = formatUnits(use);
       }
     }
   }
   if (transition !== undefined) {
-    css.transition = stringsAndPixels(transition, 'ms');
+    css.transition = formatUnits(transition, 'ms');
   }
   if (cursor !== undefined) {
     css.cursor = cursor;
@@ -374,31 +382,31 @@ export const digestShape: IDigester<IShapeDigester> = ({
     css.position = 'absolute';
     css.margin = 0;
     if (typeof absolute === 'number' || typeof absolute === 'string') {
-      css.top = stringsAndPixels(absolute);
-      css.right = stringsAndPixels(absolute);
-      css.bottom = stringsAndPixels(absolute);
-      css.left = stringsAndPixels(absolute);
+      css.top = formatUnits(absolute);
+      css.right = formatUnits(absolute);
+      css.bottom = formatUnits(absolute);
+      css.left = formatUnits(absolute);
     } else {
-      const { north, east, south, west, sides, verts } = absolute;
+      const { top, right, bottom, left, sides, verts } = absolute;
       if (verts) {
-        css.top = stringsAndPixels(verts);
-        css.bottom = stringsAndPixels(verts);
+        css.top = formatUnits(verts);
+        css.bottom = formatUnits(verts);
       }
       if (sides) {
-        css.right = stringsAndPixels(sides);
-        css.left = stringsAndPixels(sides);
+        css.right = formatUnits(sides);
+        css.left = formatUnits(sides);
       }
-      if (north) {
-        css.top = stringsAndPixels(north);
+      if (top) {
+        css.top = formatUnits(top);
       }
-      if (east) {
-        css.right = stringsAndPixels(east);
+      if (right) {
+        css.right = formatUnits(right);
       }
-      if (south) {
-        css.bottom = stringsAndPixels(south);
+      if (bottom) {
+        css.bottom = formatUnits(bottom);
       }
-      if (west) {
-        css.left = stringsAndPixels(west);
+      if (left) {
+        css.left = formatUnits(left);
       }
     }
   }
@@ -413,21 +421,19 @@ const createTransform = (name: string, value: any): string => {
 };
 
 const createRotateTransform = (
-  rotate?: number | string | ITransform3dOptions
+  rotate?: IUnit | ITransform3dOptions
 ): string => {
   let transforms = '';
   if (rotate !== undefined) {
-    transforms = createTransform(
-      'rotate',
-      typeof rotate === 'number' ? `${rotate}deg` : rotate
-    );
-    if (!transforms) {
+    if (typeof rotate === 'number' || typeof rotate === 'string') {
+      transforms = createTransform('rotate', formatUnits(rotate, 'deg'));
+    } else {
       const { x, y, z } = rotate as ITransform3dOptions;
       transforms = [
         transforms,
-        createTransform('rotateX', typeof x === 'number' ? `${x}deg` : x),
-        createTransform('rotateY', typeof y === 'number' ? `${y}deg` : y),
-        createTransform('rotateZ', typeof z === 'number' ? `${z}deg` : z),
+        createTransform('rotateX', formatUnits(x, 'deg')),
+        createTransform('rotateY', formatUnits(y, 'deg')),
+        createTransform('rotateZ', formatUnits(z, 'deg')),
       ]
         .filter(exists => exists)
         .join(' ')
@@ -440,8 +446,9 @@ const createRotateTransform = (
 const createScaleTransform = (scale?: number | ITransform3dOptions): string => {
   let transforms = '';
   if (scale !== undefined) {
-    transforms = createTransform('scale', scale);
-    if (!transforms) {
+    if (typeof scale === 'number') {
+      transforms = createTransform('scale', scale);
+    } else {
       const { x, y, z } = scale as ITransform3dOptions;
       transforms =
         z === undefined
@@ -453,19 +460,21 @@ const createScaleTransform = (scale?: number | ITransform3dOptions): string => {
 };
 
 const createTranslateTransform = (
-  translate?: number | ITransform3dOptions
+  translate?: IUnit | ITransform3dOptions
 ): string => {
   let transforms = '';
   if (translate !== undefined) {
-    transforms = createTransform('translate', translate);
-    if (!transforms) {
+    if (typeof translate === 'number' || typeof translate === 'string') {
+      transforms = createTransform('translate', translate);
+    } else {
       const { x, y, z } = translate as ITransform3dOptions;
-      const format = (value?: number | string) =>
-        typeof value === 'string' ? value : `${value || 0}px`;
-      transforms =
-        z === undefined
-          ? `translate(${format(x)}, ${format(y)})`
-          : `translate3d(${format(x)}, ${format(y)}, ${format(z)})`;
+      if (z === undefined) {
+        transforms = `translate(${formatUnits(x)}, ${formatUnits(y)})`;
+      } else {
+        transforms = `translate3d(${formatUnits(x)}, ${formatUnits(
+          y
+        )}, ${formatUnits(z)})`;
+      }
     }
   }
   return transforms;

@@ -20,7 +20,7 @@ export const Box: FunctionComponent<IBoxProps> = ({
       styles={{
         color: colors.noticeTint,
         corners: {
-          southwest: 5,
+          bottomLeft: 5,
         },
         ...styles,
       }}

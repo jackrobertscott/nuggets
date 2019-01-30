@@ -5,7 +5,7 @@ export const throttle = (time: number, cb: (...args: any[]) => any) =>
 
 export const ensure = (data?: { [name: string]: any }) => data || ({} as any);
 
-export const stringsAndPixels = (
+export const formatUnits = (
   value: string | number | undefined = 0,
   type: string = 'px'
 ): string => (typeof value === 'string' ? value : `${value}${type}`);

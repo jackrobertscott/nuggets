@@ -12,16 +12,16 @@ export type IEventsExecuter<T> = (value: T, event?: any) => any;
 
 export type IOptional<T> = undefined | T;
 
-export type IDirections = 'north' | 'east' | 'south' | 'west';
+export type ISides = 'top' | 'right' | 'bottom' | 'left';
 
-export type IDirectionsDiagonals =
-  | 'northeast'
-  | 'northwest'
-  | 'southeast'
-  | 'southwest';
+export type IDirections = 'down' | 'right' | 'up' | 'left';
 
-export type IDirectionsAll = IDirections | IDirectionsDiagonals;
+export type IDiagonals = 'topRight' | 'topLeft' | 'bottomRight' | 'bottomLeft';
+
+export type ISidesAndDiagonals = ISides | IDiagonals;
 
 export type INonText = ReactElement<any> | number | boolean;
 
 export type INonTextChildren = INonText | INonText[];
+
+export type IUnit = number | string;

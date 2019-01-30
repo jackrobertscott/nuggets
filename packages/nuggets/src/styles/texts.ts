@@ -1,27 +1,32 @@
 import { ICSS, IDigester } from '../utils/types';
-import { stringsAndPixels } from '../utils/helpers';
+import { formatUnits } from '../utils/helpers';
+
+export interface IDecorationOptions {
+  color?: string;
+  style?: 'solid' | 'double' | 'dotted' | 'dashed' | 'wavy';
+  lines:
+    | 'underline'
+    | 'overline'
+    | 'line-through'
+    | Array<'underline' | 'overline' | 'line-through'>;
+}
+
+export interface IPlaceholderOptions {
+  color?: string;
+}
 
 export interface ITextsDigester {
-  size?: number;
+  size?: number | string;
   color?: string;
   align?: 'left' | 'center' | 'right' | 'justify';
   family?: string;
-  height?: number;
-  thickness?: number;
+  height?: number | string;
   italic?: boolean;
-  divide?: number;
-  decoration?: {
-    color?: string;
-    style?: 'solid' | 'double' | 'dotted' | 'dashed' | 'wavy';
-    lines:
-      | 'underline'
-      | 'overline'
-      | 'line-through'
-      | Array<'underline' | 'overline' | 'line-through'>;
-  };
-  placeholder?: {
-    color?: string;
-  };
+  divide?: number | string;
+  transition?: number | string;
+  decoration?: IDecorationOptions;
+  thickness?: number;
+  placeholder?: IPlaceholderOptions;
 }
 
 export const digestTexts: IDigester<ITextsDigester> = ({
@@ -33,12 +38,13 @@ export const digestTexts: IDigester<ITextsDigester> = ({
   thickness,
   italic,
   divide,
+  transition,
   decoration,
   placeholder,
 }) => {
   const css: ICSS = {};
   if (size !== undefined) {
-    css.fontSize = `${size}px`;
+    css.fontSize = formatUnits(size);
   }
   if (color !== undefined) {
     css.color = color;
@@ -53,7 +59,10 @@ export const digestTexts: IDigester<ITextsDigester> = ({
     css.fontStyle = 'italic';
   }
   if (divide !== undefined) {
-    css.letterSpacing = `${divide}em`;
+    css.letterSpacing = formatUnits(divide, 'em');
+  }
+  if (transition !== undefined) {
+    css.transition = formatUnits(transition, 'ms');
   }
   if (decoration !== undefined) {
     const { lines, style, color: decolor } = decoration;
@@ -61,7 +70,7 @@ export const digestTexts: IDigester<ITextsDigester> = ({
     css.textDecoration = `${[...delines, style, decolor].join(' ')}`;
   }
   if (height !== undefined) {
-    css.lineHeight = stringsAndPixels(height, 'em');
+    css.lineHeight = formatUnits(height, 'em');
   }
   if (thickness !== undefined) {
     const min = 100;

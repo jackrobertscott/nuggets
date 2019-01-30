@@ -36,7 +36,7 @@ export const Item: FunctionComponent<IItemProps> = ({ title, active }) => {
   return (
     <Frame
       styles={{
-        direction: 'east',
+        direction: 'right',
         align: 'center',
         space: 15,
         between: 30,

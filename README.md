@@ -109,7 +109,7 @@ export default ({ children, color = 'white' }) => (
         width: 300,
         borders: {
           color: 'yellow',
-          sides: ['east'],
+          sides: ['right'],
         },
         shade: {
           color: 'black',

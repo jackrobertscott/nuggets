@@ -2,8 +2,9 @@ import * as deep from 'deepmerge';
 import { jsx, css as emotion } from '@emotion/core';
 import { StyleSheet } from '@emotion/sheet';
 import { IEventsOptions, createEvents } from './events';
-import { ensure } from './helpers';
 import { ICSS } from './types';
+import { IStylesOptions } from './styles';
+import { ensure } from './helpers';
 import clean from './clean';
 
 const nuggie = 'nug';
@@ -18,7 +19,7 @@ export interface INuggieProps<S> {
   css?: ICSS;
   into?: IRandom;
   events?: IEventsOptions;
-  styles?: S;
+  styles?: IStylesOptions<S>;
 }
 
 export interface INuggieOptions {
