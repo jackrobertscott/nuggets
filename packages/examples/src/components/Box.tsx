@@ -1,5 +1,5 @@
 import React, { FunctionComponent } from 'react';
-import { Frame } from 'nuggets';
+import { Frame, useMedia } from 'nuggets';
 import colors from '../colors';
 
 export interface IBoxProps {
@@ -39,8 +39,11 @@ export const Box: FunctionComponent<IBoxProps> = ({
     <Frame
       styles={{
         color: boxColor,
-        corners: 10,
         transition: 200,
+        gradient: {
+          angle: 45,
+          color: ['green', 'red', 'blue'],
+        },
         shade: {
           color: 'rgba(0, 0, 0, 0.3)',
           blur: 10,

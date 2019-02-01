@@ -1,6 +1,6 @@
 # nuggets
 
-> 📯 New Default Types
+> 📯 New default types.
 
 A collection of essential components which compose modern web experiences.
 
@@ -22,9 +22,7 @@ export default ({ textColor = 'blue', clickButton }) => {
       <Piece
         events={{ click: clickButton }}
         styles={{
-          shape: {
-            color: width > 500 ? 'green' : 'lime',
-          },
+          color: width > 500 ? 'green' : 'lime',
           texts: {
             color: textColor,
             hover: { color: 'red' },

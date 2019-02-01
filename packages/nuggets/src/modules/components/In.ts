@@ -8,14 +8,14 @@ export type IInProps = INuggieProps<ITextsDigester> & {
   value?: string | number;
   change?: IEventsExecuter<string | number>;
   placeholder?: string | number;
-  wrap?: number;
+  scrollable?: boolean;
 };
 
 export const In: FunctionComponent<IInProps> = ({
   children,
   placeholder,
   styles = {},
-  wrap,
+  scrollable = true,
   ...options
 }) => {
   const [value, update] = useState<string>(String(options.value || ''));
@@ -28,14 +28,20 @@ export const In: FunctionComponent<IInProps> = ({
     }
   };
   const precss = {
-    position: 'relative',
     width: '100%',
+    height: '100%',
+    position: 'relative',
+    overflow: scrollable ? 'auto' : 'hidden',
+    resize: 'none',
+    '&::-webkit-scrollbar': {
+      display: 'none',
+    },
   };
   return createNuggie({
-    type: wrap ? 'textarea' : 'input',
+    type: 'textarea',
     children,
     precss,
-    extras: { value, rows: wrap, placeholder },
+    extras: { value, placeholder },
     events: { change },
     emote: createCSSFromProps(styles, digestTexts),
     ...options,

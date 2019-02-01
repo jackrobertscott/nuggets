@@ -18,7 +18,7 @@ export const List: FunctionComponent<IListProps> = ({
       styles={{
         direction: 'down',
         space: 15,
-        between: 15,
+        between: 25,
         ...styles,
       }}
       {...options}
