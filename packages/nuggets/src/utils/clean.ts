@@ -87,7 +87,7 @@ export default `
   hyphens: none;
   left: auto;
   letter-spacing: normal;
-  line-height: normal;
+  line-height: 1em;
   list-style: none;
   list-style-image: none;
   list-style-position: outside;
