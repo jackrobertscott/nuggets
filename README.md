@@ -13,13 +13,13 @@ However, since the creation of these libraries, our demands for functionality ha
 Until now...
 
 ```tsx
-import { Piece, Out, useMedia } from 'nuggets';
+import { Frame, Out, useMedia } from 'nuggets';
 
 export default ({ textColor = 'blue', clickButton }) => {
   const { width } = useMedia();
   return (
-    <Piece>
-      <Piece
+    <Frame>
+      <Frame
         events={{ click: clickButton }}
         styles={{
           color: width > 500 ? 'green' : 'lime',
@@ -31,8 +31,8 @@ export default ({ textColor = 'blue', clickButton }) => {
         }}
       >
         <Out value={'Hello world!'} />
-      </Piece>
-      <Piece
+      </Frame>
+      <Frame
         styles={{
           shape: {
             color: 'blue',
@@ -40,7 +40,7 @@ export default ({ textColor = 'blue', clickButton }) => {
           },
         }}
       />
-    </Piece>
+    </Frame>
   );
 };
 ```
@@ -64,7 +64,7 @@ yarn add nuggets react@next react-dom@next
 Then import the helper classes where needed.
 
 ```tsx
-import { Layer, Piece, useMedia, useAddress } from 'nuggets';
+import { Layer, Frame, useMedia, useAddress } from 'nuggets';
 ```
 
 ## Components
@@ -84,15 +84,15 @@ export default () => (
 );
 ```
 
-### `<Piece />`
+### `<Frame />`
 
 This provides a component which is used to create shapes.
 
 ```tsx
-import { Piece } from 'nuggets';
+import { Frame } from 'nuggets';
 
 export default ({ children, color = 'white' }) => (
-  <Piece
+  <Frame
     events={{
       click: () => console.log('clicked!'),
     }}
@@ -130,7 +130,7 @@ export default ({ children, color = 'white' }) => (
     }}
   >
     {children}
-  </Piece>
+  </Frame>
 );
 ```
 
@@ -173,12 +173,12 @@ export default ({ value, change }) => (
 This provides easy access to the width of the browser window.
 
 ```tsx
-import { useMedia, Piece, Out } from 'nuggets';
+import { useMedia, Frame, Out } from 'nuggets';
 
 export default () => {
   const { width, height } = useMedia();
   return (
-    <Piece
+    <Frame
       styles={{
         shape: {
           color: width > 600 ? 'green' : 'blue',
@@ -190,7 +190,7 @@ export default () => {
       }}
     >
       <Out value={'This text changes color with the size of the window.'} />
-    </Piece>
+    </Frame>
   );
 };
 ```
@@ -207,29 +207,29 @@ Properties
 This gives you access to the current url of the page.
 
 ```tsx
-import { useAddress, Piece, Out } from 'nuggets';
+import { useAddress, Frame, Out } from 'nuggets';
 
 export default () => {
   const { change, backward, forward, pathname, search } = useAddress();
   return (
-    <Piece>
-      <Piece
+    <Frame>
+      <Frame
         styles={{
           texts: { color: 'blue' }
         }}
       >
         <Out value={`Pathname and search: ${pathname} ${search}`} />
-      </Piece>
-      <Piece events={{ click: () => change('/hello-nuggets') }}>
+      </Frame>
+      <Frame events={{ click: () => change('/hello-nuggets') }}>
         <Out value={'Go to hello nuggets'} />
-      </Piece>
-      <Piece events={{ click: backward }}>
+      </Frame>
+      <Frame events={{ click: backward }}>
         <Out value={'Go back'} />
-      </Piece>
-      <Piece events={{ click: forward }}>
+      </Frame>
+      <Frame events={{ click: forward }}>
         <Out value={'Go forward'} />
-      </Piece>
-    </Piece>
+      </Frame>
+    </Frame>
   );
 };
 ```
@@ -299,8 +299,8 @@ Properties
 This manages a simple value such as a number or string.
 
 ```tsx
-import { useString, Piece, Out, In } from 'nuggets';
-import { NicePiece } from './mycomponents';
+import { useString, Frame, Out, In } from 'nuggets';
+import { NiceFrame } from './mycomponents';
 
 export default ({ valueChange }) => {
   const { value, change, adjust } = useString({
@@ -308,7 +308,7 @@ export default ({ valueChange }) => {
     change: valueChange,
   });
   return (
-    <NicePiece>
+    <NiceFrame>
       <In
         value={value}
         change={change}
@@ -317,7 +317,7 @@ export default ({ valueChange }) => {
       {/* validations */}
       {value.length < 5 && <Out>Value is not long enough.</Out>}
       {hasBadChars(value) && <Out>Value contains some bad characters.</Out>}
-    </NicePiece>
+    </NiceFrame>
   );
 };
 ```
@@ -340,8 +340,8 @@ Properties
 This manages a simple value such as a number or string.
 
 ```tsx
-import { useNumber, Piece, Out, In } from 'nuggets';
-import { NicePiece } from './mycomponents';
+import { useNumber, Frame, Out, In } from 'nuggets';
+import { NiceFrame } from './mycomponents';
 
 export default ({ valueChange }) => {
   const { value, change } = useNumber({
@@ -349,7 +349,7 @@ export default ({ valueChange }) => {
     change: valueChange,
   });
   return (
-    <NicePiece>
+    <NiceFrame>
       <In
         value={value}
         change={change}
@@ -357,7 +357,7 @@ export default ({ valueChange }) => {
       {/* validations */}
       {value.length < 5 && <Out>Value is not long enough.</Out>}
       {hasBadChars(value) && <Out>Value contains some bad characters.</Out>}
-    </NicePiece>
+    </NiceFrame>
   );
 };
 ```
@@ -389,14 +389,14 @@ export default ({ person, valueChange, savePerson }) => {
     change: valueChange,
   });
   return (
-    <Piece>
+    <Frame>
       <FieldText change={data => operate('password').change(data)} />
       <FieldEmail change={operate('email').change} />
       <FieldPassword {...operate('password')} />
       <CustomButton events={{ click: () => savePerson(value) }}>
         Save
       </CustomButton>
-    </Piece>
+    </Frame>
   );
 };
 ```
@@ -420,12 +420,12 @@ Properties
 This provides a set of state and state changers for managing a toggled value.
 
 ```tsx
-import { useToggle, Piece } from 'nuggets';
+import { useToggle, Frame } from 'nuggets';
 
 export default ({ value, change }) => {
   const { active, off, on } = useToggle({ value, change });
   return (
-    <Piece
+    <Frame
       events={{
         click: active ? off : on,
       }}
@@ -442,12 +442,12 @@ export default ({ value, change }) => {
 There is also a simple `toggle` property which makes it a little easier.
 
 ```tsx
-import { useToggle, Piece } from 'nuggets';
+import { useToggle, Frame } from 'nuggets';
 
 export default ({ value, change }) => {
   const { toggle, active } = useToggle({ value, change });
   return (
-    <Piece
+    <Frame
       events={{ click: toggle }}
       styles={{
         shape: {
@@ -478,12 +478,12 @@ Properties
 Manage a datetime by setting sub-properties.
 
 ```tsx
-import { useDatetime, Piece, In } from 'nuggets';
+import { useDatetime, Frame, In } from 'nuggets';
 
 export default ({ value, change }) => {
   const { date, month, year, hour, minute, second, millisecond } = useDatetime({ value, change });
   return (
-    <Piece>
+    <Frame>
       <In
         value={date.value}
         change={date.change}
@@ -497,7 +497,7 @@ export default ({ value, change }) => {
       <In {...minute} />
       <In {...second} />
       <In {...millisecond} />
-    </Piece>
+    </Frame>
   );
 };
 ```
@@ -525,12 +525,12 @@ Properties
 Manage an array of values.
 
 ```tsx
-import { useArray, Piece, Out } from 'nuggets';
+import { useArray, Frame, Out } from 'nuggets';
 
 export default ({ value, change, listOfPeople = [] }) => {
   const { includes, add, remove } = useArray({ value, change });
   return listOfPeople.map(({ id, name }) => (
-    <Piece
+    <Frame
       key={id}
       events={{
         click: () => includes(id) ? add(id) : remove(id),
@@ -542,7 +542,7 @@ export default ({ value, change, listOfPeople = [] }) => {
       }}
     >
       <Out value={name} />
-    </Piece>
+    </Frame>
   );
 };
 ```
@@ -550,12 +550,12 @@ export default ({ value, change, listOfPeople = [] }) => {
 There is also a simple `toggle` attribute which makes the above code a little easier.
 
 ```tsx
-import { useArray, Piece, Out } from 'nuggets';
+import { useArray, Frame, Out } from 'nuggets';
 
 export default ({ value, change, listOfPeople = [] }) => {
   const { includes, toggle } = useArray({ value, change });
   return listOfPeople.map(({ id, name }) => (
-    <Piece
+    <Frame
       key={id}
       events={{ click: () => toggle(id) }}
       styles={{
@@ -565,7 +565,7 @@ export default ({ value, change, listOfPeople = [] }) => {
       }}
     >
       <Out value={name} />
-    </Piece>
+    </Frame>
   );
 };
 ```
@@ -603,18 +603,18 @@ export const authStore = createStore<IAuthStore>({
 ```
 
 ```tsx
-import { useStore, Piece, Out } from 'nuggets';
+import { useStore, Frame, Out } from 'nuggets';
 import { authStore } from './stores';
 
 export default () => {
   const { value, change } = useStore({ store: authStore });
   return (
-    <Piece>
+    <Frame>
       <Out value={`Auth id: ${value.userId}`} />
-      <Piece events={{ click: () => change({ userId: null }) }}>
+      <Frame events={{ click: () => change({ userId: null }) }}>
         <Out value={'Reset your auth.'} />
-      </Piece>
-    </Piece>
+      </Frame>
+    </Frame>
   );
 };
 ```
@@ -654,7 +654,7 @@ export const queryConnection = createConnection<IQueryConnection>({
 ```
 
 ```tsx
-import { useConnection, Piece, Out } from 'nuggets';
+import { useConnection, Frame, Out } from 'nuggets';
 import { queryConnection } from './connections';
 
 interface IGetUser {
@@ -680,13 +680,13 @@ export default ({ id }) => {
   });
   useEffect(() => execute({ variables: { id } }));
   return (
-    <Piece>
-      <Piece styles={{ texts: { color: 'blue' } }}>
+    <Frame>
+      <Frame styles={{ texts: { color: 'blue' } }}>
         <Out value={`User name and id: ${value.user.name} ${value.user.id}`} />
-      </Piece>
+      </Frame>
       <ErrorHandler error={error} />
       <SimpleButton click={refresh} />
-    </Piece>
+    </Frame>
   );
 };
 ```
