@@ -16,53 +16,48 @@ export interface IcreateConnectionOptions {
 }
 
 export interface IConnectionCallbacks {
-  defaults?: any;
   data: (data: IConnectionValue) => any;
   error: (error: IConnectionError) => any;
   loading: (loading: boolean) => any;
 }
 
-export type IConnection = (
-  { data, error }: IConnectionCallbacks
-) => [((value?: any) => any), (() => any), ...Array<(() => any)>];
-
-export const createConnection = <T>({
-  handler,
-}: IcreateConnectionOptions): IConnection => {
-  let previous: any;
-  const dataDispatcher = createDispatcher<IConnectionValue>();
-  const errorDispatcher = createDispatcher<IConnectionError>();
-  const loadingDispatcher = createDispatcher<boolean>();
-  return ({ defaults, ...executors }) => {
-    const runner = (value: T) => {
-      loadingDispatcher.dispatch(true);
-      handler(value)
-        .then(data => {
-          dataDispatcher.dispatch(data);
-          loadingDispatcher.dispatch(false);
-        })
-        .catch(error => {
-          errorDispatcher.dispatch({
-            thrown: error,
-            message: error.message,
+export const createConnection = <T>({ handler }: IcreateConnectionOptions) => {
+  return ({ defaults }: { defaults: IConnectionValue }) => {
+    let previous: any;
+    const dataDispatcher = createDispatcher<IConnectionValue>();
+    const errorDispatcher = createDispatcher<IConnectionError>();
+    const loadingDispatcher = createDispatcher<boolean>();
+    return ({ ...executors }: IConnectionCallbacks) => {
+      const runner = (value: T) => {
+        loadingDispatcher.dispatch(true);
+        handler(value)
+          .then(data => {
+            dataDispatcher.dispatch(data);
+            loadingDispatcher.dispatch(false);
+          })
+          .catch(error => {
+            errorDispatcher.dispatch({
+              thrown: error,
+              message: error.message,
+            });
+            loadingDispatcher.dispatch(false);
           });
-          loadingDispatcher.dispatch(false);
-        });
-    };
-    const execute = (value?: T) => {
-      previous = {
-        ...(defaults || {}),
-        ...(value || {}),
       };
-      runner(previous);
+      const execute = (value?: T) => {
+        previous = {
+          ...(defaults || {}),
+          ...(value || {}),
+        };
+        runner(previous);
+      };
+      const refresh = () => runner(previous);
+      return [
+        execute,
+        refresh,
+        dataDispatcher.watch(executors.data),
+        errorDispatcher.watch(executors.error),
+        loadingDispatcher.watch(executors.loading),
+      ];
     };
-    const refresh = () => runner(previous);
-    return [
-      execute,
-      refresh,
-      dataDispatcher.watch(executors.data),
-      errorDispatcher.watch(executors.error),
-      loadingDispatcher.watch(executors.loading),
-    ];
   };
 };

@@ -654,6 +654,7 @@ export const queryConnection = createConnection<IQueryConnection>({
 ```
 
 ```tsx
+import gql from 'graphql-tag';
 import { useConnection, Frame, Out } from 'nuggets';
 import { queryConnection } from './connections';
 
@@ -664,19 +665,22 @@ interface IGetUser {
   };
 }
 
-const query = `
-  query GetUser($id: String!) {
-    user(id: $id) {
-      id
-      name
-    }
+const GetUser = queryConnection({
+  defaults: {
+    query: gql`
+      query GetUser($id: String!) {
+        user(id: $id) {
+          id
+          name
+        }
+      }
+    `,
   }
-`;
+});
 
 export default ({ id }) => {
   const { value, error, execute, refresh } = useConnection<IGetUser>({
-    connection: queryConnection,
-    defaults: { query }
+    connection: GetUser,
   });
   useEffect(() => execute({ variables: { id } }));
   return (
