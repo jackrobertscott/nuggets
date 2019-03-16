@@ -4,7 +4,7 @@ import React, {
   useState,
   useEffect,
 } from 'react';
-import { Frame, Layer, useToggle, Out } from 'nuggets';
+import { Frame, Layer, useToggle, Text } from 'nuggets';
 import colors from '../colors';
 
 export interface IItemProps {
@@ -63,7 +63,7 @@ export const Item: FunctionComponent<IItemProps> = ({ title, active }) => {
             width: 160,
           }}
         >
-          <Out
+          <Text
             value={title}
             styles={{
               color: colors.white,
