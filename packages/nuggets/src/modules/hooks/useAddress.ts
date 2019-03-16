@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { IOptional } from '../../utils/types';
 import history from '../../utils/history';
+import { matchPath, IDigestOptions } from '../../utils/path';
 
 export interface IHistoryState {
   pathname: string;
@@ -16,6 +17,7 @@ export type IuseAddressProps = IHistoryState & {
   shift: (entries: number) => any;
   backward: () => any;
   forward: () => any;
+  match: (pathname: string, options?: IDigestOptions) => boolean;
 };
 
 export const useAddress = (
@@ -36,11 +38,19 @@ export const useAddress = (
   const shift = (entries: number) => history.go(entries);
   const forward = () => history.goForward();
   const backward = () => history.goForward();
+  const match = (pathname: string, digestOptions?: IDigestOptions) => {
+    return matchPath({
+      currentPath: value.pathname,
+      routePath: pathname,
+      options: digestOptions,
+    });
+  };
   return {
     change,
     shift,
     forward,
     backward,
+    match,
     ...value,
   };
 };
