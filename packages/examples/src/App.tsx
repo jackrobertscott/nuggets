@@ -1,5 +1,5 @@
 import React from 'react';
-import { Layer, Frame, Out, In } from 'nuggets';
+import { Layer, Text } from 'nuggets';
 import { Center } from './components/Center';
 import { Box } from './components/Box';
 import { Sidebar } from './components/Sidebar';
@@ -14,12 +14,12 @@ export default () => (
     <Center>
       <List>
         <Box hover={true} styles={{ size: 100, space: 10 }}>
-          <In
+          <Text
             value={'This is a small piece of text that has a lot of words...'}
           />
         </Box>
         <Box hover={true} shade="electric" styles={{ size: 100, space: 10 }}>
-          <Out
+          <Text
             value={'This is a small piece of text that has a lot of words...'}
           />
         </Box>
