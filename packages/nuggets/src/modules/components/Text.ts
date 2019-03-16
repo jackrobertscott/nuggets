@@ -13,7 +13,6 @@ export type ITextProps = INuggieProps<ITextsDigester> & {
 };
 
 export const Text: FunctionComponent<ITextProps> = ({
-  children,
   placeholder,
   styles = {},
   editable = false,
@@ -39,15 +38,24 @@ export const Text: FunctionComponent<ITextProps> = ({
       display: 'none',
     },
   };
-  return createNuggie({
-    type: editable ? 'textarea' : 'span',
-    children,
+  const features = {
     precss,
-    extras: { value, placeholder },
-    events: { change },
     emote: createCSSFromProps(styles, digestTexts),
     ...options,
-  });
+  };
+  if (editable) {
+    Object.assign(features, {
+      type: 'textarea',
+      extras: { value, placeholder },
+      events: { change },
+    });
+  } else {
+    Object.assign(features, {
+      type: 'span',
+      children: value,
+    });
+  }
+  return createNuggie(features);
 };
 
 Text.displayName = 'Text';
