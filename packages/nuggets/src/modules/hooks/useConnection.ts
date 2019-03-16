@@ -15,7 +15,13 @@ export interface IuseConnectionOptions {
   defaults: IConnectionDefaults;
 }
 
-export interface IuseConnectionProps {}
+export interface IuseConnectionProps {
+  value: IConnectionValue;
+  error?: IConnectionError;
+  loading: boolean;
+  execute: (value?: any) => any;
+  refresh: () => any;
+}
 
 export const useConnection: FunctionHook<
   IuseConnectionOptions,

@@ -26,7 +26,7 @@ export type IConnection = (
   { data, error }: IConnectionCallbacks
 ) => [((value?: any) => any), (() => any), ...Array<(() => any)>];
 
-export const createConnection = ({
+export const createConnection = <T>({
   handler,
 }: IcreateConnectionOptions): IConnection => {
   let previous: any;
@@ -34,7 +34,7 @@ export const createConnection = ({
   const errorDispatcher = createDispatcher<IConnectionError>();
   const loadingDispatcher = createDispatcher<boolean>();
   return ({ defaults, ...executors }) => {
-    const runner = (value: any) => {
+    const runner = (value: T) => {
       loadingDispatcher.dispatch(true);
       handler(value)
         .then(data => {
@@ -49,7 +49,7 @@ export const createConnection = ({
           loadingDispatcher.dispatch(false);
         });
     };
-    const execute = (value?: any) => {
+    const execute = (value?: T) => {
       previous = {
         ...(defaults || {}),
         ...(value || {}),
