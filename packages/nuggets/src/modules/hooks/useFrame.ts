@@ -1,7 +1,6 @@
 import { useEffect, useState } from 'react';
 import { css as emotion } from '@emotion/core';
 import { StyleSheet } from '@emotion/sheet';
-import { FunctionHook } from '../../utils/types';
 import { createCSSFromProps } from '../../utils/styles';
 import { digestShape, IShapeDigester } from '../../styles/shape';
 
@@ -14,10 +13,7 @@ export interface IuseFrameProps {
   styles?: string;
 }
 
-export const useFrame: FunctionHook<
-  IuseFrameOptions,
-  IuseFrameProps
-> = options => {
+export const useFrame = (options: IuseFrameOptions): IuseFrameProps => {
   const [{ styles, name }, change] = useState<{
     name?: string;
     styles?: string;

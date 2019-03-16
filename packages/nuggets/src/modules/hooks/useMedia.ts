@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { throttle } from '../../utils/helpers';
-import { FunctionHook, IOptional } from '../../utils/types';
+import { IOptional } from '../../utils/types';
 
 export type IuseMediaOptions = IOptional<{
   throttle?: number;
@@ -11,9 +11,7 @@ export interface IuseMediaProps {
   height: number;
 }
 
-export const useMedia: FunctionHook<IuseMediaOptions, IuseMediaProps> = (
-  options = {}
-) => {
+export const useMedia = (options: IuseMediaOptions = {}): IuseMediaProps => {
   const setter = () => ({
     width: window.innerWidth,
     height: window.innerHeight,

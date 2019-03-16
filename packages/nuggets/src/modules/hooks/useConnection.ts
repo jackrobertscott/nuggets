@@ -1,5 +1,4 @@
 import { useState, useEffect } from 'react';
-import { FunctionHook } from '../../utils/types';
 import {
   IConnection,
   IConnectionValue,
@@ -15,19 +14,18 @@ export interface IuseConnectionOptions {
   defaults: IConnectionDefaults;
 }
 
-export interface IuseConnectionProps {
-  value: IConnectionValue;
+export interface IuseConnectionProps<T> {
+  value: T;
   error?: IConnectionError;
   loading: boolean;
   execute: (value?: any) => any;
   refresh: () => any;
 }
 
-export const useConnection: FunctionHook<
-  IuseConnectionOptions,
-  IuseConnectionProps
-> = options => {
-  const [value, update] = useState<IConnectionValue>({});
+export const useConnection = <T extends IConnectionValue>(
+  options: IuseConnectionOptions
+): IuseConnectionProps<T> => {
+  const [value, update] = useState<any>({});
   const [error, updateError] = useState<IConnectionError | undefined>(
     undefined
   );

@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { FunctionHook, IOptional } from '../../utils/types';
+import { IOptional } from '../../utils/types';
 import history from '../../utils/history';
 
 export interface IHistoryState {
@@ -18,9 +18,9 @@ export type IuseAddressProps = IHistoryState & {
   forward: () => any;
 };
 
-export const useAddress: FunctionHook<IuseAddressOptions, IuseAddressProps> = (
-  options = {}
-) => {
+export const useAddress = (
+  options: IuseAddressOptions = {}
+): IuseAddressProps => {
   const [value, update] = useState<IHistoryState>({
     pathname: history.location.pathname,
     search: history.location.search,

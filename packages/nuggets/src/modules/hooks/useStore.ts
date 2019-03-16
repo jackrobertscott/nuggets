@@ -1,5 +1,4 @@
 import { useState, useEffect } from 'react';
-import { FunctionHook } from '../../utils/types';
 import { IStore, IStoreValue } from '../helpers/createStore';
 
 export interface IuseStoreOptions {
@@ -8,10 +7,7 @@ export interface IuseStoreOptions {
 
 export interface IuseStoreProps {}
 
-export const useStore: FunctionHook<
-  IuseStoreOptions,
-  IuseStoreProps
-> = options => {
+export const useStore = (options: IuseStoreOptions): IuseStoreProps => {
   const [value, update] = useState<IStoreValue>({});
   const [change, unwatch] = options.store((data: IStoreValue) => {
     update(data);

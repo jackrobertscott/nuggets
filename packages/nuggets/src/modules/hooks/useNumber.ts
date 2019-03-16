@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { FunctionHook, IOptional } from '../../utils/types';
+import { IOptional } from '../../utils/types';
 
 export type IuseNumberOptions = IOptional<{
   value?: any;
@@ -12,9 +12,7 @@ export interface IuseNumberProps {
   change: (value: any) => any;
 }
 
-export const useNumber: FunctionHook<IuseNumberOptions, IuseNumberProps> = (
-  options = {}
-) => {
+export const useNumber = (options: IuseNumberOptions = {}): IuseNumberProps => {
   const [value, update] = useState<number>(options.value || 0);
   useEffect(() => change(options.value), [options.value]);
   const change = (next?: any) => {

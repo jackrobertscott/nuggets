@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { FunctionHook, IOptional } from '../../utils/types';
+import { IOptional } from '../../utils/types';
 
 export interface IuseDatetimeOperate {
   value: number | string;
@@ -25,10 +25,9 @@ export interface IuseDatetimeProps {
   };
 }
 
-export const useDatetime: FunctionHook<
-  IuseDatetimeOptions,
-  IuseDatetimeProps
-> = (options = {}) => {
+export const useDatetime = (
+  options: IuseDatetimeOptions = {}
+): IuseDatetimeProps => {
   const [value, update] = useState<Date>(options.value || new Date());
   useEffect(() => change(options.value), [options.value]);
   const change = (next?: Date) => {

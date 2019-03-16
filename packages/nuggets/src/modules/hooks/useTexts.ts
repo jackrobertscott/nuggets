@@ -1,7 +1,6 @@
 import { useEffect, useState } from 'react';
 import { css as emotion } from '@emotion/core';
 import { StyleSheet } from '@emotion/sheet';
-import { FunctionHook } from '../../utils/types';
 import { createCSSFromProps } from '../../utils/styles';
 import { digestTexts, ITextsDigester } from '../../styles/texts';
 
@@ -14,10 +13,7 @@ export interface IuseTextsProps {
   styles?: string;
 }
 
-export const useTexts: FunctionHook<
-  IuseTextsOptions,
-  IuseTextsProps
-> = options => {
+export const useTexts = (options: IuseTextsOptions): IuseTextsProps => {
   const [{ styles, name }, change] = useState<{
     name?: string;
     styles?: string;
