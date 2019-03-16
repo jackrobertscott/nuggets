@@ -1,15 +1,15 @@
 /**
  * Components.
  */
-export * from './modules/components/In';
-export * from './modules/components/Layer';
-export * from './modules/components/Out';
 export * from './modules/components/Frame';
+export * from './modules/components/Layer';
+export * from './modules/components/Text';
 
 /**
  * Helpers.
  */
 export * from './modules/helpers/createConnection';
+export * from './modules/helpers/createDispatcher';
 export * from './modules/helpers/createStore';
 
 /**

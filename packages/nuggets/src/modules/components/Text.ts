@@ -4,17 +4,19 @@ import { createNuggie, INuggieProps } from '../../utils/dom';
 import { digestTexts, ITextsDigester } from '../../styles/texts';
 import { createCSSFromProps } from '../../utils/styles';
 
-export type IInProps = INuggieProps<ITextsDigester> & {
+export type ITextProps = INuggieProps<ITextsDigester> & {
   value?: string | number;
   change?: IEventsExecuter<string | number>;
   placeholder?: string | number;
+  editable?: boolean;
   scrollable?: boolean;
 };
 
-export const In: FunctionComponent<IInProps> = ({
+export const Text: FunctionComponent<ITextProps> = ({
   children,
   placeholder,
   styles = {},
+  editable = false,
   scrollable = true,
   ...options
 }) => {
@@ -38,7 +40,7 @@ export const In: FunctionComponent<IInProps> = ({
     },
   };
   return createNuggie({
-    type: 'textarea',
+    type: editable ? 'textarea' : 'span',
     children,
     precss,
     extras: { value, placeholder },
@@ -48,4 +50,4 @@ export const In: FunctionComponent<IInProps> = ({
   });
 };
 
-In.displayName = 'In';
+Text.displayName = 'Text';
