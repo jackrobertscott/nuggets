@@ -15,7 +15,7 @@ Until now...
 ```tsx
 import { Frame, Out, useMedia } from 'nuggets';
 
-export default ({ textColor = 'blue', clickButton }) => {
+export default ({ mainColor = 'blue', clickButton }) => {
   const { width } = useMedia();
   return (
     <Frame>
@@ -23,10 +23,9 @@ export default ({ textColor = 'blue', clickButton }) => {
         events={{ click: clickButton }}
         styles={{
           color: width > 500 ? 'green' : 'lime',
-          texts: {
-            color: textColor,
+          border: {
+            color: mainColor,
             hover: { color: 'red' },
-            press: { color: 'yellow' },
           }
         }}
       >
@@ -115,12 +114,6 @@ export default ({ children, color = 'white' }) => (
           down: 3,
         },
       },
-      texts: {
-        color: 'black',
-        border: { color: 'green' },
-        hover: { color: 'yellow' },
-        press: { color: 'black' },
-      },
       transform: {
         rotate: {
           x: 30,
@@ -134,34 +127,18 @@ export default ({ children, color = 'white' }) => (
 );
 ```
 
-### `<Out />`
+### `<Text />`
 
-This component is used to render and adjust text.
+This component is used to render and record text.
 
 ```tsx
 import { Out } from 'nuggets';
 
-export default ({ color = 'black' }) => (
-  <Out
+export default ({ color = 'black', change }) => (
+  <Text
     value={'Hello nuggets!'}
-    adjust={value => value.toUpperCase()}
-  />
-);
-```
-
-### `<In />`
-
-This is a simple interface for recording user keyboard input. Styles may be applied to the text created by this component (similar to `<Out />`).
-
-```tsx
-import { In } from 'nuggets';
-
-export default ({ value, change }) => (
-  <In
-    wrap={true}
-    value={value}
+    editable={true}
     change={change}
-    adjust={value => stringToLowerCase(value)}
   />
 );
 ```
@@ -215,7 +192,7 @@ export default () => {
     <Frame>
       <Frame
         styles={{
-          texts: { color: 'blue' }
+          color: 'blue',
         }}
       >
         <Out value={`Pathname and search: ${pathname} ${search}`} />
@@ -278,9 +255,6 @@ export default () => {
     shape: {
       height: 100,
       color: 'green',
-    },
-    texts: {
-      color: 'blue',
     },
   });
   return <Editor className={name} />;
@@ -685,7 +659,7 @@ export default ({ id }) => {
   useEffect(() => execute({ variables: { id } }));
   return (
     <Frame>
-      <Frame styles={{ texts: { color: 'blue' } }}>
+      <Frame styles={{ color: 'blue' }}>
         <Out value={`User name and id: ${value.user.name} ${value.user.id}`} />
       </Frame>
       <ErrorHandler error={error} />

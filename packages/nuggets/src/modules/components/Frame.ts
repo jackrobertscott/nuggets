@@ -20,14 +20,10 @@ export const Frame: FunctionComponent<IFrameProps> = ({
     display: 'flex',
     position: 'relative',
   };
-  const emote = {
-    ...createCSSFromProps(styles, digestShape),
-    ...createCSSFromProps(styles.texts || {}, digestTexts),
-  };
   return createNuggie({
     children,
     precss,
-    emote,
+    emote: createCSSFromProps(styles, digestShape),
     ...options,
   });
 };
