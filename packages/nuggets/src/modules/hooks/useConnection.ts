@@ -11,7 +11,6 @@ export interface IConnectionDefaults {
 
 export interface IuseConnectionOptions {
   connection: IConnection;
-  defaults: IConnectionDefaults;
 }
 
 export interface IuseConnectionProps<T> {
@@ -31,7 +30,6 @@ export const useConnection = <T extends IConnectionValue>(
   );
   const [loading, updateLoading] = useState<boolean>(false);
   const [execute, refresh, ...unwatch] = options.connection({
-    defaults: options.defaults,
     data: update,
     error: updateError,
     loading: updateLoading,

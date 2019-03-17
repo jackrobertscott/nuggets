@@ -21,8 +21,12 @@ export interface IConnectionCallbacks {
   loading: (loading: boolean) => any;
 }
 
+export type IConnection = (
+  { ...executors }: IConnectionCallbacks
+) => [(value?: any) => void, () => void, ...Array<(() => any)>];
+
 export const createConnection = <T>({ handler }: IcreateConnectionOptions) => {
-  return ({ defaults }: { defaults: IConnectionValue }) => {
+  return ({ defaults }: { defaults: IConnectionValue }): IConnection => {
     let previous: any;
     const dataDispatcher = createDispatcher<IConnectionValue>();
     const errorDispatcher = createDispatcher<IConnectionError>();
