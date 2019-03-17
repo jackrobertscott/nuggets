@@ -26,7 +26,7 @@ export type IConnection = (
 ) => [(value?: any) => void, () => void, ...Array<(() => any)>];
 
 export const createConnection = <T>({ handler }: IcreateConnectionOptions) => {
-  return ({ defaults }: { defaults: IConnectionValue }): IConnection => {
+  return (defaults: IConnectionValue): IConnection => {
     let previous: any;
     const dataDispatcher = createDispatcher<IConnectionValue>();
     const errorDispatcher = createDispatcher<IConnectionError>();
