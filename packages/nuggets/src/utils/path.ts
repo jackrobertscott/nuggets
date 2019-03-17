@@ -3,7 +3,7 @@ import * as pathToRegexp from 'path-to-regexp';
 export interface IDigestOptions {
   sensitive?: boolean;
   strict?: boolean;
-  end?: boolean;
+  exact?: boolean;
   start?: boolean;
 }
 
@@ -17,7 +17,10 @@ export const digestRoutePath = ({
   options = {},
 }: IDigestRoutePathOptions): { keys: any[]; regexp: RegExp } => {
   const keys: any[] = [];
-  const regexp: RegExp = pathToRegexp(routePath, keys, options);
+  const regexp: RegExp = pathToRegexp(routePath, keys, {
+    ...options,
+    end: options.exact,
+  });
   return {
     keys,
     regexp,
