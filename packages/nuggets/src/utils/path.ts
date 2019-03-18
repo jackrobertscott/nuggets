@@ -19,7 +19,7 @@ export const digestRoutePath = ({
   const keys: any[] = [];
   const regexp: RegExp = pathToRegexp(routePath, keys, {
     ...options,
-    end: options.exact,
+    end: !!options.exact,
   });
   return {
     keys,
