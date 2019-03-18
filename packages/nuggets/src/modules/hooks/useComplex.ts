@@ -12,14 +12,14 @@ export type IuseComplexOptions = IOptional<{
 
 export interface IuseComplexProps {
   value?: IComplexValue;
-  change?: (value: IComplexValue) => any;
-  operate?: (
+  change: (value: IComplexValue) => any;
+  operate: (
     name: string
   ) => {
     value: any;
     change: (data: any) => void;
   };
-  override?: (next?: any) => void;
+  override: (next?: any) => void;
 }
 
 export const useComplex = (
