@@ -73,6 +73,7 @@ export class Connection<E, T extends IConnectionValue> {
         message: error.message,
       });
       this.loadingDispatcher.dispatch(false);
+      throw error;
     }
   }
 }
