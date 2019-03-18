@@ -9,14 +9,16 @@ export type ITextProps = INuggieProps<ITextsDigester> & {
   change?: IEventsExecuter<string | number>;
   placeholder?: string | number;
   editable?: boolean;
-  scrollable?: boolean;
+  multiline?: boolean;
+  type?: string;
 };
 
 export const Text: FunctionComponent<ITextProps> = ({
-  placeholder,
   styles = {},
+  placeholder,
   editable = false,
-  scrollable = true,
+  multiline = false,
+  type,
   ...options
 }) => {
   const [value, update] = useState<string>(String(options.value || ''));
@@ -30,9 +32,7 @@ export const Text: FunctionComponent<ITextProps> = ({
   };
   const precss = {
     width: '100%',
-    height: '100%',
     position: 'relative',
-    overflow: scrollable ? 'auto' : 'hidden',
     resize: 'none',
     '&::-webkit-scrollbar': {
       display: 'none',
@@ -45,8 +45,8 @@ export const Text: FunctionComponent<ITextProps> = ({
   };
   if (editable) {
     Object.assign(features, {
-      type: 'textarea',
-      extras: { value, placeholder },
+      type: multiline ? 'textarea' : 'input',
+      extras: { value, placeholder, type },
       events: { change },
     });
   } else {

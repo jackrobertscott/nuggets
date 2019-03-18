@@ -23,7 +23,7 @@ export interface IConnectionCallbacks {
 
 export type IConnection = (
   { ...executors }: IConnectionCallbacks
-) => [(value?: any) => void, () => void, ...Array<(() => any)>];
+) => [(value?: any) => Promise<any>, () => Promise<any>, ...Array<(() => any)>];
 
 export const createConnection = <T>({ handler }: IcreateConnectionOptions) => {
   return (defaults: IConnectionValue): IConnection => {
@@ -34,10 +34,11 @@ export const createConnection = <T>({ handler }: IcreateConnectionOptions) => {
     return ({ ...executors }: IConnectionCallbacks) => {
       const runner = (value: T) => {
         loadingDispatcher.dispatch(true);
-        handler(value)
+        return handler(value)
           .then(data => {
             dataDispatcher.dispatch(data);
             loadingDispatcher.dispatch(false);
+            return data;
           })
           .catch(error => {
             errorDispatcher.dispatch({
@@ -52,7 +53,7 @@ export const createConnection = <T>({ handler }: IcreateConnectionOptions) => {
           ...(defaults || {}),
           ...(value || {}),
         };
-        runner(previous);
+        return runner(previous);
       };
       const refresh = () => runner(previous);
       return [
