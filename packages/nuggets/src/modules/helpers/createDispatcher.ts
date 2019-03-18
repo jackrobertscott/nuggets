@@ -1,24 +1,30 @@
-export type IWatcher<T> = (value: T) => any;
+export type IDispatcherWatcher<T> = (value: T) => any;
 
-export const createDispatcher = <T>() => {
-  const watchers = new Map<number, IWatcher<T>>();
-  const watch = (watcher: IWatcher<T>) => {
+export class Dispatcher<T> {
+  private watchers: Map<number, IDispatcherWatcher<T>>;
+
+  constructor() {
+    this.watchers = new Map<number, IDispatcherWatcher<T>>();
+  }
+
+  public watch(watcher: IDispatcherWatcher<T>): () => void {
     let id: number;
     do {
       id = Math.random();
-    } while (watchers.has(id));
-    watchers.set(id, watcher);
+    } while (this.watchers.has(id));
+    this.watchers.set(id, watcher);
     return () => {
-      if (watchers.has(id)) {
-        watchers.delete(id);
+      if (this.watchers.has(id)) {
+        this.watchers.delete(id);
       }
     };
-  };
-  const dispatch = (value: T) => {
-    watchers.forEach(watcher => watcher(value));
-  };
-  return {
-    watch,
-    dispatch,
-  };
+  }
+
+  public dispatch(value: T): void {
+    this.watchers.forEach(watcher => watcher(value));
+  }
+}
+
+export const createDispatcher = <T>(): Dispatcher<T> => {
+  return new Dispatcher<T>();
 };

@@ -1,18 +1,17 @@
-import { createDispatcher } from './createDispatcher';
+import { createDispatcher, Dispatcher } from './createDispatcher';
 
 export interface IConnectionValue {
   [name: string]: any;
 }
 
-export type IConnectionError =
-  | {
-      thrown?: Error;
-      message?: string;
-    }
-  | undefined;
+export interface IConnectionError {
+  message?: string;
+  thrown?: Error;
+}
 
-export interface IcreateConnectionOptions {
-  handler: (value: IConnectionValue) => Promise<IConnectionValue>;
+export interface IConnectionOptions<E> {
+  handler: (value: any) => Promise<any>;
+  defaults: E;
 }
 
 export interface IConnectionCallbacks {
@@ -21,48 +20,69 @@ export interface IConnectionCallbacks {
   loading: (loading: boolean) => any;
 }
 
-export type IConnection = (
-  { ...executors }: IConnectionCallbacks
-) => [(value?: any) => Promise<any>, () => Promise<any>, ...Array<(() => any)>];
+export class Connection<E, T extends IConnectionValue> {
+  private handler: (value: E) => Promise<T>;
+  private defaults: E;
+  private previous: any;
+  private dataDispatcher: Dispatcher<T>;
+  private errorDispatcher: Dispatcher<IConnectionError>;
+  private loadingDispatcher: Dispatcher<boolean>;
 
-export const createConnection = <T>({ handler }: IcreateConnectionOptions) => {
-  return (defaults: IConnectionValue): IConnection => {
-    let previous: any;
-    const dataDispatcher = createDispatcher<IConnectionValue>();
-    const errorDispatcher = createDispatcher<IConnectionError>();
-    const loadingDispatcher = createDispatcher<boolean>();
-    return ({ ...executors }: IConnectionCallbacks) => {
-      const runner = (value: T) => {
-        loadingDispatcher.dispatch(true);
-        return handler(value)
-          .then(data => {
-            dataDispatcher.dispatch(data);
-            loadingDispatcher.dispatch(false);
-            return data;
-          })
-          .catch(error => {
-            errorDispatcher.dispatch({
-              thrown: error,
-              message: error.message,
-            });
-            loadingDispatcher.dispatch(false);
-          });
-      };
-      const execute = (value?: T) => {
-        previous = {
-          ...(defaults || {}),
-          ...(value || {}),
-        };
-        return runner(previous);
-      };
-      const refresh = () => runner(previous);
-      return [
-        execute,
-        refresh,
-        dataDispatcher.watch(executors.data),
-        errorDispatcher.watch(executors.error),
-        loadingDispatcher.watch(executors.loading),
-      ];
+  constructor({ handler, defaults }: IConnectionOptions<E>) {
+    this.handler = handler;
+    this.defaults = defaults;
+    this.previous = {};
+    this.dataDispatcher = createDispatcher<T>();
+    this.errorDispatcher = createDispatcher<IConnectionError>();
+    this.loadingDispatcher = createDispatcher<boolean>();
+  }
+
+  public execute(value?: T): Promise<void | T> {
+    this.previous = {
+      ...this.defaults,
+      ...(value || {}),
     };
+    return this.dooer(this.previous);
+  }
+
+  public refresh(): Promise<void | T> {
+    return this.dooer(this.previous);
+  }
+
+  public attach({ ...executors }: IConnectionCallbacks): () => void {
+    const tasks = [
+      this.dataDispatcher.watch(executors.data),
+      this.errorDispatcher.watch(executors.error),
+      this.loadingDispatcher.watch(executors.loading),
+    ];
+    return () => {
+      tasks.forEach(unwatch => unwatch());
+    };
+  }
+
+  public async dooer(value: E): Promise<void | T> {
+    this.loadingDispatcher.dispatch(true);
+    try {
+      const data = await this.handler(value);
+      this.dataDispatcher.dispatch(data);
+      this.loadingDispatcher.dispatch(false);
+      return data;
+    } catch (error) {
+      this.errorDispatcher.dispatch({
+        thrown: error,
+        message: error.message,
+      });
+      this.loadingDispatcher.dispatch(false);
+    }
+  }
+}
+
+export const createConnection = <E>({
+  handler,
+}: {
+  handler: (value: E) => Promise<any>;
+}) => {
+  return <T>(defaults: E): Connection<E, any> => {
+    return new Connection<E, T>({ handler, defaults });
   };
 };
