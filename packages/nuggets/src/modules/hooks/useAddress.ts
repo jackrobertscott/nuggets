@@ -17,7 +17,7 @@ export type IuseAddressProps = IHistoryState & {
   shift: (entries: number) => any;
   backward: () => any;
   forward: () => any;
-  match: (pathname: string, options?: IDigestOptions) => boolean;
+  match: (options: { path: string } & IDigestOptions) => boolean;
 };
 
 export const useAddress = (
@@ -38,10 +38,13 @@ export const useAddress = (
   const shift = (entries: number) => history.go(entries);
   const forward = () => history.goForward();
   const backward = () => history.goForward();
-  const match = (pathname: string, digestOptions?: IDigestOptions) => {
+  const match = ({
+    path,
+    ...digestOptions
+  }: { path: string } & IDigestOptions) => {
     return matchPath({
       currentPath: value.pathname,
-      routePath: pathname,
+      routePath: path,
       options: digestOptions,
     });
   };
