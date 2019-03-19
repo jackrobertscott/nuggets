@@ -286,24 +286,24 @@ export const digestShape: IDigester<IShapeDigester> = ({
       css.padding = formatUnits(space);
     } else {
       const { top, right, bottom, left, sides, verts } = space;
-      if (verts) {
+      if (verts !== undefined) {
         css.paddingTop = formatUnits(verts);
         css.paddingBottom = formatUnits(verts);
       }
-      if (sides) {
+      if (sides !== undefined) {
         css.paddingRight = formatUnits(sides);
         css.paddingLeft = formatUnits(sides);
       }
-      if (top) {
+      if (top !== undefined) {
         css.paddingTop = formatUnits(top);
       }
-      if (right) {
+      if (right !== undefined) {
         css.paddingRight = formatUnits(right);
       }
-      if (bottom) {
+      if (bottom !== undefined) {
         css.paddingBottom = formatUnits(bottom);
       }
-      if (left) {
+      if (left !== undefined) {
         css.paddingLeft = formatUnits(left);
       }
     }
@@ -388,24 +388,24 @@ export const digestShape: IDigester<IShapeDigester> = ({
       css.left = formatUnits(absolute);
     } else {
       const { top, right, bottom, left, sides, verts } = absolute;
-      if (verts) {
+      if (verts !== undefined) {
         css.top = formatUnits(verts);
         css.bottom = formatUnits(verts);
       }
-      if (sides) {
+      if (sides !== undefined) {
         css.right = formatUnits(sides);
         css.left = formatUnits(sides);
       }
-      if (top) {
+      if (top !== undefined) {
         css.top = formatUnits(top);
       }
-      if (right) {
+      if (right !== undefined) {
         css.right = formatUnits(right);
       }
-      if (bottom) {
+      if (bottom !== undefined) {
         css.bottom = formatUnits(bottom);
       }
-      if (left) {
+      if (left !== undefined) {
         css.left = formatUnits(left);
       }
     }
