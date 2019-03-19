@@ -2,7 +2,6 @@ import {
   ICSS,
   IDigester,
   ISides,
-  ISidesAndDiagonals,
   IUnit,
   IDirections,
   IDiagonals,
@@ -72,6 +71,7 @@ export interface IShapeDigester {
   align?: 'start' | 'end' | 'center' | 'stretch';
   space?: IUnit | ISpaceOptions;
   absolute?: IUnit | ISpaceOptions;
+  zindex?: number;
   between?: IUnit;
   circle?: boolean;
   size?: IUnit;
@@ -100,6 +100,7 @@ export const digestShape: IDigester<IShapeDigester> = ({
   align,
   space,
   absolute,
+  zindex,
   circle,
   size,
   height,
@@ -307,6 +308,9 @@ export const digestShape: IDigester<IShapeDigester> = ({
         css.paddingLeft = formatUnits(left);
       }
     }
+  }
+  if (zindex !== undefined) {
+    css.zIndex = zindex;
   }
   if (circle === true) {
     css.borderRadius = '50%';
