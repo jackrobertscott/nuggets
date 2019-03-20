@@ -22,7 +22,8 @@
     "prepublishOnly": "cp ../../README.md .",
     "postpublish": "rm -f README.md",
     "clean": "rm -rf lib",
-    "compile": "tsc"
+    "compile": "tsc",
+    "connect": "npm link ../../../astronauts/node_modules/react && npm link ../../../astronauts/node_modules/react-dom"
   },
   "devDependencies": {
     "@types/code": "^4.0.5",
