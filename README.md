@@ -84,7 +84,7 @@ export default () => (
 );
 ```
 
-#### `<Layer />` Properties
+#### Properties
 
 This component needs to attach to an element in the DOM. This is similar to how you would attach your React app to an element such as `<div id="root"></div>`. You can attach the layer to a DOM element with either a node or an id:
 
@@ -129,7 +129,7 @@ export default ({ children, color = 'white' }) => (
 );
 ```
 
-#### `<Frame />` Properties
+#### Properties
 
 - `events?`: this property should contain all HTML element events.
 
@@ -187,7 +187,7 @@ export default ({ color = 'black', change }) => (
 );
 ```
 
-#### `<Text />` Properties
+#### Properties
 
 This element shares the same convention for events and styles as the `<Frame />` component with some differences in the styles which are available.
 
@@ -239,7 +239,7 @@ export default () => {
 
 #### `const { ...properties } = useMedia();`
 
-Properties
+##### Properties
 
 - `width: number` the width of the window in pixels.
 - `height: number` the height of the window in pixels.
@@ -296,7 +296,7 @@ export default () => {
 
 #### `const { ...properties } = useAddress();`
 
-Properties
+##### Properties
 
 - `change(address: string)` change location to address.
 - `shift(entries: number)` move forward or backward in history.
@@ -328,7 +328,7 @@ export default () => {
 
 #### `const { ...properties } = useStyles({ ...styles });`
 
-Properties
+##### Properties
 
 - `css: object` an object containing css properties.
 - `name: string` the class name associated with the css properties.
@@ -362,6 +362,8 @@ export default ({ valueChange }) => {
 ```
 
 #### `const { ...properties } = useString({ ...options });`
+
+##### Properties
 
 Options
 
@@ -403,13 +405,13 @@ export default ({ valueChange }) => {
 
 #### `const { ...properties } = useNumber({ ...options });`
 
-Options
+##### Options
 
 - `value: number` use this value to update override the current value.
 - `change(value: number)` this is run when the value changes.
 - `adjust(value: number): number` perform adjustments on the value before updating.
 
-Properties
+##### Properties
 
 - `value: number` the current number value.
 - `change(value: number)` set a new number value.
@@ -442,12 +444,12 @@ export default ({ person, valueChange, savePerson }) => {
 
 #### `const { ...properties } = useComplex({ ...options });`
 
-Options
+##### Options
 
 - `value: object` use this value to update override the current value.
 - `change(value: object)` this is run when the value changes.
 
-Properties
+##### Properties
 
 - `value: object` the current number value.
 - `operate(property: string)` get operators for changing a sub property.
@@ -500,12 +502,12 @@ export default ({ value, change }) => {
 
 #### `const { ...properties } = useToggle({ ...options });`
 
-Options
+##### Options
 
 - `value: boolean` use this value to update override the current value.
 - `change(value: boolean)` this is run when the value changes.
 
-Properties
+##### Properties
 
 - `active: boolean` the current toggle state.
 - `on()` set the state to `true`.
@@ -543,12 +545,12 @@ export default ({ value, change }) => {
 
 #### `const { ...properties } = useDatetime({ ...options });`
 
-Options
+##### Options
 
 - `value: Date` use this value to update override the current value.
 - `change(value: Date)` this is run when the value changes.
 
-Properties
+##### Properties
 
 - `const { value, change } = date | month | year | ...etc;`
   - `date`
@@ -611,12 +613,12 @@ export default ({ value, change, listOfPeople = [] }) => {
 
 #### `const { ...properties } = useArray({ ...options });`
 
-Options
+##### Options
 
 - `value: any[]` use this value to update override the current value.
 - `change(value: any[])` this is run when the value changes.
 
-Properties
+##### Properties
 
 - `includes(value: any): boolean` detects whether an item is in the array.
 - `add(value: any)` add the item to the array.
@@ -660,11 +662,11 @@ export default () => {
 
 #### `const { ...properties } = useStore({ ...options });`
 
-Options
+##### Options
 
 - `store` a store - created using `createStore`.
 
-Properties
+##### Properties
 
 - `value: object` the value of the store.
 - `change(value: object)` patch the store with new values.
@@ -736,12 +738,12 @@ export default ({ id }) => {
 
 #### `const { ...properties } = useConnection({ ...options });`
 
-Options
+##### Options
 
 - `connection` a connection - created using `createConnection`.
 - `defaults: object` the default values passed to the connection.
 
-Properties
+##### Properties
 
 - `value: object` the latest value provided by the connection.
 - `error: object` an error caught by the connection.
