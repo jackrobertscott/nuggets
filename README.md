@@ -6,16 +6,16 @@ A collection of essential components which compose modern web experiences.
 
 ## Overview
 
-In 1980, physicist Tim Berners-Lee proposed a new markup language called HTML. Later, they brought out CSS3 in 1998. Both are powerful languages.
-
-However, since the creation of these libraries, our demands for functionality has increased and we have not seen a similar improvement in these technologies to meet this demand. A lot has been left to be desired.
-
-Until now...
+Nuggets is designed to be minimal so you can focus on your design rather than deciding which element tag should be used. It also takes all the advantages that JavaScript has to offer so that you can build more intricate styles.
 
 ```tsx
-import { Frame, Out, useMedia } from 'nuggets';
+import { Frame, Text, useMedia } from 'nuggets';
 
-export default ({ mainColor = 'blue', clickButton }) => {
+export default ({
+  contents = 'Hello world!',
+  mainColor = 'blue',
+  clickButton = () => console.log('clicked!'),
+}) => {
   const { width } = useMedia();
   return (
     <Frame>
@@ -29,14 +29,15 @@ export default ({ mainColor = 'blue', clickButton }) => {
           }
         }}
       >
-        <Out value={'Hello world!'} />
+        <Text
+          value={contents}
+          styles={{ color: 'black' }}
+        />
       </Frame>
       <Frame
         styles={{
-          shape: {
-            color: 'blue',
-            diameter: 100,
-          },
+          color: 'blue',
+          diameter: 100,
         }}
       />
     </Frame>
@@ -44,7 +45,7 @@ export default ({ mainColor = 'blue', clickButton }) => {
 };
 ```
 
-Nuggets helps you think less and build more.
+Think less, build more.
 
 ## Install
 
@@ -70,7 +71,7 @@ import { Layer, Frame, useMedia, useAddress } from 'nuggets';
 
 ### `<Layer />`
 
-The layer element prepares the browser window for a new level components. It fills the entire screen and acts similar layers which are use in design tools.
+The layer element prepares the browser window for a new level components. It covers the entire screen and is perfect for using with modals. The `<Layer />` component is similar to a "layer" used in design tools.
 
 ```tsx
 import { Layer } from 'nuggets';
@@ -82,6 +83,13 @@ export default () => (
   </Layer>
 );
 ```
+
+#### `<Layer />` Properties
+
+This component needs to attach to an element in the DOM. This is similar to how you would attach your React app to an element such as `<div id="root"></div>`. You can attach the layer to a DOM element with either a node or an id:
+
+- `node?`: a HTML element i.e. `document.getElementById('root')`.
+- `id?`: a string which contains the id of the an element i.e. `root`.
 
 ### `<Frame />`
 
@@ -96,35 +104,71 @@ export default ({ children, color = 'white' }) => (
       click: () => console.log('clicked!'),
     }}
     styles={{
-      frame: {
-        direction: 'down',
-        space: 30,
+      color,
+      height: 100,
+      width: 300,
+      direction: 'down',
+      space: 30,
+      borders: {
+        color: 'yellow',
+        sides: ['right'],
       },
-      shape: {
-        color,
-        height: 100,
-        width: 300,
-        borders: {
-          color: 'yellow',
-          sides: ['right'],
-        },
-        shade: {
-          color: 'black',
-          blur: 10,
-          down: 3,
-        },
+      shade: {
+        color: 'black',
+        blur: 10,
+        down: 3,
       },
-      transform: {
-        rotate: {
-          x: 30,
-          y: 90,
-        }
+      rotate: {
+        x: 30,
+        y: 90,
       }
     }}
   >
     {children}
   </Frame>
 );
+```
+
+#### `<Frame />` Properties
+
+- `events?`: this property should contain all HTML element events.
+
+The event names do not require the word "on" to prepend them i.e. "onClick" should be written as "click" and "onMouseLeave" becomes "mouseLeave".
+
+**Note:** the event callback will receive the value of the event as the first parameter and the event as the second parameter i.e. `click(value, event) {}`.
+
+- `styles?`: this is used to style the element.
+
+Nuggets styles do not match up directly to CSS. Instead, we use the power of JavaScript object to make it a little easier to write complicated styles.
+
+**Note:** Another thing you will notice is that "margin" is not a property; this is because margins are an anti-pattern and prevent the reuse of components. Instead, all spacing is determined by an elements parent which is far more composable.
+
+```ts
+color?: string;
+alpha?: number;
+gradient?: IGradientOptions;
+shade?: IShadeOptions;
+corners?: IUnit | ICornersOptions;
+borders?: IBordersOptions;
+direction?: IDirections;
+force?: 'start' | 'end' | 'center' | 'stretch' | 'between' | 'even';
+align?: 'start' | 'end' | 'center' | 'stretch';
+space?: IUnit | ISpaceOptions;
+absolute?: IUnit | ISpaceOptions;
+zindex?: number;
+between?: IUnit;
+circle?: boolean;
+size?: IUnit;
+width?: IUnit | ISizeOptions;
+height?: IUnit | ISizeOptions;
+grow?: boolean;
+collapse?: boolean;
+transition?: IUnit;
+cursor?: string;
+overflow?: string;
+rotate?: IUnit | ITransform3dOptions;
+scale?: number | ITransform3dOptions;
+translate?: IUnit | ITransform3dOptions;
 ```
 
 ### `<Text />`
@@ -141,6 +185,27 @@ export default ({ color = 'black', change }) => (
     change={change}
   />
 );
+```
+
+#### `<Text />` Properties
+
+This element shares the same convention for events and styles as the `<Frame />` component with some differences in the styles which are available.
+
+- `events?`: this property should contain all HTML element events.
+- `styles?`: this is used to style the element.
+
+```ts
+size?: number | string;
+color?: string;
+align?: 'left' | 'center' | 'right' | 'justify';
+family?: string;
+height?: number | string;
+italic?: boolean;
+divide?: number | string;
+transition?: number | string;
+decoration?: IDecorationOptions;
+thickness?: number;
+placeholder?: IPlaceholderOptions;
 ```
 
 ## Hooks
