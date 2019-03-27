@@ -141,7 +141,7 @@ The event names do not require the word "on" to prepend them i.e. "onClick" shou
 
 Nuggets styles do not match up directly to CSS. Instead, we use the power of JavaScript object to make it a little easier to write complicated styles.
 
-**Note:** Another thing you will notice is that "margin" is not a property; this is because margins are an anti-pattern and prevent the reuse of components. Instead, all spacing is determined by an elements parent which is far more composable.
+**Note:** another thing you will notice is that "margin" is not a property; this is because margins are an anti-pattern and prevent the reuse of components. Instead, all spacing is determined by an elements parent which is far more composable.
 
 ```ts
 color?: string;
