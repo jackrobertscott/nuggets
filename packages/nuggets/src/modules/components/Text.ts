@@ -15,6 +15,7 @@ export type ITextProps = INuggieProps<ITextsDigester> & {
 
 export const Text: FunctionComponent<ITextProps> = ({
   styles = {},
+  events = {},
   placeholder,
   editable = false,
   multiline = false,
@@ -48,12 +49,13 @@ export const Text: FunctionComponent<ITextProps> = ({
     Object.assign(features, {
       type: multiline ? 'textarea' : 'input',
       extras: { value, placeholder, type },
-      events: { change },
+      events: { change, ...events },
     });
   } else {
     Object.assign(features, {
       type: 'span',
       children: value,
+      events,
     });
   }
   return createNuggie(features);

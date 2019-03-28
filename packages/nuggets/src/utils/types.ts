@@ -18,7 +18,7 @@ export type IDiagonals = 'topRight' | 'topLeft' | 'bottomRight' | 'bottomLeft';
 
 export type ISidesAndDiagonals = ISides | IDiagonals;
 
-export type INonText = ReactElement<any> | number | boolean;
+export type INonText = ReactElement<any> | number | boolean | undefined;
 
 export type INonTextChildren = INonText | INonText[];
 
