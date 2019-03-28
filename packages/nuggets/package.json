@@ -23,7 +23,7 @@
     "postpublish": "rm -f README.md",
     "clean": "rm -rf lib",
     "compile": "tsc",
-    "connect": "npm link ../../../astronauts/node_modules/react && npm link ../../../astronauts/node_modules/react-dom"
+    "connect:widgets": "npm link ../../../widgets/node_modules/react && npm link ../../../widgets/node_modules/react-dom"
   },
   "devDependencies": {
     "@types/code": "^4.0.5",

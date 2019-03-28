@@ -31,7 +31,7 @@ export const Text: FunctionComponent<ITextProps> = ({
     }
   };
   const precss = {
-    width: '100%',
+    width: 'auto',
     position: 'relative',
     resize: 'none',
     '&::-webkit-scrollbar': {

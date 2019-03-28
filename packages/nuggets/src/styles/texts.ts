@@ -24,9 +24,10 @@ export interface ITextsDigester {
   italic?: boolean;
   divide?: number | string;
   transition?: number | string;
-  decoration?: IDecorationOptions;
+  decoration?: string | IDecorationOptions;
   thickness?: number;
   placeholder?: IPlaceholderOptions;
+  cursor?: string;
 }
 
 export const digestTexts: IDigester<ITextsDigester> = ({
@@ -41,6 +42,7 @@ export const digestTexts: IDigester<ITextsDigester> = ({
   transition,
   decoration,
   placeholder,
+  cursor,
 }) => {
   const css: ICSS = {};
   if (size !== undefined) {
@@ -65,9 +67,13 @@ export const digestTexts: IDigester<ITextsDigester> = ({
     css.transition = formatUnits(transition, 'ms');
   }
   if (decoration !== undefined) {
-    const { lines, style, color: decolor } = decoration;
-    const delines = Array.isArray(lines) ? lines : [lines];
-    css.textDecoration = `${[...delines, style, decolor].join(' ')}`;
+    if (typeof decoration === 'string') {
+      css.textDecoration = decoration;
+    } else {
+      const { lines, style, color: decolor } = decoration;
+      const delines = Array.isArray(lines) ? lines : [lines];
+      css.textDecoration = `${[...delines, style, decolor].join(' ')}`;
+    }
   }
   if (height !== undefined) {
     css.lineHeight = formatUnits(height, 'em');
@@ -83,6 +89,9 @@ export const digestTexts: IDigester<ITextsDigester> = ({
   }
   if (placeholder !== undefined) {
     css['&::placeholder'] = { color: placeholder.color };
+  }
+  if (cursor !== undefined) {
+    css.cursor = cursor;
   }
   return css;
 };

@@ -212,6 +212,8 @@ placeholder?: IPlaceholderOptions;
 
 ### `useMedia()`
 
+#### `const { ...properties } = useMedia();`
+
 This provides easy access to the width of the browser window.
 
 ```tsx
@@ -237,14 +239,14 @@ export default () => {
 };
 ```
 
-#### `const { ...properties } = useMedia();`
-
 ##### Properties
 
 - `width: number` the width of the window in pixels.
 - `height: number` the height of the window in pixels.
 
 ### `useAddress()`
+
+#### `const { ...properties } = useAddress();`
 
 This gives you access to the current url of the page.
 
@@ -294,8 +296,6 @@ export default () => {
 };
 ```
 
-#### `const { ...properties } = useAddress();`
-
 ##### Properties
 
 - `change(address: string)` change location to address.
@@ -308,6 +308,8 @@ export default () => {
 - `entries: number` the number of locations in the location history.
 
 ### `useStyles()`
+
+#### `const { ...properties } = useStyles({ ...styles });`
 
 Compile styles into css and attach to the document. It returns the class name which can be added to components which are not in the nuggets lib.
 
@@ -326,14 +328,14 @@ export default () => {
 };
 ```
 
-#### `const { ...properties } = useStyles({ ...styles });`
-
 ##### Properties
 
 - `css: object` an object containing css properties.
 - `name: string` the class name associated with the css properties.
 
 ### `useString()`
+
+#### `const { ...properties } = useString({ ...options });`
 
 This manages a simple value such as a number or string.
 
@@ -361,8 +363,6 @@ export default ({ valueChange }) => {
 };
 ```
 
-#### `const { ...properties } = useString({ ...options });`
-
 ##### Properties
 
 Options
@@ -377,6 +377,8 @@ Properties
 - `change(value: string)` set a new string value.
 
 ### `useNumber()`
+
+#### `const { ...properties } = useNumber({ ...options });`
 
 This manages a simple value such as a number or string.
 
@@ -403,8 +405,6 @@ export default ({ valueChange }) => {
 };
 ```
 
-#### `const { ...properties } = useNumber({ ...options });`
-
 ##### Options
 
 - `value: number` use this value to update override the current value.
@@ -417,6 +417,8 @@ export default ({ valueChange }) => {
 - `change(value: number)` set a new number value.
 
 ### `useComplex()`
+
+#### `const { ...properties } = useComplex({ ...options });`
 
 This manages a object with sub properties - similar to a form.
 
@@ -442,8 +444,6 @@ export default ({ person, valueChange, savePerson }) => {
 };
 ```
 
-#### `const { ...properties } = useComplex({ ...options });`
-
 ##### Options
 
 - `value: object` use this value to update override the current value.
@@ -457,6 +457,8 @@ export default ({ person, valueChange, savePerson }) => {
 - `override(value: object)` set the entire object.
 
 ### `useToggle()`
+
+#### `const { ...properties } = useToggle({ ...options });`
 
 This provides a set of state and state changers for managing a toggled value.
 
@@ -500,8 +502,6 @@ export default ({ value, change }) => {
 };
 ```
 
-#### `const { ...properties } = useToggle({ ...options });`
-
 ##### Options
 
 - `value: boolean` use this value to update override the current value.
@@ -515,6 +515,8 @@ export default ({ value, change }) => {
 - `toggle()` toggle the current active state.
 
 ### `useDatetime()`
+
+#### `const { ...properties } = useDatetime({ ...options });`
 
 Manage a datetime by setting sub-properties.
 
@@ -543,8 +545,6 @@ export default ({ value, change }) => {
 };
 ```
 
-#### `const { ...properties } = useDatetime({ ...options });`
-
 ##### Options
 
 - `value: Date` use this value to update override the current value.
@@ -562,6 +562,8 @@ export default ({ value, change }) => {
   - `millisecond`
 
 ### `useArray()`
+
+#### `const { ...properties } = useArray({ ...options });`
 
 Manage an array of values.
 
@@ -611,8 +613,6 @@ export default ({ value, change, listOfPeople = [] }) => {
 };
 ```
 
-#### `const { ...properties } = useArray({ ...options });`
-
 ##### Options
 
 - `value: any[]` use this value to update override the current value.
@@ -626,6 +626,8 @@ export default ({ value, change, listOfPeople = [] }) => {
 - `toggle(value: any)` toggle (add or remove) the value in the array.
 
 ### `createStore()` & `useStore()`
+
+#### `const { ...properties } = useStore({ ...options });`
 
 Share data across multiple components.
 
@@ -660,8 +662,6 @@ export default () => {
 };
 ```
 
-#### `const { ...properties } = useStore({ ...options });`
-
 ##### Options
 
 - `store` a store - created using `createStore`.
@@ -672,6 +672,8 @@ export default () => {
 - `change(value: object)` patch the store with new values.
 
 ### `createConnection()` & `useConnection()`
+
+#### `const { ...properties } = useConnection({ ...options });`
 
 Easily connect to and manage external data sources.
 
@@ -735,8 +737,6 @@ export default ({ id }) => {
   );
 };
 ```
-
-#### `const { ...properties } = useConnection({ ...options });`
 
 ##### Options
 
