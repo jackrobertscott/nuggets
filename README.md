@@ -315,16 +315,13 @@ Compile styles into css and attach to the document. It returns the class name wh
 
 ```tsx
 import { useStyle } from 'nuggets';
-import { Editor } from 'some-code-editor';
 
 export default () => {
   const { css, name } = useStyles({
-    shape: {
-      height: 100,
-      color: 'green',
-    },
+    height: 100,
+    color: 'green',
   });
-  return <Editor className={name} />;
+  return <div className={name} />;
 };
 ```
 
