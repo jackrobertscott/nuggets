@@ -82,6 +82,7 @@ export interface IShapeDigester {
   transition?: IUnit;
   cursor?: string;
   overflow?: string;
+  events?: string;
   rotate?: IUnit | ITransform3dOptions;
   scale?: number | ITransform3dOptions;
   translate?: IUnit | ITransform3dOptions;
@@ -110,6 +111,7 @@ export const digestShape: IDigester<IShapeDigester> = ({
   transition,
   cursor,
   overflow,
+  events,
   rotate,
   scale,
   translate,
@@ -365,6 +367,9 @@ export const digestShape: IDigester<IShapeDigester> = ({
   }
   if (overflow !== undefined) {
     css.overflow = overflow;
+  }
+  if (events !== undefined) {
+    css.pointerEvents = events;
   }
   const transforms: string[] = [];
   if (rotate !== undefined) {
