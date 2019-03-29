@@ -18,6 +18,7 @@ export type IuseComplexOptions = IOptional<{
 export interface IuseComplexProps {
   value: IComplexValue;
   errors: IComplexValue;
+  invalid: boolean;
   change: (value: IComplexValue) => any;
   override: (next?: any) => void;
   operate: (
@@ -72,9 +73,10 @@ export const useComplex = (
   });
   return {
     value,
+    errors,
+    invalid: !!Object.keys(errors).filter(key => errors[key]).length,
     change,
     operate,
     override,
-    errors,
   };
 };
