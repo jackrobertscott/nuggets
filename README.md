@@ -307,17 +307,17 @@ export default () => {
 - `hash: string` the hash fragment in the location.
 - `entries: number` the number of locations in the location history.
 
-### `useStyles()`
+### `useFrameStyles()` & `useTextStyles()`
 
-#### `const { ...properties } = useStyles({ ...styles });`
+#### `const { ...properties } = useFrameStyles({ ...styles });`
 
 Compile styles into css and attach to the document. It returns the class name which can be added to components which are not in the nuggets lib.
 
 ```tsx
-import { useStyle } from 'nuggets';
+import { useFrameStyles } from 'nuggets';
 
 export default () => {
-  const { css, name } = useStyles({
+  const { styles, name } = useFrameStyles({
     height: 100,
     color: 'green',
   });
@@ -327,7 +327,7 @@ export default () => {
 
 ##### Properties
 
-- `css: object` an object containing css properties.
+- `styles: object` an object containing css properties.
 - `name: string` the class name associated with the css properties.
 
 ### `useString()`

@@ -3,6 +3,7 @@ import { IOptional } from '../../utils/types';
 
 export type IuseToggleOptions = IOptional<{
   value?: any;
+  error?: any;
   change?: (value: boolean) => any;
 }>;
 
@@ -11,6 +12,7 @@ export interface IuseToggleProps {
   off: (...args: any[]) => any;
   toggle: (override?: boolean, ...args: any[]) => any;
   active: boolean;
+  error: any;
   use: {
     value: boolean;
     change: (value: boolean) => any;
@@ -37,6 +39,7 @@ export const useToggle = (options: IuseToggleOptions = {}): IuseToggleProps => {
     on,
     off,
     toggle,
+    error: options.error,
     use: {
       value,
       change,

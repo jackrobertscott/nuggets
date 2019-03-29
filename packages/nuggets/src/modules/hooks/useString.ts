@@ -3,12 +3,14 @@ import { IOptional } from '../../utils/types';
 
 export type IuseStringOptions = IOptional<{
   value?: any;
+  error?: any;
   change?: (value: string) => any;
   adjust?: (value: string) => string;
 }>;
 
 export interface IuseStringProps {
   value: any;
+  error: any;
   change: (value: any) => any;
 }
 
@@ -25,6 +27,7 @@ export const useString = (options: IuseStringOptions = {}): IuseStringProps => {
   };
   return {
     value,
+    error: options.error,
     change,
   };
 };

@@ -8,6 +8,7 @@ export interface IuseDatetimeOperate {
 
 export type IuseDatetimeOptions = IOptional<{
   value?: Date;
+  error?: any;
   change?: (value: Date) => any;
 }>;
 
@@ -19,6 +20,7 @@ export interface IuseDatetimeProps {
   minutes: IuseDatetimeOperate;
   seconds: IuseDatetimeOperate;
   milliseconds: IuseDatetimeOperate;
+  error: any;
   use: {
     value: Date;
     change: (value: Date) => any;
@@ -53,6 +55,7 @@ export const useDatetime = (
     minutes: operate('Minutes'),
     seconds: operate('Seconds'),
     milliseconds: operate('Milliseconds'),
+    error: options.error,
     use: {
       value,
       change,

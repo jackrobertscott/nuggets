@@ -3,6 +3,7 @@ import { IOptional } from '../../utils/types';
 
 export type IuseArrayOptions = IOptional<{
   value?: any[];
+  error?: any;
   change?: (value: any[]) => any;
 }>;
 
@@ -11,6 +12,7 @@ export interface IuseArrayProps {
   remove: (item: any | ((item: any) => any), ...args: any[]) => any;
   includes: (item: any | ((item: any) => any), ...args: any[]) => any;
   toggle: (item: any | ((item: any) => any), ...args: any[]) => any;
+  error: any;
   use: {
     value: any[];
     change: (value: any[]) => any;
@@ -53,6 +55,7 @@ export const useArray = (options: IuseArrayOptions = {}): IuseArrayProps => {
     remove,
     includes,
     toggle,
+    error: options.error,
     use: {
       value,
       change,
