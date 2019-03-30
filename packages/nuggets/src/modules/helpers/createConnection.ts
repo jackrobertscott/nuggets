@@ -19,9 +19,9 @@ export interface IConnectionOptions<E extends IConnectionDefaults, T> {
 }
 
 export interface IConnectionCallbacks<T extends IConnectionValue> {
-  data: (data: T) => any;
-  error: (error: IConnectionError) => any;
-  loading: (loading: boolean) => any;
+  data?: (data: T) => any;
+  error?: (error: IConnectionError) => any;
+  loading?: (loading: boolean) => any;
 }
 
 export class Connection<
@@ -56,12 +56,17 @@ export class Connection<
     return this.dooer(this.previous);
   }
 
-  public attach({ ...executors }: IConnectionCallbacks<T>): () => void {
-    const tasks = [
-      this.dataDispatcher.watch(executors.data),
-      this.errorDispatcher.watch(executors.error),
-      this.loadingDispatcher.watch(executors.loading),
-    ];
+  public attach(executors: IConnectionCallbacks<T>): () => void {
+    const tasks: Array<() => void> = [];
+    if (executors.data) {
+      tasks.push(this.dataDispatcher.watch(executors.data));
+    }
+    if (executors.error) {
+      tasks.push(this.errorDispatcher.watch(executors.error));
+    }
+    if (executors.loading) {
+      tasks.push(this.loadingDispatcher.watch(executors.loading));
+    }
     return () => {
       tasks.forEach(unwatch => unwatch());
     };
