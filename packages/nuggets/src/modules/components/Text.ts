@@ -9,7 +9,7 @@ export type ITextProps = INuggieProps<ITextsDigester> & {
   change?: IEventsExecuter<string | number>;
   placeholder?: string | number;
   editable?: boolean;
-  multiline?: boolean;
+  multiline?: number;
   type?: string;
 };
 
@@ -48,7 +48,7 @@ export const Text: FunctionComponent<ITextProps> = ({
   if (editable) {
     Object.assign(features, {
       type: multiline ? 'textarea' : 'input',
-      extras: { value, placeholder, type },
+      extras: { value, placeholder, type, rows: multiline },
       events: { change, ...events },
     });
   } else {
