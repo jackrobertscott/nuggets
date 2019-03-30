@@ -1,5 +1,9 @@
 import { createDispatcher, Dispatcher } from './createDispatcher';
 
+export interface IConnectionDefaults {
+  [name: string]: any;
+}
+
 export interface IConnectionValue {
   [name: string]: any;
 }
@@ -9,35 +13,38 @@ export interface IConnectionError {
   thrown?: Error;
 }
 
-export interface IConnectionOptions<E> {
-  handler: (value: any) => Promise<any>;
+export interface IConnectionOptions<E extends IConnectionDefaults, T> {
+  handler: (value: E) => Promise<T>;
   defaults: E;
 }
 
-export interface IConnectionCallbacks {
-  data: (data: IConnectionValue) => any;
+export interface IConnectionCallbacks<T extends IConnectionValue> {
+  data: (data: T) => any;
   error: (error: IConnectionError) => any;
   loading: (loading: boolean) => any;
 }
 
-export class Connection<E, T extends IConnectionValue> {
+export class Connection<
+  E extends IConnectionDefaults,
+  T extends IConnectionValue
+> {
   private handler: (value: E) => Promise<T>;
   private defaults: E;
-  private previous: any;
+  private previous: E;
   private dataDispatcher: Dispatcher<T>;
   private errorDispatcher: Dispatcher<IConnectionError>;
   private loadingDispatcher: Dispatcher<boolean>;
 
-  constructor({ handler, defaults }: IConnectionOptions<E>) {
+  constructor({ handler, defaults }: IConnectionOptions<E, T>) {
     this.handler = handler;
     this.defaults = defaults;
-    this.previous = {};
+    this.previous = this.defaults;
     this.dataDispatcher = createDispatcher<T>();
     this.errorDispatcher = createDispatcher<IConnectionError>();
     this.loadingDispatcher = createDispatcher<boolean>();
   }
 
-  public execute(value?: T): Promise<void | T> {
+  public execute(value?: E): Promise<T> {
     this.previous = {
       ...this.defaults,
       ...(value || {}),
@@ -45,11 +52,11 @@ export class Connection<E, T extends IConnectionValue> {
     return this.dooer(this.previous);
   }
 
-  public refresh(): Promise<void | T> {
+  public refresh(): Promise<T> {
     return this.dooer(this.previous);
   }
 
-  public attach({ ...executors }: IConnectionCallbacks): () => void {
+  public attach({ ...executors }: IConnectionCallbacks<T>): () => void {
     const tasks = [
       this.dataDispatcher.watch(executors.data),
       this.errorDispatcher.watch(executors.error),
@@ -60,7 +67,7 @@ export class Connection<E, T extends IConnectionValue> {
     };
   }
 
-  public async dooer(value: E): Promise<void | T> {
+  public async dooer(value: E): Promise<T> {
     this.loadingDispatcher.dispatch(true);
     try {
       const data = await this.handler(value);
@@ -78,12 +85,12 @@ export class Connection<E, T extends IConnectionValue> {
   }
 }
 
-export const createConnection = <E>({
+export const createConnection = <E extends IConnectionDefaults>({
   handler,
 }: {
   handler: (value: E) => Promise<any>;
 }) => {
-  return <T>(defaults: E): Connection<E, any> => {
+  return <T>(defaults: E): Connection<E, T> => {
     return new Connection<E, T>({ handler, defaults });
   };
 };
