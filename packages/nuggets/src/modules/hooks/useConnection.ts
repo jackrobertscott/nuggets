@@ -8,6 +8,7 @@ import {
 
 export interface IuseConnectionOptions<E, T> {
   connection: Connection<E, T>;
+  run?: IConnectionDefaults;
 }
 
 export interface IuseConnectionProps<T extends IConnectionValue> {
@@ -20,6 +21,7 @@ export interface IuseConnectionProps<T extends IConnectionValue> {
 
 export const useConnection = <T extends IConnectionValue>({
   connection,
+  ...options
 }: IuseConnectionOptions<unknown, T>): IuseConnectionProps<T> => {
   const [value, update] = useState<T | undefined>(undefined);
   const [error, updateError] = useState<IConnectionError | undefined>(
@@ -27,11 +29,15 @@ export const useConnection = <T extends IConnectionValue>({
   );
   const [loading, updateLoading] = useState<boolean>(false);
   useEffect(() => {
-    return connection.attach({
-      data: values => update(values),
+    const unwatch = connection.attach({
+      data: results => update(results),
       error: updateError,
       loading: updateLoading,
     });
+    if (typeof options.run !== 'undefined') {
+      execute(options.run);
+    }
+    return unwatch;
   }, []);
   const execute = (data?: IConnectionDefaults): Promise<T> =>
     connection.execute(data);
