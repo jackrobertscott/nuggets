@@ -18,7 +18,7 @@ export const Text: FunctionComponent<ITextProps> = ({
   events = {},
   placeholder,
   editable = false,
-  multiline = false,
+  multiline,
   type,
   ...options
 }) => {
