@@ -49,11 +49,11 @@ export class Connection<
       ...this.defaults,
       ...(value || {}),
     };
-    return this.dooer(this.previous);
+    return this.perform(this.previous);
   }
 
   public refresh(): Promise<T> {
-    return this.dooer(this.previous);
+    return this.perform(this.previous);
   }
 
   public attach(executors: IConnectionCallbacks<T>): () => void {
@@ -72,10 +72,10 @@ export class Connection<
     };
   }
 
-  public async dooer(value: E): Promise<T> {
+  public async perform(value: E): Promise<T> {
     this.loadingDispatcher.dispatch(true);
     try {
-      const data = await this.handler(value);
+      const data = (await this.handler(value)) || {};
       this.dataDispatcher.dispatch(data);
       this.loadingDispatcher.dispatch(false);
       return data;

@@ -12,7 +12,7 @@ export interface IuseConnectionOptions<E, T> {
 }
 
 export interface IuseConnectionProps<T extends IConnectionValue> {
-  value?: T;
+  value: T;
   error?: IConnectionError;
   loading: boolean;
   execute: (data?: IConnectionDefaults) => Promise<T>;
@@ -23,7 +23,7 @@ export const useConnection = <T extends IConnectionValue>({
   connection,
   ...options
 }: IuseConnectionOptions<unknown, T>): IuseConnectionProps<T> => {
-  const [value, update] = useState<T | undefined>(undefined);
+  const [value, update] = useState<T>({} as any);
   const [error, updateError] = useState<IConnectionError | undefined>(
     undefined
   );
