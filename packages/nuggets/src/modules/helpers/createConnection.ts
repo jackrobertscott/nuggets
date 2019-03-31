@@ -92,10 +92,11 @@ export class Connection<
 
 export const createConnection = <E extends IConnectionDefaults>({
   handler,
+  ...args
 }: {
   handler: (value: E) => Promise<any>;
 }) => {
   return <T>(defaults: E): Connection<E, T> => {
-    return new Connection<E, T>({ handler, defaults });
+    return new Connection<E, T>({ handler, defaults, ...args });
   };
 };
