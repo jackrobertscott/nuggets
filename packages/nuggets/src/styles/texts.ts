@@ -29,7 +29,7 @@ export interface ITextsDigester {
   color?: string;
   align?: 'left' | 'center' | 'right' | 'justify';
   family?: string;
-  height?: IUnit;
+  line?: IUnit;
   italic?: boolean;
   divide?: IUnit;
   transition?: IUnit;
@@ -46,7 +46,7 @@ export const digestTexts: IDigester<ITextsDigester> = ({
   align,
   family,
   italic,
-  height,
+  line,
   thickness,
   divide,
   transition,
@@ -71,8 +71,8 @@ export const digestTexts: IDigester<ITextsDigester> = ({
   if (italic !== undefined) {
     css.fontStyle = 'italic';
   }
-  if (height !== undefined) {
-    css.lineHeight = formatUnits(height, 'em');
+  if (line !== undefined) {
+    css.lineHeight = formatUnits(line, 'em');
   }
   if (divide !== undefined) {
     css.letterSpacing = formatUnits(divide, 'em');

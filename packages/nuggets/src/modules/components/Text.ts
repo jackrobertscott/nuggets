@@ -50,6 +50,7 @@ export const Text: FunctionComponent<ITextProps> = ({
       type: multiline ? 'textarea' : 'input',
       extras: { value, placeholder, type, rows: multiline },
       events: { change, ...events },
+      precss: { ...precss, height: '1em', boxSizing: 'content-box' },
     });
   } else {
     Object.assign(features, {
