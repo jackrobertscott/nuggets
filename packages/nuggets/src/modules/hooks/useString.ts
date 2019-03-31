@@ -15,7 +15,7 @@ export interface IuseStringProps {
 }
 
 export const useString = (options: IuseStringOptions = {}): IuseStringProps => {
-  const [value, update] = useState<string>(options.value);
+  const [value, update] = useState<string>(options.value || '');
   useEffect(() => change(options.value), [options.value]);
   const change = (next?: any) => {
     const nice = String(next || '');
