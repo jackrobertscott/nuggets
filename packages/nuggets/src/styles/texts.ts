@@ -1,4 +1,4 @@
-import { ICSS, IDigester } from '../utils/types';
+import { ICSS, IDigester, IUnit } from '../utils/types';
 import { formatUnits } from '../utils/helpers';
 
 export interface IDecorationOptions {
@@ -15,19 +15,29 @@ export interface IPlaceholderOptions {
   color?: string;
 }
 
+export interface ISpaceOptions {
+  sides?: IUnit;
+  verts?: IUnit;
+  top?: IUnit;
+  bottom?: IUnit;
+  right?: IUnit;
+  left?: IUnit;
+}
+
 export interface ITextsDigester {
-  size?: number | string;
+  size?: IUnit;
   color?: string;
   align?: 'left' | 'center' | 'right' | 'justify';
   family?: string;
-  height?: number | string;
+  height?: IUnit;
   italic?: boolean;
-  divide?: number | string;
-  transition?: number | string;
+  divide?: IUnit;
+  transition?: IUnit;
   decoration?: string | IDecorationOptions;
   thickness?: number;
   placeholder?: IPlaceholderOptions;
   cursor?: string;
+  space?: IUnit | ISpaceOptions;
 }
 
 export const digestTexts: IDigester<ITextsDigester> = ({
@@ -35,14 +45,15 @@ export const digestTexts: IDigester<ITextsDigester> = ({
   color,
   align,
   family,
+  italic,
   height,
   thickness,
-  italic,
   divide,
   transition,
   decoration,
   placeholder,
   cursor,
+  space,
 }) => {
   const css: ICSS = {};
   if (size !== undefined) {
@@ -60,6 +71,9 @@ export const digestTexts: IDigester<ITextsDigester> = ({
   if (italic !== undefined) {
     css.fontStyle = 'italic';
   }
+  if (height !== undefined) {
+    css.lineHeight = formatUnits(height, 'em');
+  }
   if (divide !== undefined) {
     css.letterSpacing = formatUnits(divide, 'em');
   }
@@ -75,9 +89,6 @@ export const digestTexts: IDigester<ITextsDigester> = ({
       css.textDecoration = `${[...delines, style, decolor].join(' ')}`;
     }
   }
-  if (height !== undefined) {
-    css.lineHeight = formatUnits(height, 'em');
-  }
   if (thickness !== undefined) {
     const min = 100;
     const max = 900;
@@ -92,6 +103,33 @@ export const digestTexts: IDigester<ITextsDigester> = ({
   }
   if (cursor !== undefined) {
     css.cursor = cursor;
+  }
+  if (space !== undefined) {
+    if (typeof space === 'number' || typeof space === 'string') {
+      css.padding = formatUnits(space);
+    } else {
+      const { top, right, bottom, left, sides, verts } = space;
+      if (verts !== undefined) {
+        css.paddingTop = formatUnits(verts);
+        css.paddingBottom = formatUnits(verts);
+      }
+      if (sides !== undefined) {
+        css.paddingRight = formatUnits(sides);
+        css.paddingLeft = formatUnits(sides);
+      }
+      if (top !== undefined) {
+        css.paddingTop = formatUnits(top);
+      }
+      if (right !== undefined) {
+        css.paddingRight = formatUnits(right);
+      }
+      if (bottom !== undefined) {
+        css.paddingBottom = formatUnits(bottom);
+      }
+      if (left !== undefined) {
+        css.paddingLeft = formatUnits(left);
+      }
+    }
   }
   return css;
 };
