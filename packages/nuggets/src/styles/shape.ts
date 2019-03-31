@@ -191,7 +191,9 @@ export const digestShape: IDigester<IShapeDigester> = ({
       borders.sides
         .filter(exists => exists)
         .forEach(side => {
-          const borderSize = formatUnits(borders.thickness || 1);
+          const thickness =
+            typeof borders.thickness !== 'undefined' ? borders.thickness : 1;
+          const borderSize = formatUnits(thickness);
           switch (side) {
             case 'top':
               css.borderTopWidth = borderSize;
