@@ -44,7 +44,7 @@ export class Connection<
     this.loadingDispatcher = createDispatcher<boolean>();
   }
 
-  public execute(value?: E): Promise<T> {
+  public execute(value?: Partial<E>): Promise<T> {
     this.previous = {
       ...this.defaults,
       ...(value || {}),

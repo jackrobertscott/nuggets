@@ -46,12 +46,20 @@ export const Text: FunctionComponent<ITextProps> = ({
     ...options,
   };
   if (editable) {
-    Object.assign(features, {
-      type: multiline ? 'textarea' : 'input',
-      extras: { value, placeholder, type, rows: multiline },
-      events: { change, ...events },
-      precss: { ...precss, height: '1em', boxSizing: 'content-box' },
-    });
+    if (multiline) {
+      Object.assign(features, {
+        type: 'textarea',
+        extras: { value, placeholder, rows: multiline },
+        events: { change, ...events },
+      });
+    } else {
+      Object.assign(features, {
+        type: 'input',
+        extras: { value, placeholder, type },
+        events: { change, ...events },
+        precss: { ...precss, height: '1em', boxSizing: 'content-box' },
+      });
+    }
   } else {
     Object.assign(features, {
       type: 'span',

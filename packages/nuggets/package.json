@@ -47,7 +47,8 @@
     "deepmerge": "^3.0.0",
     "history": "^4.7.2",
     "path-to-regexp": "^3.0.0",
-    "throttle-debounce": "^2.0.1"
+    "throttle-debounce": "^2.0.1",
+    "utility-types": "^3.4.1"
   },
   "peerDependencies": {
     "react": "^16.8.4",
