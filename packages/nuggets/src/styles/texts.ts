@@ -37,6 +37,7 @@ export interface ITextsDigester {
   thickness?: number;
   placeholder?: IPlaceholderOptions;
   cursor?: string;
+  whitespace?: string;
   space?: IUnit | ISpaceOptions;
 }
 
@@ -53,6 +54,7 @@ export const digestTexts: IDigester<ITextsDigester> = ({
   decoration,
   placeholder,
   cursor,
+  whitespace,
   space,
 }) => {
   const css: ICSS = {};
@@ -103,6 +105,9 @@ export const digestTexts: IDigester<ITextsDigester> = ({
   }
   if (cursor !== undefined) {
     css.cursor = cursor;
+  }
+  if (whitespace !== undefined) {
+    css.whiteSpace = whitespace;
   }
   if (space !== undefined) {
     if (typeof space === 'number' || typeof space === 'string') {
