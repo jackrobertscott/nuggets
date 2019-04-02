@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import * as queryString from 'query-string';
 import { IOptional } from '../../utils/types';
 import history from '../../utils/history';
 import { matchPath, IDigestOptions } from '../../utils/path';
@@ -18,6 +19,8 @@ export type IuseAddressProps = IHistoryState & {
   backward: () => any;
   forward: () => any;
   match: (options: { path: string } & IDigestOptions) => boolean;
+  params: queryString.ParsedQuery;
+  stringify: (data: { [param: string]: unknown }) => string;
 };
 
 export const useAddress = (
@@ -38,6 +41,9 @@ export const useAddress = (
   const shift = (entries: number) => history.go(entries);
   const forward = () => history.goForward();
   const backward = () => history.goForward();
+  const params = value.search ? queryString.parse(value.search) : {};
+  const stringify = (data: { [param: string]: unknown }) =>
+    queryString.stringify(data);
   const match = ({
     path,
     ...digestOptions
@@ -54,6 +60,8 @@ export const useAddress = (
     forward,
     backward,
     match,
+    params,
+    stringify,
     ...value,
   };
 };
