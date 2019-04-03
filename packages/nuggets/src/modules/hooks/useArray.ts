@@ -8,6 +8,7 @@ export type IuseArrayOptions = IOptional<{
 }>;
 
 export interface IuseArrayProps {
+  items: any[];
   add: (item: any, ...args: any[]) => any;
   remove: (item: any | ((item: any) => any), ...args: any[]) => any;
   includes: (item: any | ((item: any) => any), ...args: any[]) => any;
@@ -51,6 +52,7 @@ export const useArray = (options: IuseArrayOptions = {}): IuseArrayProps => {
     }
   };
   return {
+    items: value,
     add,
     remove,
     includes,
