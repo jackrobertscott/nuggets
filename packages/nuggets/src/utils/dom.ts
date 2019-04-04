@@ -16,17 +16,19 @@ export interface IRandom {
 }
 
 export interface INuggieProps<S> {
+  type?: string;
+  id?: string;
   css?: ICSS;
   into?: IRandom;
   events?: IEventsOptions;
   styles?: IStylesOptions<S>;
   unclean?: boolean;
+  reference?: any;
 }
 
 export interface INuggieOptions {
   type?: string;
   id?: string;
-  children?: unknown;
   css?: ICSS;
   into?: IRandom;
   events?: IEventsOptions;
@@ -34,12 +36,13 @@ export interface INuggieOptions {
   emote?: ICSS;
   extras?: IRandom;
   unclean?: boolean;
+  reference?: any;
+  children?: unknown;
 }
 
 export const createNuggie = ({
   type = 'div',
   id,
-  children,
   precss = {},
   css = {},
   into = {},
@@ -47,6 +50,8 @@ export const createNuggie = ({
   events = {},
   extras = {},
   unclean = false,
+  reference,
+  children,
 }: INuggieOptions) => {
   const attrs = createEvents(events);
   const props = {
@@ -56,6 +61,9 @@ export const createNuggie = ({
   };
   if (id) {
     props.id = id;
+  }
+  if (reference) {
+    props.ref = reference;
   }
   const styles = deep.all([precss, emote, css]) as ICSS;
   return jsx(type, {
