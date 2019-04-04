@@ -7,7 +7,7 @@ import { IStylesOptions } from './styles';
 import { ensure } from './helpers';
 import clean from './clean';
 
-const nuggie = 'nug';
+const nuggie = 'css-nuggets';
 const sheet = new StyleSheet({ key: 'clean', container: document.head });
 sheet.insert(`.${nuggie} {${clean}}`);
 
@@ -24,19 +24,21 @@ export interface INuggieProps<S> {
 }
 
 export interface INuggieOptions {
+  type?: string;
+  id?: string;
+  children?: unknown;
   css?: ICSS;
   into?: IRandom;
   events?: IEventsOptions;
   precss?: ICSS;
-  type?: string;
   emote?: ICSS;
-  children?: unknown;
   extras?: IRandom;
   unclean?: boolean;
 }
 
 export const createNuggie = ({
   type = 'div',
+  id,
   children,
   precss = {},
   css = {},
@@ -52,6 +54,9 @@ export const createNuggie = ({
     ...ensure(into),
     ...ensure(extras),
   };
+  if (id) {
+    props.id = id;
+  }
   const styles = deep.all([precss, emote, css]) as ICSS;
   return jsx(type, {
     ...props,
