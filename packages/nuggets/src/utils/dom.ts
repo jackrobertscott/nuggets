@@ -16,7 +16,7 @@ export interface IRandom {
 }
 
 export interface INuggieProps<S> {
-  type?: string;
+  node?: string;
   id?: string;
   css?: ICSS;
   into?: IRandom;
@@ -27,7 +27,7 @@ export interface INuggieProps<S> {
 }
 
 export interface INuggieOptions {
-  type?: string;
+  node?: string;
   id?: string;
   css?: ICSS;
   into?: IRandom;
@@ -41,7 +41,7 @@ export interface INuggieOptions {
 }
 
 export const createNuggie = ({
-  type = 'div',
+  node = 'div',
   id,
   precss = {},
   css = {},
@@ -66,7 +66,7 @@ export const createNuggie = ({
     props.ref = reference;
   }
   const styles = deep.all([precss, emote, css]) as ICSS;
-  return jsx(type, {
+  return jsx(node, {
     ...props,
     children,
     className: [unclean ? '' : nuggie, props.className || ''].join(' ').trim(),

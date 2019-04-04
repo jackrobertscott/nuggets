@@ -10,9 +10,11 @@ export type ITextProps = INuggieProps<ITextsDigester> & {
   placeholder?: string | number;
   editable?: boolean;
   multiline?: number;
+  type?: string;
 };
 
 export const Text: FunctionComponent<ITextProps> = ({
+  node,
   styles = {},
   events = {},
   placeholder,
@@ -47,13 +49,13 @@ export const Text: FunctionComponent<ITextProps> = ({
   if (editable) {
     if (multiline) {
       Object.assign(features, {
-        type: type || 'textarea',
+        node: node || 'textarea',
         extras: { value, placeholder, rows: multiline },
         events: { change, ...events },
       });
     } else {
       Object.assign(features, {
-        type: type || 'input',
+        node: node || 'input',
         extras: { value, placeholder, type },
         events: { change, ...events },
         precss: { ...precss, height: '1em', boxSizing: 'content-box' },
@@ -61,7 +63,7 @@ export const Text: FunctionComponent<ITextProps> = ({
     }
   } else {
     Object.assign(features, {
-      type: type || 'span',
+      node: node || 'span',
       children: value,
       events,
     });
