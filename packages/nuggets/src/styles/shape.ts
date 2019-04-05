@@ -22,9 +22,16 @@ export interface IShadeOptions {
   across?: IUnit;
 }
 
+export interface ISideOptions {
+  top?: IUnit;
+  bottom?: IUnit;
+  right?: IUnit;
+  left?: IUnit;
+}
+
 export interface IBordersOptions {
   color?: string;
-  thickness?: IUnit;
+  sides?: number | ISideOptions;
   style?:
     | 'dotted'
     | 'dashed'
@@ -34,7 +41,6 @@ export interface IBordersOptions {
     | 'ridge'
     | 'inset'
     | 'outset';
-  sides?: ISides[];
 }
 
 export type ICornersOptions = { [sides in IDiagonals]?: IUnit };
@@ -65,7 +71,7 @@ export interface IShapeDigester {
   gradient?: IGradientOptions;
   shade?: IShadeOptions;
   corners?: IUnit | ICornersOptions;
-  borders?: IBordersOptions;
+  borders?: string | IBordersOptions;
   direction?: IDirections;
   force?: 'start' | 'end' | 'center' | 'stretch' | 'between' | 'even';
   align?: 'start' | 'end' | 'center' | 'stretch';
@@ -184,33 +190,38 @@ export const digestShape: IDigester<IShapeDigester> = ({
     }
   }
   if (borders !== undefined) {
-    css.borderColor = borders.color || '#000';
-    css.borderStyle = borders.style || 'solid';
-    if (borders.sides) {
-      css.borderWidth = formatUnits(0);
-      borders.sides
-        .filter(exists => exists)
-        .forEach(side => {
-          const thickness =
-            typeof borders.thickness !== 'undefined' ? borders.thickness : 1;
-          const borderSize = formatUnits(thickness);
-          switch (side) {
-            case 'top':
-              css.borderTopWidth = borderSize;
-              break;
-            case 'right':
-              css.borderRightWidth = borderSize;
-              break;
-            case 'bottom':
-              css.borderBottomWidth = borderSize;
-              break;
-            case 'left':
-              css.borderLeftWidth = borderSize;
-              break;
-          }
-        });
+    if (typeof borders === 'string') {
+      css.borderColor = borders;
+      css.borderStyle = 'solid';
+      css.borderWidth = formatUnits(1);
     } else {
-      css.borderWidth = formatUnits(borders.thickness || 1);
+      css.borderColor = borders.color || '#000';
+      css.borderStyle = borders.style || 'solid';
+      const { sides } = borders;
+      if (typeof sides === 'number' || !sides) {
+        css.borderWidth = formatUnits(1);
+      } else {
+        css.borderWidth = formatUnits(0);
+        Object.keys(sides)
+          .filter(exists => exists)
+          .forEach(side => {
+            const sideSize = formatUnits((sides as any)[side]);
+            switch (side) {
+              case 'top':
+                css.borderTopWidth = sideSize;
+                break;
+              case 'right':
+                css.borderRightWidth = sideSize;
+                break;
+              case 'bottom':
+                css.borderBottomWidth = sideSize;
+                break;
+              case 'left':
+                css.borderLeftWidth = sideSize;
+                break;
+            }
+          });
+      }
     }
   }
   if (direction !== undefined) {
