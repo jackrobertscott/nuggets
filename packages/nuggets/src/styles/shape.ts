@@ -31,7 +31,7 @@ export interface ISideOptions {
 
 export interface IBordersOptions {
   color?: string;
-  sides?: number | ISideOptions;
+  sides?: IUnit | ISideOptions;
   style?:
     | 'dotted'
     | 'dashed'
@@ -200,8 +200,8 @@ export const digestShape: IDigester<IShapeDigester> = ({
       css.borderColor = borders.color || '#000';
       css.borderStyle = borders.style || 'solid';
       const { sides } = borders;
-      if (typeof sides === 'number' || !sides) {
-        css.borderWidth = formatUnits(1);
+      if (typeof sides === 'number' || typeof sides === 'string' || !sides) {
+        css.borderWidth = formatUnits(sides || 1);
       } else {
         css.borderWidth = formatUnits(0);
         Object.keys(sides)
