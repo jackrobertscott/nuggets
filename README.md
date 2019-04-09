@@ -23,7 +23,7 @@ export default ({
         events={{ click: clickButton }}
         styles={{
           color: width > 500 ? 'green' : 'lime',
-          border: {
+          borders: {
             color: mainColor,
             hover: { color: 'red' },
           }
@@ -36,8 +36,8 @@ export default ({
       </Frame>
       <Frame
         styles={{
+          size: 100,
           color: 'blue',
-          diameter: 100,
         }}
       />
     </Frame>
@@ -111,7 +111,9 @@ export default ({ children, color = 'white' }) => (
       space: 30,
       borders: {
         color: 'yellow',
-        sides: ['right'],
+        sides: {
+          right: 3,
+        },
       },
       shade: {
         color: 'black',
@@ -224,10 +226,8 @@ export default () => {
   return (
     <Frame
       styles={{
-        shape: {
-          color: width > 600 ? 'green' : 'blue',
-        }
-        border: {
+        color: width > 600 ? 'green' : 'blue',
+        borders: {
           color: 'black',
           thickness: height > 500 ? 3 : 10,
         },
@@ -257,11 +257,7 @@ export default () => {
   const { change, backward, forward, pathname, search } = useAddress();
   return (
     <Frame>
-      <Frame
-        styles={{
-          color: 'blue',
-        }}
-      >
+      <Frame styles={{ color: 'blue' }}>
         <Out value={`Pathname and search: ${pathname} ${search}`} />
       </Frame>
       <Frame events={{ click: () => change('/hello-nuggets') }}>
@@ -489,11 +485,7 @@ export default ({ value, change }) => {
   return (
     <Frame
       events={{ click: toggle }}
-      styles={{
-        shape: {
-          color: active ? 'green' : 'blue',
-        },
-      }}
+      styles={{ color: active ? 'green' : 'blue' }}
     />
   );
 };
@@ -572,14 +564,8 @@ export default ({ value, change, listOfPeople = [] }) => {
   return listOfPeople.map(({ id, name }) => (
     <Frame
       key={id}
-      events={{
-        click: () => includes(id) ? add(id) : remove(id),
-      }}
-      styles={{
-        shape: {
-          color: includes(id) ? 'green' : 'blue',
-        }
-      }}
+      events={{ click: () => includes(id) ? add(id) : remove(id) }}
+      styles={{ color: includes(id) ? 'green' : 'blue' }}
     >
       <Out value={name} />
     </Frame>
@@ -598,11 +584,7 @@ export default ({ value, change, listOfPeople = [] }) => {
     <Frame
       key={id}
       events={{ click: () => toggle(id) }}
-      styles={{
-        shape: {
-          color: includes(id) ? 'green' : 'blue',
-        }
-      }}
+      styles={{ color: includes(id) ? 'green' : 'blue' }}
     >
       <Out value={name} />
     </Frame>
