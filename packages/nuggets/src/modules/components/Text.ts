@@ -34,8 +34,8 @@ export const Text: FunctionComponent<ITextProps> = ({
   };
   const precss = {
     width: 'auto',
-    position: 'relative',
     resize: 'none',
+    position: 'relative',
     flexShrink: 1,
     '&::-webkit-scrollbar': {
       display: 'none',
