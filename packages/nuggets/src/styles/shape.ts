@@ -69,7 +69,7 @@ export interface IShapeDigester {
   color?: string;
   alpha?: number;
   gradient?: IGradientOptions;
-  shade?: IShadeOptions;
+  shade?: IShadeOptions | IShadeOptions[];
   corners?: IUnit | ICornersOptions;
   borders?: string | IBordersOptions;
   direction?: IDirections;
@@ -141,14 +141,20 @@ export const digestShape: IDigester<IShapeDigester> = ({
     css.background = `linear-gradient(${angle}deg, ${colors.join(', ')})`;
   }
   if (shade !== undefined) {
-    const shadeColor = shade.color || '#000';
-    css.boxShadow = [
-      formatUnits(shade.across),
-      formatUnits(shade.down),
-      formatUnits(shade.blur),
-      formatUnits(shade.grow),
-      shadeColor,
-    ].join(' ');
+    const createShadow = (data: IShadeOptions) => {
+      return [
+        formatUnits(data.across),
+        formatUnits(data.down),
+        formatUnits(data.blur),
+        formatUnits(data.grow),
+        data.color || '#000',
+      ]
+        .join(' ')
+        .trim();
+    };
+    css.boxShadow = Array.isArray(shade)
+      ? shade.map(createShadow).join(', ')
+      : createShadow(shade);
   }
   if (corners !== undefined) {
     if (typeof corners === 'number' || typeof corners === 'string') {
