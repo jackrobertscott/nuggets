@@ -4,16 +4,18 @@ import { StyleSheet } from '@emotion/sheet';
 import { createCSSFromProps } from '../../utils/styles';
 import { digestTexts, ITextsDigester } from '../../styles/texts';
 
-export interface IuseTextsOptions {
+export interface IuseTextStylesOptions {
   [property: string]: any;
 }
 
-export interface IuseTextsProps {
+export interface IuseTextStylesProps {
   name?: string;
   styles?: string;
 }
 
-export const useTexts = (options: IuseTextsOptions): IuseTextsProps => {
+export const useTextStyles = (
+  options: IuseTextStylesOptions
+): IuseTextStylesProps => {
   const [{ styles, name }, change] = useState<{
     name?: string;
     styles?: string;

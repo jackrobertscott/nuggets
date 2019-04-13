@@ -43,6 +43,7 @@ export const Text: FunctionComponent<ITextProps> = ({
   };
   const features = {
     precss,
+    classname: 'text',
     emote: createCSSFromProps(styles, digestTexts),
     ...options,
   };

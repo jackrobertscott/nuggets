@@ -29,6 +29,7 @@ export interface INuggieProps<S> {
 export interface INuggieOptions {
   node?: string;
   id?: string;
+  classname?: string;
   css?: ICSS;
   into?: IRandom;
   events?: IEventsOptions;
@@ -43,11 +44,12 @@ export interface INuggieOptions {
 export const createNuggie = ({
   node = 'div',
   id,
-  precss = {},
+  classname,
   css = {},
   into = {},
   emote = {},
   events = {},
+  precss = {},
   extras = {},
   unclean = false,
   reference,
@@ -69,7 +71,14 @@ export const createNuggie = ({
   return jsx(node, {
     ...props,
     children,
-    className: [unclean ? '' : nuggie, props.className || ''].join(' ').trim(),
+    className: [
+      !unclean && nuggie,
+      classname && `css-${classname}-nuggets`,
+      props.className,
+    ]
+      .filter(exists => exists)
+      .join(' ')
+      .trim(),
     css: emotion(styles),
   });
 };

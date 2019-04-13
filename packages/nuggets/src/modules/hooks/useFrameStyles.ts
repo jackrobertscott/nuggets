@@ -4,16 +4,18 @@ import { StyleSheet } from '@emotion/sheet';
 import { createCSSFromProps } from '../../utils/styles';
 import { digestShape, IShapeDigester } from '../../styles/shape';
 
-export interface IuseFrameOptions {
+export interface IuseFrameStylesOptions {
   [property: string]: any;
 }
 
-export interface IuseFrameProps {
+export interface IuseFrameStylesProps {
   name?: string;
   styles?: string;
 }
 
-export const useFrame = (options: IuseFrameOptions): IuseFrameProps => {
+export const useFrameStyles = (
+  options: IuseFrameStylesOptions
+): IuseFrameStylesProps => {
   const [{ styles, name }, change] = useState<{
     name?: string;
     styles?: string;
