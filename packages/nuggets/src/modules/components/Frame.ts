@@ -3,31 +3,30 @@ import { createNuggie, INuggieProps } from '../../utils/dom';
 import { createCSSFromProps, IStylesOptions } from '../../utils/styles';
 import { digestShape, IShapeDigester } from '../../styles/shape';
 import { INonTextChildren } from '../../utils/types';
-import { ITextsDigester, digestTexts } from '../../styles/texts';
 
 export type IFrameProps = INuggieProps<IShapeDigester> & {
   children?: INonTextChildren;
-  textStyles?: IStylesOptions<ITextsDigester>;
 };
 
 export const Frame: FunctionComponent<IFrameProps> = ({
   children,
   styles = {},
-  textStyles = {},
   ...options
 }) => {
   const precss = {
     display: 'flex',
     position: 'relative',
   };
+  /**
+   * Decision: don't add text styles to frame - classes break down
+   * when it comes to class specifity as frame text styles always
+   * override the direct text styles.
+   */
   return createNuggie({
     children,
     precss,
     classname: 'frame',
-    emote: {
-      ...createCSSFromProps(styles, digestShape),
-      ...createCSSFromProps(textStyles, digestTexts, '.css-text-nuggets'),
-    },
+    emote: createCSSFromProps(styles, digestShape),
     ...options,
   });
 };
