@@ -29,8 +29,8 @@ export const Layer: FunctionComponent<ILayerProps> = ({
   };
   const InterLayer = createNuggie({
     children,
-    precss,
     classname: 'layer',
+    precss,
     ...options,
   });
   return item && createPortal(InterLayer, item);

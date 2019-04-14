@@ -23,8 +23,8 @@ export const Frame: FunctionComponent<IFrameProps> = ({
    */
   return createNuggie({
     children,
-    precss,
     classname: 'frame',
+    precss,
     emote: createCSSFromProps(styles, digestShape),
     ...options,
   });
