@@ -1,11 +1,10 @@
-import { FunctionComponent } from 'react';
+import { FunctionComponent, ReactNode } from 'react';
 import { createNuggie, INuggieProps } from '../../utils/dom';
-import { createCSSFromProps, IStylesOptions } from '../../utils/styles';
+import { createCSSFromProps } from '../../utils/styles';
 import { digestShape, IShapeDigester } from '../../styles/shape';
-import { INonTextChildren } from '../../utils/types';
 
 export type IFrameProps = INuggieProps<IShapeDigester> & {
-  children?: INonTextChildren;
+  children?: ReactNode;
 };
 
 export const Frame: FunctionComponent<IFrameProps> = ({
