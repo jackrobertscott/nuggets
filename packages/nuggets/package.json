@@ -49,13 +49,11 @@
     "history": "^4.7.2",
     "path-to-regexp": "^3.0.0",
     "query-string": "^6.4.2",
-    "react": "^16.8.0",
-    "react-dom": "^16.8.0",
     "throttle-debounce": "^2.0.1",
     "utility-types": "^3.4.1"
   },
   "peerDependencies": {
-    "react": "^16.8.0",
-    "react-dom": "^16.8.0"
+    "react": ">=16.8.0",
+    "react-dom": ">=16.8.0"
   }
 }
