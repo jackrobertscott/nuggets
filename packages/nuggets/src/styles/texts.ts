@@ -27,6 +27,7 @@ export interface ISpaceOptions {
 export interface ITextsDigester {
   size?: IUnit;
   color?: string;
+  alpha?: number;
   align?: 'left' | 'center' | 'right' | 'justify';
   family?: string;
   line?: IUnit;
@@ -44,6 +45,7 @@ export interface ITextsDigester {
 export const digestTexts: IDigester<ITextsDigester> = ({
   size,
   color,
+  alpha,
   align,
   family,
   italic,
@@ -63,6 +65,13 @@ export const digestTexts: IDigester<ITextsDigester> = ({
   }
   if (color !== undefined) {
     css.color = color;
+  }
+  if (alpha !== undefined) {
+    if (alpha > 1 || alpha < 0) {
+      const message = `The "shape.alpha" property must be between 0 and 1 inclusive, but got "${alpha}".`;
+      throw new Error(message);
+    }
+    css.opacity = alpha;
   }
   if (align !== undefined) {
     css.textAlign = align;

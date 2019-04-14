@@ -1,7 +1,6 @@
 import {
   ICSS,
   IDigester,
-  ISides,
   IUnit,
   IDirections,
   IDiagonals,
