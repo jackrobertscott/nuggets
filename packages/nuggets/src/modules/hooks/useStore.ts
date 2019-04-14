@@ -7,7 +7,6 @@ export interface IuseStoreOptions<T> {
 
 export interface IuseStoreProps<T> {
   value: T;
-  change: (data: T) => any;
 }
 
 export const useStore = <T extends IStoreValue>({
@@ -17,9 +16,7 @@ export const useStore = <T extends IStoreValue>({
   useEffect(() => {
     return store.attach((data: T) => update(data));
   }, []);
-  const change = (data: T) => store.change(data);
   return {
     value,
-    change,
   };
 };
