@@ -59,7 +59,7 @@ export const Text: FunctionComponent<ITextProps> = ({
         node: node || 'input',
         extras: { value, placeholder, type },
         events: { change, ...events },
-        precss: { ...precss, height: '1em', boxSizing: 'content-box' },
+        precss: { ...precss, boxSizing: 'content-box' },
       });
     }
   } else {
