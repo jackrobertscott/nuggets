@@ -35,7 +35,7 @@ export interface ITextsDigester {
   divide?: IUnit;
   transition?: IUnit;
   decoration?: string | IDecorationOptions;
-  thickness?: number;
+  thickness?: number | string;
   placeholder?: IPlaceholderOptions;
   cursor?: string;
   whitespace?: string;
@@ -101,11 +101,13 @@ export const digestTexts: IDigester<ITextsDigester> = ({
     }
   }
   if (thickness !== undefined) {
-    const min = 100;
-    const max = 900;
-    if (thickness < min || thickness > max) {
-      const message = `In "<Text thickness={number} />": number must be between ${min} and ${max} inclusive but got "${thickness}".`;
-      throw new Error(message);
+    if (typeof thickness === 'number') {
+      const min = 100;
+      const max = 900;
+      if (thickness < min || thickness > max) {
+        const message = `Thickness must be between ${min} and ${max} inclusive but got "${thickness}".`;
+        throw new Error(message);
+      }
     }
     css.fontWeight = thickness;
   }
