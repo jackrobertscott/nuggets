@@ -1,4 +1,4 @@
-export default `
+export const standardize = `
   animation: none;
   animation-delay: 0;
   animation-direction: normal;

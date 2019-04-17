@@ -1,16 +1,13 @@
 import { createElement } from 'react';
 import * as deep from 'deepmerge';
-import { StyleSheet } from '@emotion/sheet';
 import { IEventsOptions, createEvents } from './events';
 import { ICSS } from './types';
 import { IStylesOptions } from './styles';
 import { ensure } from './helpers';
-import { tag, emotion } from './emotion';
-import clean from './clean';
+import { emotion, tag } from './emotion';
+import { standardize } from './clean';
 
-const nuggie = 'nuggets';
-const sheet = new StyleSheet({ key: tag, container: document.head });
-sheet.insert(`.${nuggie} {${clean}}`);
+const cleanedClassname = emotion.css(standardize);
 
 export interface IRandom {
   [name: string]: any;
@@ -69,17 +66,18 @@ export const createNuggie = ({
     props.ref = reference;
   }
   const styles = deep.all([precss, emote, css]) as ICSS;
+  const classnames = [
+    !unclean && cleanedClassname,
+    emotion.css(styles),
+    classname && `${tag}-${classname}`,
+    props.className,
+  ]
+    .filter(exists => exists)
+    .join(' ')
+    .trim();
   return createElement(node, {
     ...props,
     children,
-    className: [
-      !unclean && nuggie,
-      emotion.css(styles),
-      classname && `nuggets-${classname}`,
-      props.className,
-    ]
-      .filter(exists => exists)
-      .join(' ')
-      .trim(),
+    className: classnames,
   });
 };
