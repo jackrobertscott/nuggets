@@ -29,7 +29,6 @@ export const Layer: FunctionComponent<ILayerProps> = ({
   };
   const InterLayer = createNuggie({
     children,
-    classname: 'layer',
     precss,
     ...options,
   });

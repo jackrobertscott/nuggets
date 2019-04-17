@@ -3,6 +3,7 @@ import { css as emotion } from '@emotion/core';
 import { StyleSheet } from '@emotion/sheet';
 import { createCSSFromProps } from '../../utils/styles';
 import { digestTexts, ITextsDigester } from '../../styles/texts';
+import { tag } from '../../utils/emotion';
 
 export interface IuseTextStylesOptions {
   [property: string]: any;
@@ -21,7 +22,7 @@ export const useTextStyles = (
     styles?: string;
   }>({});
   const sheet = new StyleSheet({
-    key: '',
+    key: tag,
     container: document.head,
   });
   useEffect(

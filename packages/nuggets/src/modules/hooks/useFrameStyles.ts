@@ -3,6 +3,7 @@ import { css as emotion } from '@emotion/core';
 import { StyleSheet } from '@emotion/sheet';
 import { createCSSFromProps } from '../../utils/styles';
 import { digestShape, IShapeDigester } from '../../styles/shape';
+import { tag } from '../../utils/emotion';
 
 export interface IuseFrameStylesOptions {
   [property: string]: any;
@@ -21,7 +22,7 @@ export const useFrameStyles = (
     styles?: string;
   }>({});
   const sheet = new StyleSheet({
-    key: '',
+    key: tag,
     container: document.head,
   });
   useEffect(
