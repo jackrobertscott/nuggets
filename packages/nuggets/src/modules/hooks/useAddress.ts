@@ -20,6 +20,7 @@ export type IuseAddressProps = IHistoryState & {
   forward: () => any;
   match: (options: { path: string } & IDigestOptions) => boolean;
   params: queryString.ParsedQuery;
+  parse: (search: string) => { [param: string]: unknown };
   stringify: (data: { [param: string]: unknown }) => string;
 };
 
@@ -42,6 +43,7 @@ export const useAddress = (
   const forward = () => history.goForward();
   const backward = () => history.goForward();
   const params = value.search ? queryString.parse(value.search) : {};
+  const parse = (search: string) => queryString.parse(search);
   const stringify = (data: { [param: string]: unknown }) =>
     queryString.stringify(data);
   const match = ({
@@ -61,6 +63,7 @@ export const useAddress = (
     backward,
     match,
     params,
+    parse,
     stringify,
     ...value,
   };
