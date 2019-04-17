@@ -7,7 +7,10 @@ import { ensure } from './helpers';
 import { emotion, tag } from './emotion';
 import { standardize } from './clean';
 
-const cleanedClassname = emotion.css(standardize);
+const cleanedClassname = `${tag}-${Math.random()
+  .toString()
+  .slice(-7)}`;
+emotion.sheet.insert(`.${cleanedClassname} {${standardize}}`);
 
 export interface IRandom {
   [name: string]: any;
