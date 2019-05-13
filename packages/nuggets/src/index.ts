@@ -3,7 +3,6 @@
  */
 export * from './modules/components/Frame';
 export * from './modules/components/Layer';
-export * from './modules/components/Text';
 
 /**
  * Helpers.

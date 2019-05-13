@@ -2,7 +2,7 @@ import { FunctionComponent, ReactNode } from 'react';
 import { createPortal } from 'react-dom';
 import { INuggieProps, createNuggie } from '../../utils/dom';
 
-export type ILayerProps = INuggieProps<{}> & {
+export type ILayerProps = INuggieProps & {
   children?: ReactNode;
   node?: HTMLElement | null;
   id?: string;

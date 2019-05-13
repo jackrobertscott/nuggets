@@ -16,13 +16,12 @@ export interface IRandom {
   [name: string]: any;
 }
 
-export interface INuggieProps<S> {
+export interface INuggieProps {
   node?: string;
   id?: string;
   css?: ICSS;
   into?: IRandom;
   events?: IEventsOptions;
-  styles?: IStylesOptions<S>;
   unclean?: boolean;
   reference?: any;
 }
