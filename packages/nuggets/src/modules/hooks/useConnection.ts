@@ -9,11 +9,10 @@ export interface IuseConnectionOptions<E, T> {
   connection: Connection<E, T>;
 }
 
-export interface IuseConnectionProps<T extends IConnectionValue> {
-  value: T;
-  error?: IConnectionError;
-  loading: boolean;
-}
+export type IuseConnectionProps<T extends IConnectionValue> = [
+  T,
+  { error?: IConnectionError; loading: boolean }
+];
 
 export const useConnection = <T extends IConnectionValue>({
   connection,
@@ -31,9 +30,5 @@ export const useConnection = <T extends IConnectionValue>({
       loading: data => updateLoading(data),
     });
   }, []);
-  return {
-    value,
-    error,
-    loading,
-  };
+  return [value, { error, loading }];
 };
