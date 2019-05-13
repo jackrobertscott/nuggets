@@ -76,7 +76,7 @@ export const Frame: FunctionComponent<IFrameProps> = ({
   }
   return createNuggie({
     ...features,
-    node: node || 'span',
+    node: node || 'div',
     children: children || value,
     events,
   });
