@@ -79,7 +79,7 @@ export interface IShapeDigester {
   space?: IUnit | ISpaceOptions;
   absolute?: IUnit | ISpaceOptions;
   zindex?: number;
-  between?: IUnit;
+  divide?: IUnit;
   circle?: boolean;
   size?: IUnit;
   width?: IUnit | ISizeOptions;
@@ -104,7 +104,7 @@ export const digestShape: IDigester<IShapeDigester> = ({
   direction,
   grow,
   wrap,
-  between,
+  divide,
   force,
   align,
   space,
@@ -254,7 +254,7 @@ export const digestShape: IDigester<IShapeDigester> = ({
   if (wrap !== undefined) {
     css.flexWrap = wrap ? 'wrap' : 'nowrap';
   }
-  if (between !== undefined) {
+  if (divide !== undefined) {
     const side =
       direction === 'left'
         ? 'Left'
@@ -264,7 +264,7 @@ export const digestShape: IDigester<IShapeDigester> = ({
         ? 'Top'
         : 'Bottom';
     css['& > *'] = {
-      [`margin${side}`]: formatUnits(between),
+      [`margin${side}`]: formatUnits(divide),
       [':last-child']: {
         [`margin${side}`]: 0,
       },
@@ -272,8 +272,8 @@ export const digestShape: IDigester<IShapeDigester> = ({
     if (wrap) {
       const wrapSide =
         direction === 'left' || direction === 'right' ? 'Bottom' : 'Right';
-      (css['& > *'] as any)[`margin${wrapSide}`] = formatUnits(between);
-      css[`margin${wrapSide}`] = `-${formatUnits(between)} !important`;
+      (css['& > *'] as any)[`margin${wrapSide}`] = formatUnits(divide);
+      css[`margin${wrapSide}`] = `-${formatUnits(divide)} !important`;
     }
   }
   if (force !== undefined) {

@@ -158,7 +158,7 @@ align?: 'start' | 'end' | 'center' | 'stretch';
 space?: IUnit | ISpaceOptions;
 absolute?: IUnit | ISpaceOptions;
 zindex?: number;
-between?: IUnit;
+divide?: IUnit;
 circle?: boolean;
 size?: IUnit;
 width?: IUnit | ISizeOptions;
