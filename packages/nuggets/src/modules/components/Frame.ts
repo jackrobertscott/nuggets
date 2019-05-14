@@ -1,4 +1,5 @@
 import { useState, useEffect, FunctionComponent, ReactNode } from 'react';
+import * as deep from 'deepmerge';
 import { IEventsExecuter } from '../../utils/types';
 import { createNuggie, INuggieProps } from '../../utils/dom';
 import { digestTexts, ITextsDigester } from '../../styles/texts';
@@ -50,10 +51,10 @@ export const Frame: FunctionComponent<IFrameProps> = ({
   };
   const features = {
     precss,
-    emote: {
-      ...(shape ? createCSSFromProps(shape, digestShape) : {}),
-      ...(fonts ? createCSSFromProps(fonts, digestTexts) : {}),
-    },
+    emote: deep(
+      fonts ? createCSSFromProps(fonts, digestTexts) : {},
+      shape ? createCSSFromProps(shape, digestShape) : {}
+    ),
     ...options,
   };
   if (editable) {
