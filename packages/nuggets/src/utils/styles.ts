@@ -10,6 +10,7 @@ export type IStylesOptions<S> = S & {
   hover?: S;
   press?: S;
   known?: S;
+  merge?: IStylesOptions<S>;
 };
 
 export type IcreateCSSFromProps = <S>(
@@ -42,7 +43,10 @@ export type IcreateCSSFromStyles = (
   data: IStylesOptions<IStylesDigester>
 ) => ICSS;
 
-export const createCSSFromStyles: IcreateCSSFromStyles = data => {
+export const createCSSFromStyles: IcreateCSSFromStyles = ({
+  merge,
+  ...data
+}) => {
   const digester: IDigester<IStylesDigester> = options => {
     return deep.all([
       fontsDigester(options),
@@ -51,5 +55,5 @@ export const createCSSFromStyles: IcreateCSSFromStyles = data => {
       transformDigester(options),
     ]) as ICSS;
   };
-  return createCSSFromProps(data, digester);
+  return createCSSFromProps(deep.all([data, merge || {}]), digester);
 };

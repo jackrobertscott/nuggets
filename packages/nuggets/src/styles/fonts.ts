@@ -29,6 +29,15 @@ export interface IFontsOptions {
   thickness?: number | string;
 }
 
+/**
+ * The reason why storing font styles in a single object
+ * can be bad is because of how we spread the properties
+ * when combining them with new ones e.g.
+ *
+ * styles={{ fonts: {}, ...styles }}
+ *
+ * in this circumstance, the fonts can be easily overridden...
+ */
 export interface IFontsDigester {
   fonts?: IFontsOptions;
 }
