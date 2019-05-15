@@ -115,7 +115,7 @@ export default ({ children, color = 'white' }) => (
           right: 3,
         },
       },
-      shade: {
+      shadows: {
         color: 'black',
         blur: 10,
         down: 3,
@@ -149,7 +149,7 @@ Nuggets styles do not match up directly to CSS. Instead, we use the power of Jav
 color?: string;
 alpha?: number;
 gradient?: IGradientOptions;
-shade?: IShadeOptions;
+shadows?: IShadeOptions;
 corners?: IUnit | ICornersOptions;
 borders?: IBordersOptions;
 direction?: IDirections;

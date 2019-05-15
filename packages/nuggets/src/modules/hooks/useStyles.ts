@@ -1,27 +1,26 @@
 import { useEffect, useState } from 'react';
-import { createCSSFromProps } from '../../utils/styles';
-import { digestShape, IShapeDigester } from '../../styles/shape';
+import {
+  IStylesOptions,
+  IStylesDigester,
+  createCSSFromStyles,
+} from '../../utils/styles';
 import { emotion } from '../../utils/emotion';
-
-export interface IuseFrameStylesOptions {
-  [property: string]: any;
-}
 
 export interface IuseFrameStylesProps {
   classname?: string;
 }
 
 export const useFrameStyles = (
-  options: IuseFrameStylesOptions
+  styles: IStylesOptions<IStylesDigester>
 ): IuseFrameStylesProps => {
   const [classname, change] = useState<string | undefined>(undefined);
   useEffect(
     () => {
-      const css = createCSSFromProps<IShapeDigester>(options, digestShape);
+      const css = createCSSFromStyles(styles);
       const name = emotion.css(css);
       change(name);
     },
-    [options]
+    [styles]
   );
   return {
     classname,

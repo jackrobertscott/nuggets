@@ -1,15 +1,10 @@
 import { useState, useEffect, FunctionComponent, ReactNode } from 'react';
-import * as deep from 'deepmerge';
 import { IEventsExecuter } from '../../utils/types';
 import { createNuggie, INuggieProps } from '../../utils/dom';
-import { digestTexts, ITextsDigester } from '../../styles/texts';
-import { createCSSFromProps, IStylesOptions } from '../../utils/styles';
-import { IShapeDigester, digestShape } from '../../styles/shape';
+import { createCSSFromStyles } from '../../utils/styles';
 
 export type IFrameProps = INuggieProps & {
   children?: ReactNode;
-  shape?: IStylesOptions<IShapeDigester>;
-  fonts?: IStylesOptions<ITextsDigester>;
   value?: string | number;
   change?: IEventsExecuter<string | number>;
   placeholder?: string | number;
@@ -19,11 +14,10 @@ export type IFrameProps = INuggieProps & {
 };
 
 export const Frame: FunctionComponent<IFrameProps> = ({
-  children,
   node,
-  shape,
-  fonts,
   events = {},
+  styles = {},
+  children,
   placeholder,
   editable = false,
   multiline,
@@ -49,25 +43,22 @@ export const Frame: FunctionComponent<IFrameProps> = ({
       display: 'none',
     },
   };
-  const features = {
+  const setup = {
     precss,
-    emote: deep(
-      fonts ? createCSSFromProps(fonts, digestTexts) : {},
-      shape ? createCSSFromProps(shape, digestShape) : {}
-    ),
+    emote: createCSSFromStyles(styles),
     ...options,
   };
   if (editable) {
     if (multiline) {
       return createNuggie({
-        ...features,
+        ...setup,
         node: node || 'textarea',
         extras: { value, placeholder, rows: multiline },
         events: { change, ...events },
       });
     } else {
       return createNuggie({
-        ...features,
+        ...setup,
         node: node || 'input',
         extras: { value, placeholder, type },
         events: { change, ...events },
@@ -76,7 +67,7 @@ export const Frame: FunctionComponent<IFrameProps> = ({
     }
   }
   return createNuggie({
-    ...features,
+    ...setup,
     node: node || 'div',
     children: children || value,
     events,

@@ -1,17 +1,5 @@
-import {
-  ICSS,
-  IDigester,
-  IUnit,
-  IDirections,
-  IDiagonals,
-} from '../utils/types';
+import { ICSS, IDigester, IUnit, IDiagonals } from '../utils/types';
 import { formatUnits } from '../utils/helpers';
-
-export interface ITransform3dOptions {
-  x?: IUnit;
-  y?: IUnit;
-  z?: IUnit;
-}
 
 export interface IShadeOptions {
   color?: string;
@@ -65,67 +53,72 @@ export interface ISpaceOptions {
 }
 
 export interface IShapeDigester {
-  color?: string;
-  alpha?: number;
-  gradient?: IGradientOptions;
-  shade?: IShadeOptions | IShadeOptions[];
-  corners?: IUnit | ICornersOptions;
-  borders?: string | IBordersOptions;
-  direction?: IDirections;
-  grow?: boolean;
-  wrap?: boolean;
-  force?: 'start' | 'end' | 'center' | 'stretch' | 'between' | 'even';
-  align?: 'start' | 'end' | 'center' | 'stretch';
-  space?: IUnit | ISpaceOptions;
-  absolute?: IUnit | ISpaceOptions;
   zindex?: number;
-  divide?: IUnit;
-  circle?: boolean;
-  size?: IUnit;
-  width?: IUnit | ISizeOptions;
-  height?: IUnit | ISizeOptions;
-  collapse?: boolean;
   transition?: IUnit;
   cursor?: string;
   overflow?: string;
   events?: string;
-  rotate?: IUnit | ITransform3dOptions;
-  scale?: number | ITransform3dOptions;
-  translate?: IUnit | ITransform3dOptions;
+  absolute?: IUnit | ISpaceOptions;
+  color?: string;
+  gradient?: IGradientOptions;
+  alpha?: number;
+  size?: IUnit;
+  circle?: boolean;
+  collapse?: boolean;
+  width?: IUnit | ISizeOptions;
+  height?: IUnit | ISizeOptions;
+  padding?: IUnit | ISpaceOptions;
+  shadows?: IShadeOptions | IShadeOptions[];
+  corners?: IUnit | ICornersOptions;
+  borders?: string | IBordersOptions;
 }
 
-export const digestShape: IDigester<IShapeDigester> = ({
-  color,
-  gradient,
-  alpha,
-  shade,
-  corners,
-  borders,
-  direction,
-  grow,
-  wrap,
-  divide,
-  force,
-  align,
-  space,
-  absolute,
+export const shapeDigester: IDigester<IShapeDigester> = ({
   zindex,
-  circle,
-  size,
-  height,
-  width,
-  collapse,
   transition,
   cursor,
   overflow,
   events,
-  rotate,
-  scale,
-  translate,
+  absolute,
+  color,
+  gradient,
+  alpha,
+  size,
+  circle,
+  collapse,
+  width,
+  height,
+  padding,
+  shadows,
+  corners,
+  borders,
 }) => {
   const css: ICSS = {};
+  if (zindex !== undefined) {
+    css.zIndex = zindex;
+  }
+  if (transition !== undefined) {
+    css.transition = formatUnits(transition, 'ms');
+  }
+  if (cursor !== undefined) {
+    css.cursor = cursor;
+  }
+  if (overflow !== undefined) {
+    css.overflow = overflow;
+  }
+  if (events !== undefined) {
+    css.pointerEvents = events;
+  }
+  /**
+   * Colors.
+   */
   if (color !== undefined) {
     css.backgroundColor = color;
+  }
+  if (gradient !== undefined) {
+    const angle = gradient.angle || 10;
+    const colors = gradient.color || [];
+    css.background = `linear-gradient(${angle}deg, ${colors.join(', ')})`;
   }
   if (alpha !== undefined) {
     if (alpha > 1 || alpha < 0) {
@@ -134,12 +127,82 @@ export const digestShape: IDigester<IShapeDigester> = ({
     }
     css.opacity = alpha;
   }
-  if (gradient !== undefined) {
-    const angle = gradient.angle || 10;
-    const colors = gradient.color || [];
-    css.background = `linear-gradient(${angle}deg, ${colors.join(', ')})`;
+  /**
+   * Sizes.
+   */
+  if (size !== undefined) {
+    css.width = formatUnits(size);
+    css.height = formatUnits(size);
   }
-  if (shade !== undefined) {
+  if (circle === true) {
+    css.borderRadius = '50%';
+  }
+  if (collapse !== undefined) {
+    css.width = 'fit-content';
+  }
+  if (width !== undefined) {
+    if (typeof width === 'number' || typeof width === 'string') {
+      css.width = formatUnits(width);
+    } else {
+      const { min, max, use } = width as ISizeOptions;
+      if (min) {
+        css.minWidth = formatUnits(min);
+      }
+      if (max) {
+        css.maxWidth = formatUnits(max);
+      }
+      if (use) {
+        css.width = formatUnits(use);
+      }
+    }
+  }
+  if (height !== undefined) {
+    if (typeof height === 'number' || typeof height === 'string') {
+      css.height = formatUnits(height);
+    } else {
+      const { min, max, use } = height as ISizeOptions;
+      if (min) {
+        css.minHeight = formatUnits(min);
+      }
+      if (max) {
+        css.maxHeight = formatUnits(max);
+      }
+      if (use) {
+        css.height = formatUnits(use);
+      }
+    }
+  }
+  if (padding !== undefined) {
+    if (typeof padding === 'number' || typeof padding === 'string') {
+      css.padding = formatUnits(padding);
+    } else {
+      const { top, right, bottom, left, sides, verts } = padding;
+      if (verts !== undefined) {
+        css.paddingTop = formatUnits(verts);
+        css.paddingBottom = formatUnits(verts);
+      }
+      if (sides !== undefined) {
+        css.paddingRight = formatUnits(sides);
+        css.paddingLeft = formatUnits(sides);
+      }
+      if (top !== undefined) {
+        css.paddingTop = formatUnits(top);
+      }
+      if (right !== undefined) {
+        css.paddingRight = formatUnits(right);
+      }
+      if (bottom !== undefined) {
+        css.paddingBottom = formatUnits(bottom);
+      }
+      if (left !== undefined) {
+        css.paddingLeft = formatUnits(left);
+      }
+    }
+  }
+  /**
+   * Edges.
+   */
+  if (shadows !== undefined) {
     const createShadow = (data: IShadeOptions) => {
       return [
         formatUnits(data.across),
@@ -151,9 +214,9 @@ export const digestShape: IDigester<IShapeDigester> = ({
         .join(' ')
         .trim();
     };
-    css.boxShadow = Array.isArray(shade)
-      ? shade.map(createShadow).join(', ')
-      : createShadow(shade);
+    css.boxShadow = Array.isArray(shadows)
+      ? shadows.map(createShadow).join(', ')
+      : createShadow(shadows);
   }
   if (corners !== undefined) {
     if (typeof corners === 'number' || typeof corners === 'string') {
@@ -231,191 +294,9 @@ export const digestShape: IDigester<IShapeDigester> = ({
       }
     }
   }
-  if (direction !== undefined) {
-    switch (direction) {
-      default:
-      case 'down':
-        css.flexDirection = 'column';
-        break;
-      case 'up':
-        css.flexDirection = 'column-reverse';
-        break;
-      case 'right':
-        css.flexDirection = 'row';
-        break;
-      case 'left':
-        css.flexDirection = 'row-reverse';
-        break;
-    }
-  }
-  if (grow !== undefined) {
-    css.flexGrow = grow ? 1 : 0;
-  }
-  if (wrap !== undefined) {
-    css.flexWrap = wrap ? 'wrap' : 'nowrap';
-  }
-  if (divide !== undefined) {
-    const side =
-      direction === 'left'
-        ? 'Left'
-        : direction === 'right'
-        ? 'Right'
-        : direction === 'up'
-        ? 'Top'
-        : 'Bottom';
-    css['& > *'] = {
-      [`margin${side}`]: formatUnits(divide),
-      [':last-child']: {
-        [`margin${side}`]: 0,
-      },
-    };
-    if (wrap) {
-      const wrapSide =
-        direction === 'left' || direction === 'right' ? 'Bottom' : 'Right';
-      (css['& > *'] as any)[`margin${wrapSide}`] = formatUnits(divide);
-      css[`margin${wrapSide}`] = `-${formatUnits(divide)} !important`;
-    }
-  }
-  if (force !== undefined) {
-    switch (force) {
-      default:
-      case 'start':
-        css.justifyContent = 'flex-start';
-        break;
-      case 'end':
-        css.justifyContent = 'flex-end';
-        break;
-      case 'center':
-        css.justifyContent = 'center';
-        break;
-      case 'between':
-        css.justifyContent = 'space-between';
-        break;
-      case 'even':
-        css.justifyContent = 'space-evenly';
-        break;
-      case 'stretch':
-        css.justifyContent = 'stretch';
-        break;
-    }
-  }
-  if (align !== undefined) {
-    switch (align) {
-      default:
-      case 'start':
-        css.alignItems = 'flex-start';
-        break;
-      case 'end':
-        css.alignItems = 'flex-end';
-        break;
-      case 'center':
-        css.alignItems = 'center';
-        break;
-      case 'stretch':
-        css.alignItems = 'stretch';
-        break;
-    }
-  }
-  if (space !== undefined) {
-    if (typeof space === 'number' || typeof space === 'string') {
-      css.padding = formatUnits(space);
-    } else {
-      const { top, right, bottom, left, sides, verts } = space;
-      if (verts !== undefined) {
-        css.paddingTop = formatUnits(verts);
-        css.paddingBottom = formatUnits(verts);
-      }
-      if (sides !== undefined) {
-        css.paddingRight = formatUnits(sides);
-        css.paddingLeft = formatUnits(sides);
-      }
-      if (top !== undefined) {
-        css.paddingTop = formatUnits(top);
-      }
-      if (right !== undefined) {
-        css.paddingRight = formatUnits(right);
-      }
-      if (bottom !== undefined) {
-        css.paddingBottom = formatUnits(bottom);
-      }
-      if (left !== undefined) {
-        css.paddingLeft = formatUnits(left);
-      }
-    }
-  }
-  if (zindex !== undefined) {
-    css.zIndex = zindex;
-  }
-  if (circle === true) {
-    css.borderRadius = '50%';
-  }
-  if (size !== undefined) {
-    css.height = formatUnits(size);
-    css.width = formatUnits(size);
-  }
-  if (collapse !== undefined) {
-    css.width = 'fit-content';
-  }
-  if (width !== undefined) {
-    if (typeof width === 'number' || typeof width === 'string') {
-      css.width = formatUnits(width);
-    } else {
-      const { min, max, use } = width as ISizeOptions;
-      if (min) {
-        css.minWidth = formatUnits(min);
-      }
-      if (max) {
-        css.maxWidth = formatUnits(max);
-      }
-      if (use) {
-        css.width = formatUnits(use);
-      }
-    }
-  }
-  if (height !== undefined) {
-    if (typeof height === 'number' || typeof height === 'string') {
-      css.height = formatUnits(height);
-    } else {
-      const { min, max, use } = height as ISizeOptions;
-      if (min) {
-        css.minHeight = formatUnits(min);
-      }
-      if (max) {
-        css.maxHeight = formatUnits(max);
-      }
-      if (use) {
-        css.height = formatUnits(use);
-      }
-    }
-  }
-  if (transition !== undefined) {
-    css.transition = formatUnits(transition, 'ms');
-  }
-  if (cursor !== undefined) {
-    css.cursor = cursor;
-  }
-  if (overflow !== undefined) {
-    css.overflow = overflow;
-  }
-  if (events !== undefined) {
-    css.pointerEvents = events;
-  }
-  const transforms: string[] = [];
-  if (rotate !== undefined) {
-    transforms.push(createRotateTransform(rotate));
-  }
-  if (scale !== undefined) {
-    transforms.push(createScaleTransform(scale));
-  }
-  if (translate !== undefined) {
-    transforms.push(createTranslateTransform(translate));
-  }
-  if (transforms.length) {
-    css.transform = transforms
-      .filter(exists => exists)
-      .join(' ')
-      .trim();
-  }
+  /**
+   * Position.
+   */
   if (absolute !== undefined) {
     css.position = 'absolute';
     css.margin = 0;
@@ -449,71 +330,4 @@ export const digestShape: IDigester<IShapeDigester> = ({
     }
   }
   return css;
-};
-
-const createTransform = (name: string, value: any): string => {
-  if (typeof value === 'number' || typeof value === 'string') {
-    return `${name}(${value})`;
-  }
-  return '';
-};
-
-const createRotateTransform = (
-  rotate?: IUnit | ITransform3dOptions
-): string => {
-  let transforms = '';
-  if (rotate !== undefined) {
-    if (typeof rotate === 'number' || typeof rotate === 'string') {
-      transforms = createTransform('rotate', formatUnits(rotate, 'deg'));
-    } else {
-      const { x, y, z } = rotate as ITransform3dOptions;
-      transforms = [
-        transforms,
-        createTransform('rotateX', formatUnits(x, 'deg')),
-        createTransform('rotateY', formatUnits(y, 'deg')),
-        createTransform('rotateZ', formatUnits(z, 'deg')),
-      ]
-        .filter(exists => exists)
-        .join(' ')
-        .trim();
-    }
-  }
-  return transforms;
-};
-
-const createScaleTransform = (scale?: number | ITransform3dOptions): string => {
-  let transforms = '';
-  if (scale !== undefined) {
-    if (typeof scale === 'number') {
-      transforms = createTransform('scale', scale);
-    } else {
-      const { x, y, z } = scale as ITransform3dOptions;
-      transforms =
-        z === undefined
-          ? `scale(${x || 1}, ${y || 1})`
-          : `scale3d(${x || 1}, ${y || 1}, ${z || 1})`;
-    }
-  }
-  return transforms;
-};
-
-const createTranslateTransform = (
-  translate?: IUnit | ITransform3dOptions
-): string => {
-  let transforms = '';
-  if (translate !== undefined) {
-    if (typeof translate === 'number' || typeof translate === 'string') {
-      transforms = createTransform('translate', translate);
-    } else {
-      const { x, y, z } = translate as ITransform3dOptions;
-      if (z === undefined) {
-        transforms = `translate(${formatUnits(x)}, ${formatUnits(y)})`;
-      } else {
-        transforms = `translate3d(${formatUnits(x)}, ${formatUnits(
-          y
-        )}, ${formatUnits(z)})`;
-      }
-    }
-  }
-  return transforms;
 };

@@ -1,8 +1,8 @@
 import { createElement } from 'react';
 import * as deep from 'deepmerge';
 import { IEventsOptions, createEvents } from './events';
+import { IStylesOptions, IStylesDigester } from './styles';
 import { ICSS } from './types';
-import { IStylesOptions } from './styles';
 import { ensure } from './helpers';
 import { emotion, tag } from './emotion';
 import { standardize } from './clean';
@@ -22,6 +22,7 @@ export interface INuggieProps {
   css?: ICSS;
   into?: IRandom;
   events?: IEventsOptions;
+  styles?: IStylesOptions<IStylesDigester>;
   unclean?: boolean;
   reference?: any;
 }
