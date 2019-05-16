@@ -79,7 +79,7 @@ export const standardize = `
   float: none;
   font: normal;
   font-family: inherit;
-  font-size: medium;
+  font-size: inherit;
   font-style: normal;
   font-variant: normal;
   font-weight: normal;
