@@ -1,18 +1,19 @@
 import { useState, useEffect } from 'react';
-import { IOptional } from '../../utils/types';
 
 export interface IuseDatetimeOperate {
   value: number | string;
   change: (value: number | string) => any;
 }
 
-export type IuseDatetimeOptions = IOptional<{
+export interface IuseDatetimeOptions {
   value?: Date;
-  error?: any;
   change?: (value: Date) => any;
-}>;
+  error?: any;
+}
 
 export interface IuseDatetimeProps {
+  value: Date;
+  change: (value: Date) => any;
   year: IuseDatetimeOperate;
   month: IuseDatetimeOperate;
   date: IuseDatetimeOperate;
@@ -21,33 +22,33 @@ export interface IuseDatetimeProps {
   seconds: IuseDatetimeOperate;
   milliseconds: IuseDatetimeOperate;
   error: any;
-  use: {
-    value: Date;
-    change: (value: Date) => any;
-  };
 }
 
-export const useDatetime = (
-  options: IuseDatetimeOptions = {}
-): IuseDatetimeProps => {
-  const [value, update] = useState<Date>(options.value || new Date());
-  useEffect(() => change(options.value), [options.value]);
-  const change = (next?: Date) => {
+export const useDatetime = ({
+  value,
+  change,
+  error,
+}: IuseDatetimeOptions = {}): IuseDatetimeProps => {
+  const [state, update] = useState<Date>(value || new Date());
+  useEffect(() => mutate(value), [value]);
+  const mutate = (next?: Date) => {
     const data = next || new Date();
     update(data);
-    if (options.change) {
-      options.change(data);
+    if (change) {
+      change(data);
     }
   };
   const operate = (type: string) => ({
-    value: (value as any)[`get${type}`](),
+    value: (state as any)[`get${type}`](),
     adjust: (next: number | string) => Number(next),
     change: (next: number | string) => {
-      (value as any)[`set${type}`](Number(next));
-      change(new Date(value.valueOf()));
+      (state as any)[`set${type}`](Number(next));
+      mutate(new Date(state.valueOf()));
     },
   });
   return {
+    value: state,
+    change: mutate,
     year: operate('Year'),
     month: operate('Month'),
     date: operate('Date'),
@@ -55,10 +56,6 @@ export const useDatetime = (
     minutes: operate('Minutes'),
     seconds: operate('Seconds'),
     milliseconds: operate('Milliseconds'),
-    error: options.error,
-    use: {
-      value,
-      change,
-    },
+    error,
   };
 };

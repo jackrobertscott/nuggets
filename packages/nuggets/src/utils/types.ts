@@ -8,8 +8,6 @@ export type IDigester<M> = (options: M) => ICSS;
 
 export type IEventsExecuter<T> = (value: T, event?: any) => any;
 
-export type IOptional<T> = undefined | T;
-
 export type ISides = 'top' | 'right' | 'bottom' | 'left';
 
 export type IDirections = 'down' | 'right' | 'up' | 'left';

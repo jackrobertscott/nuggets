@@ -12,9 +12,11 @@ export interface IuseStoreProps<T> {
 export const useStore = <T extends IStoreValue>({
   store,
 }: IuseStoreOptions<T>): IuseStoreProps<T> => {
-  const [value, update] = useState<T>(store.state());
+  const [state, update] = useState<T>(store.state());
   useEffect(() => {
     return store.attach((data: T) => update(data));
   }, []);
-  return { value };
+  return {
+    value: state,
+  };
 };

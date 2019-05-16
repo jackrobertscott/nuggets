@@ -1,48 +1,45 @@
 import { useState, useEffect } from 'react';
-import { IOptional } from '../../utils/types';
 
-export type IuseToggleOptions = IOptional<{
+export interface IuseToggleOptions {
   value?: any;
-  error?: any;
   change?: (value: boolean) => any;
-}>;
+  error?: any;
+}
 
 export interface IuseToggleProps {
+  value: boolean;
+  change: (value: boolean) => any;
   on: (...args: any[]) => any;
   off: (...args: any[]) => any;
   toggle: (override?: boolean, ...args: any[]) => any;
-  active: boolean;
   error: any;
-  use: {
-    value: boolean;
-    change: (value: boolean) => any;
-  };
 }
 
-export const useToggle = (options: IuseToggleOptions = {}): IuseToggleProps => {
-  const [value, update] = useState<boolean>(!!options.value || false);
-  useEffect(() => change(options.value), [options.value]);
-  const change = (next: boolean) => {
+export const useToggle = ({
+  value,
+  change,
+  error,
+}: IuseToggleOptions = {}): IuseToggleProps => {
+  const [state, update] = useState<boolean>(!!value || false);
+  useEffect(() => mutate(value), [value]);
+  const mutate = (next: boolean) => {
     const data = !!next || false;
     update(data);
-    if (options.change) {
-      options.change(data);
+    if (change) {
+      change(data);
     }
   };
-  const on = () => change(true);
-  const off = () => change(false);
+  const on = () => mutate(true);
+  const off = () => mutate(false);
   const toggle = (override?: boolean) => {
-    change(typeof override === 'boolean' ? override : !value);
+    mutate(typeof override === 'boolean' ? override : !state);
   };
   return {
-    active: value,
+    value: state,
+    change: mutate,
     on,
     off,
     toggle,
-    error: options.error,
-    use: {
-      value,
-      change,
-    },
+    error,
   };
 };

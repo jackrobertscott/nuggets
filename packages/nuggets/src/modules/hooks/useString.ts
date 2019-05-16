@@ -1,33 +1,37 @@
 import { useState, useEffect } from 'react';
-import { IOptional } from '../../utils/types';
 
-export type IuseStringOptions = IOptional<{
+export interface IuseStringOptions {
   value?: any;
-  error?: any;
   change?: (value: string) => any;
   adjust?: (value: string) => string;
-}>;
+  error?: any;
+}
 
 export interface IuseStringProps {
   value: any;
-  error: any;
   change: (value: any) => any;
+  error: any;
 }
 
-export const useString = (options: IuseStringOptions = {}): IuseStringProps => {
-  const [value, update] = useState<string>(options.value || '');
-  useEffect(() => change(options.value), [options.value]);
-  const change = (next?: any) => {
+export const useString = ({
+  value,
+  adjust,
+  change,
+  error,
+}: IuseStringOptions = {}): IuseStringProps => {
+  const [state, update] = useState<string>(value || '');
+  useEffect(() => mutate(value), [value]);
+  const mutate = (next?: any) => {
     const nice = String(next || '');
-    const data = options.adjust ? options.adjust(nice) : nice;
+    const data = adjust ? adjust(nice) : nice;
     update(data);
-    if (options.change) {
-      options.change(data);
+    if (change) {
+      change(data);
     }
   };
   return {
-    value,
-    error: options.error,
-    change,
+    value: state,
+    change: mutate,
+    error,
   };
 };

@@ -17,9 +17,8 @@ export interface IuseConnectionProps<T extends IConnectionValue> {
 
 export const useConnection = <T extends IConnectionValue>({
   connection,
-  ...options
 }: IuseConnectionOptions<unknown, T>): IuseConnectionProps<T> => {
-  const [value, update] = useState<T>({} as any);
+  const [state, update] = useState<T>({} as any);
   const [error, updateError] = useState<IConnectionError | undefined>(
     undefined
   );
@@ -31,5 +30,9 @@ export const useConnection = <T extends IConnectionValue>({
       loading: data => updateLoading(data),
     });
   }, []);
-  return { value, error, loading };
+  return {
+    value: state,
+    loading,
+    error,
+  };
 };

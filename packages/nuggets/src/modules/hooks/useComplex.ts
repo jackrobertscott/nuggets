@@ -1,11 +1,10 @@
 import { useState, useEffect } from 'react';
-import { IOptional } from '../../utils/types';
 
 export interface IComplexValue {
   [name: string]: any;
 }
 
-export type IuseComplexOptions = IOptional<{
+export interface IuseComplexOptions {
   value?: IComplexValue;
   change?: (value: IComplexValue) => any;
   schema?: {
@@ -13,11 +12,11 @@ export type IuseComplexOptions = IOptional<{
       validate: (data: any) => Promise<any>;
     };
   };
-}>;
+}
 
 export interface IuseComplexProps {
   value: IComplexValue;
-  errors: IComplexValue;
+  error: IComplexValue;
   invalid: boolean;
   change: (value: IComplexValue) => any;
   override: (next?: any) => void;
@@ -30,53 +29,55 @@ export interface IuseComplexProps {
   };
 }
 
-export const useComplex = (
-  options: IuseComplexOptions = {}
-): IuseComplexProps => {
-  const [value, update] = useState<IComplexValue>(options.value || {});
-  const [errors, updateErrors] = useState<IComplexValue>({});
-  useEffect(() => change(options.value), [options.value]);
+export const useComplex = ({
+  value,
+  change,
+  schema,
+}: IuseComplexOptions = {}): IuseComplexProps => {
+  const [state, update] = useState<IComplexValue>(value || {});
+  const [error, updateErrors] = useState<IComplexValue>({});
+  useEffect(() => mutate(value), [value]);
   const override = (next?: any) => {
     const data = next || {};
     update(data);
-    if (options.change) {
-      options.change(data);
+    if (change) {
+      change(data);
     }
-    if (options.schema) {
-      const tasks = Object.keys(options.schema).map(key => {
+    if (schema) {
+      const tasks = Object.keys(schema).map(key => {
         return (
-          options.schema &&
-          options.schema[key]
+          schema &&
+          schema[key]
             .validate(data[key])
             .then(() => ({ [key]: undefined }))
-            .catch(error => ({ [key]: error }))
+            .catch((e: Error) => ({ [key]: e }))
         );
       });
       Promise.all(tasks as Array<Promise<any>>).then(values => {
-        const issues = values.reduce((all, error) => {
+        const issues = values.reduce((all, e) => {
           return {
             ...all,
-            ...(error || {}),
+            ...(e || {}),
           };
         }, {});
         updateErrors(issues);
       });
     }
   };
-  const change = (next?: IComplexValue) => {
-    override({ ...value, ...(next || {}) });
+  const mutate = (next?: IComplexValue) => {
+    override({ ...state, ...(next || {}) });
   };
   const operate = (name: string) => ({
-    value: value[name],
-    error: errors[name],
-    change: (data: any) => change({ [name]: data }),
+    value: state[name],
+    error: error[name],
+    change: (data: any) => mutate({ [name]: data }),
   });
   return {
-    value,
-    errors,
-    invalid: !!Object.keys(errors).filter(key => errors[key]).length,
-    change,
+    value: state,
+    invalid: !!Object.keys(error).filter(key => error[key]).length,
+    change: mutate,
     operate,
     override,
+    error,
   };
 };

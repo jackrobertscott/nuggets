@@ -1,48 +1,39 @@
 import { useState, useEffect } from 'react';
 import * as queryString from 'query-string';
-import { IOptional } from '../../utils/types';
-import history from '../../utils/history';
+import history, { ILocation } from '../../utils/history';
 import { matchPath, IDigestOptions } from '../../utils/path';
 
-export interface IHistoryState {
-  pathname: string;
-  search: string;
-  hash: string;
+export interface IuseAddressOptions {}
+
+export type IuseAddressProps = ILocation & {
+  value: ILocation;
+  params: queryString.ParsedQuery;
   entries: number;
-}
-
-export type IuseAddressOptions = IOptional<{}>;
-
-export type IuseAddressProps = IHistoryState & {
   change: (address: string) => any;
   shift: (entries: number) => any;
   backward: () => any;
   forward: () => any;
   match: (options: { path: string } & IDigestOptions) => boolean;
-  params: queryString.ParsedQuery;
   parse: (search: string) => { [param: string]: unknown };
   stringify: (data: { [param: string]: unknown }) => string;
 };
 
-export const useAddress = (
-  options: IuseAddressOptions = {}
-): IuseAddressProps => {
-  const [value, update] = useState<IHistoryState>({
-    pathname: history.location.pathname,
-    search: history.location.search,
-    hash: history.location.hash,
-    entries: history.length,
+export const useAddress = ({
+  ...options
+}: IuseAddressOptions = {}): IuseAddressProps => {
+  const [state, update] = useState<ILocation>({
+    ...history.location,
   });
   useEffect(() => {
-    return history.listen(({ pathname, search, hash }) => {
-      update({ pathname, search, hash, entries: history.length });
+    return history.listen((data: ILocation) => {
+      update(data);
     });
   }, []);
   const change = (address: string) => history.push(address);
   const shift = (entries: number) => history.go(entries);
   const forward = () => history.goForward();
   const backward = () => history.goForward();
-  const params = value.search ? queryString.parse(value.search) : {};
+  const params = state.search ? queryString.parse(state.search) : {};
   const parse = (search: string) => queryString.parse(search);
   const stringify = (data: { [param: string]: unknown }) =>
     queryString.stringify(data);
@@ -51,20 +42,22 @@ export const useAddress = (
     ...digestOptions
   }: { path: string } & IDigestOptions) => {
     return matchPath({
-      currentPath: value.pathname,
+      currentPath: state.pathname,
       routePath: path,
       options: digestOptions,
     });
   };
   return {
+    ...state,
+    value: state,
+    params,
+    entries: history.length,
     change,
     shift,
     forward,
     backward,
     match,
-    params,
     parse,
     stringify,
-    ...value,
   };
 };

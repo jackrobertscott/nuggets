@@ -18,14 +18,15 @@ export const Frame: FunctionComponent<IFrameProps> = ({
   events = {},
   styles = {},
   children,
+  value,
   placeholder,
   editable = false,
   multiline,
   type,
   ...options
 }) => {
-  const [value, update] = useState<string>(String(options.value || ''));
-  useEffect(() => change(options.value), [options.value]);
+  const [state, update] = useState<string>(String(value || ''));
+  useEffect(() => change(value), [value]);
   const change = (next?: string | number) => {
     const data = String(next || '');
     update(data);
@@ -53,14 +54,14 @@ export const Frame: FunctionComponent<IFrameProps> = ({
       return createNuggie({
         ...setup,
         node: node || 'textarea',
-        extras: { value, placeholder, rows: multiline },
+        extras: { value: state, placeholder, rows: multiline },
         events: { change, ...events },
       });
     } else {
       return createNuggie({
         ...setup,
         node: node || 'input',
-        extras: { value, placeholder, type },
+        extras: { value: state, placeholder, type },
         events: { change, ...events },
         precss: { ...precss, boxSizing: 'content-box' },
       });
@@ -69,7 +70,7 @@ export const Frame: FunctionComponent<IFrameProps> = ({
   return createNuggie({
     ...setup,
     node: node || 'div',
-    children: children || value,
+    children: children || state,
     events,
   });
 };
