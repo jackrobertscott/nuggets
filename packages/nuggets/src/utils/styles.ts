@@ -43,10 +43,7 @@ export type IcreateCSSFromStyles = (
   data: IStylesOptions<IStylesDigester>
 ) => ICSS;
 
-export const createCSSFromStyles: IcreateCSSFromStyles = ({
-  merge,
-  ...data
-}) => {
+export const createCSSFromStyles: IcreateCSSFromStyles = data => {
   const digester: IDigester<IStylesDigester> = options => {
     return deep.all([
       fontsDigester(options),
@@ -55,5 +52,5 @@ export const createCSSFromStyles: IcreateCSSFromStyles = ({
       transformDigester(options),
     ]) as ICSS;
   };
-  return createCSSFromProps(deep.all([data, merge || {}]), digester);
+  return createCSSFromProps(data, digester);
 };

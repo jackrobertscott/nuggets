@@ -1,9 +1,11 @@
 import { useState, useEffect, FunctionComponent, ReactNode } from 'react';
+import * as deep from 'deepmerge';
 import { IEventsExecuter } from '../../utils/types';
 import { createNuggie, INuggieProps } from '../../utils/dom';
 import { createCSSFromStyles } from '../../utils/styles';
 
 export type IFrameProps = INuggieProps & {
+  merge?: IFrameProps;
   children?: ReactNode;
   value?: string | number;
   change?: IEventsExecuter<string | number>;
@@ -14,18 +16,21 @@ export type IFrameProps = INuggieProps & {
 };
 
 export const Frame: FunctionComponent<IFrameProps> = ({
-  node,
-  events = {},
-  styles = {},
-  children,
-  value,
-  change,
-  placeholder,
-  editable = false,
-  multiline,
-  type,
+  merge,
   ...options
 }) => {
+  const {
+    node,
+    events = {},
+    styles = {},
+    children,
+    value,
+    change,
+    placeholder,
+    editable = false,
+    multiline,
+    type,
+  } = deep.all([options, merge || {}]) as IFrameProps;
   const starts: string | number = value
     ? value
     : typeof children === 'number' || typeof children === 'string'
