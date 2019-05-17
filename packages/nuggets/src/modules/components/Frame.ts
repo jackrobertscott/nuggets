@@ -30,7 +30,7 @@ export const Frame: FunctionComponent<IFrameProps> = ({
     editable = false,
     multiline,
     type,
-  } = deep.all([options, merge || {}]) as IFrameProps;
+  } = merge ? (deep.all([options, merge]) as IFrameProps) : options;
   const starts: string | number = value
     ? value
     : typeof children === 'number' || typeof children === 'string'
