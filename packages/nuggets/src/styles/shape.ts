@@ -1,8 +1,9 @@
 import { ICSS, IDigester, IUnit, IDiagonals } from '../utils/types';
 import { formatUnits } from '../utils/helpers';
+import { IColor, createColor } from '../utils/theme';
 
 export interface IShadeOptions {
-  color?: string;
+  color?: IColor;
   blur?: IUnit;
   grow?: IUnit;
   down?: IUnit;
@@ -17,7 +18,7 @@ export interface ISideOptions {
 }
 
 export interface IBordersOptions {
-  color?: string;
+  color?: IColor;
   sides?: IUnit | ISideOptions;
   style?:
     | 'dotted'
@@ -34,7 +35,7 @@ export type ICornersOptions = { [sides in IDiagonals]?: IUnit };
 
 export interface IGradientOptions {
   angle?: number;
-  color?: string[];
+  color?: IColor[];
 }
 
 export interface ISizeOptions {
@@ -59,7 +60,7 @@ export interface IShapeDigester {
   overflow?: string;
   events?: string;
   absolute?: IUnit | ISpaceOptions;
-  color?: string;
+  color?: IColor;
   gradient?: IGradientOptions;
   alpha?: number;
   size?: IUnit;
@@ -73,7 +74,7 @@ export interface IShapeDigester {
   borders?: string | IBordersOptions;
 }
 
-export const shapeDigester: IDigester<IShapeDigester> = ({
+export const shapeDigester: IDigester<IShapeDigester> = theme => ({
   zindex,
   transition,
   cursor,
@@ -94,6 +95,7 @@ export const shapeDigester: IDigester<IShapeDigester> = ({
   borders,
 }) => {
   const css: ICSS = {};
+  const hsla = createColor(theme);
   if (zindex !== undefined) {
     css.zIndex = zindex;
   }
@@ -113,12 +115,14 @@ export const shapeDigester: IDigester<IShapeDigester> = ({
    * Colors.
    */
   if (color !== undefined) {
-    css.backgroundColor = color;
+    css.backgroundColor = hsla(color);
   }
   if (gradient !== undefined) {
     const angle = gradient.angle || 10;
     const colors = gradient.color || [];
-    css.background = `linear-gradient(${angle}deg, ${colors.join(', ')})`;
+    css.background = `linear-gradient(${angle}deg, ${colors
+      .map(hsla)
+      .join(', ')})`;
   }
   if (alpha !== undefined) {
     if (alpha > 1 || alpha < 0) {
@@ -209,7 +213,7 @@ export const shapeDigester: IDigester<IShapeDigester> = ({
         formatUnits(data.down),
         formatUnits(data.blur),
         formatUnits(data.grow),
-        data.color || '#000',
+        hsla(data.color),
       ]
         .join(' ')
         .trim();
@@ -265,7 +269,7 @@ export const shapeDigester: IDigester<IShapeDigester> = ({
       css.borderStyle = 'solid';
       css.borderWidth = formatUnits(1);
     } else {
-      css.borderColor = borders.color || '#000';
+      css.borderColor = hsla(borders.color);
       css.borderStyle = borders.style || 'solid';
       const { sides } = borders;
       if (typeof sides === 'number' || typeof sides === 'string' || !sides) {

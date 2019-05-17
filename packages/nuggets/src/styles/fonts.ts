@@ -1,8 +1,9 @@
 import { ICSS, IDigester, IUnit } from '../utils/types';
 import { formatUnits } from '../utils/helpers';
+import { createColor, IColor } from '../utils/theme';
 
 export interface IDecorationOptions {
-  color?: string;
+  color?: IColor;
   style?: 'solid' | 'double' | 'dotted' | 'dashed' | 'wavy';
   lines:
     | 'underline'
@@ -12,12 +13,12 @@ export interface IDecorationOptions {
 }
 
 export interface IPlaceholderOptions {
-  color?: string;
+  color?: IColor;
 }
 
 export interface IFontsOptions {
   size?: IUnit;
-  color?: string;
+  color?: IColor;
   align?: 'left' | 'center' | 'right' | 'justify';
   family?: string;
   line?: IUnit;
@@ -42,14 +43,18 @@ export interface IFontsDigester {
   placeholder?: string | IPlaceholderOptions;
 }
 
-export const fontsDigester: IDigester<IFontsDigester> = ({
+export const fontsDigester: IDigester<IFontsDigester> = theme => ({
   fonts,
   placeholder,
 }) => {
   const css: ICSS = {};
+  const hsla = createColor(theme);
   if (placeholder !== undefined) {
     css['&::placeholder'] = {
-      color: typeof placeholder === 'string' ? placeholder : placeholder.color,
+      color:
+        typeof placeholder === 'object'
+          ? hsla(placeholder.color)
+          : hsla(placeholder),
     };
   }
   if (fonts !== undefined) {
@@ -72,7 +77,7 @@ export const fontsDigester: IDigester<IFontsDigester> = ({
         css.fontSize = formatUnits(size);
       }
       if (color !== undefined) {
-        css.color = color;
+        css.color = hsla(color);
       }
       if (align !== undefined) {
         css.textAlign = align;
@@ -95,7 +100,9 @@ export const fontsDigester: IDigester<IFontsDigester> = ({
         } else {
           const { lines, style, color: decolor } = decoration;
           const delines = Array.isArray(lines) ? lines : [lines];
-          css.textDecoration = `${[...delines, style, decolor].join(' ')}`;
+          css.textDecoration = `${[...delines, style, hsla(decolor)].join(
+            ' '
+          )}`;
         }
       }
       if (thickness !== undefined) {

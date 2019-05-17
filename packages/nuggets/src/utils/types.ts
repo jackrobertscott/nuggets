@@ -1,10 +1,11 @@
 import { ReactElement } from 'react';
+import { IThemeOptions } from './theme';
 
 export interface ICSS {
   [name: string]: string | number | ICSS | undefined;
 }
 
-export type IDigester<M> = (options: M) => ICSS;
+export type IDigester<M> = (theme: IThemeOptions) => (options: M) => ICSS;
 
 export type IEventsExecuter<T> = (value: T, event?: any) => any;
 

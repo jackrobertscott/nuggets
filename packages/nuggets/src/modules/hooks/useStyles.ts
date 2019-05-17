@@ -10,9 +10,9 @@ export interface IuseFrameStylesProps {
   classname?: string;
 }
 
-export const useFrameStyles = (
-  styles: IStylesOptions<IStylesDigester>
-): IuseFrameStylesProps => {
+export type IStyles = IStylesOptions<IStylesDigester>;
+
+export const useFrameStyles = (styles: IStyles = {}): IuseFrameStylesProps => {
   const [classname, change] = useState<string | undefined>(undefined);
   useEffect(
     () => {
