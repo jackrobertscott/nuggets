@@ -19,19 +19,25 @@ export const Frame: FunctionComponent<IFrameProps> = ({
   styles = {},
   children,
   value,
+  change,
   placeholder,
   editable = false,
   multiline,
   type,
   ...options
 }) => {
-  const [state, update] = useState<string>(String(value || ''));
-  useEffect(() => change(value), [value]);
-  const change = (next?: string | number) => {
+  const starts: string | number = value
+    ? value
+    : typeof children === 'number' || typeof children === 'string'
+    ? children
+    : '';
+  const [state, update] = useState<string>(String(starts));
+  useEffect(() => mutate(starts), [starts]);
+  const mutate = (next?: string | number) => {
     const data = String(next || '');
     update(data);
-    if (options.change) {
-      options.change(data, {});
+    if (change) {
+      change(data, {});
     }
   };
   const precss = {
@@ -55,14 +61,14 @@ export const Frame: FunctionComponent<IFrameProps> = ({
         ...setup,
         node: node || 'textarea',
         extras: { value: state, placeholder, rows: multiline },
-        events: { change, ...events },
+        events: { change: mutate, ...events },
       });
     } else {
       return createNuggie({
         ...setup,
         node: node || 'input',
         extras: { value: state, placeholder, type },
-        events: { change, ...events },
+        events: { change: mutate, ...events },
         precss: { ...precss, boxSizing: 'content-box' },
       });
     }
@@ -70,7 +76,7 @@ export const Frame: FunctionComponent<IFrameProps> = ({
   return createNuggie({
     ...setup,
     node: node || 'div',
-    children: children || state,
+    children: state || children,
     events,
   });
 };
