@@ -1,9 +1,8 @@
 import { ICSS, IDigester, IUnit, IDiagonals } from '../utils/types';
 import { formatUnits } from '../utils/helpers';
-import { IColor, createColor } from '../utils/theme';
 
 export interface IShadeOptions {
-  color?: IColor;
+  color?: string;
   blur?: IUnit;
   grow?: IUnit;
   down?: IUnit;
@@ -18,7 +17,7 @@ export interface ISideOptions {
 }
 
 export interface IBordersOptions {
-  color?: IColor;
+  color?: string;
   sides?: IUnit | ISideOptions;
   style?:
     | 'dotted'
@@ -35,7 +34,7 @@ export type ICornersOptions = { [sides in IDiagonals]?: IUnit };
 
 export interface IGradientOptions {
   angle?: number;
-  color?: IColor[];
+  color?: string[];
 }
 
 export interface ISizeOptions {
@@ -60,7 +59,7 @@ export interface IShapeDigester {
   overflow?: string;
   events?: string;
   absolute?: IUnit | ISpaceOptions;
-  color?: IColor;
+  color?: string;
   gradient?: IGradientOptions;
   alpha?: number;
   size?: IUnit;
@@ -74,7 +73,7 @@ export interface IShapeDigester {
   borders?: string | IBordersOptions;
 }
 
-export const shapeDigester: IDigester<IShapeDigester> = theme => ({
+export const shapeDigester: IDigester<IShapeDigester> = ({
   zindex,
   transition,
   cursor,
@@ -95,7 +94,6 @@ export const shapeDigester: IDigester<IShapeDigester> = theme => ({
   borders,
 }) => {
   const css: ICSS = {};
-  const hsla = createColor(theme);
   if (zindex !== undefined) {
     css.zIndex = zindex;
   }
@@ -115,14 +113,12 @@ export const shapeDigester: IDigester<IShapeDigester> = theme => ({
    * Colors.
    */
   if (color !== undefined) {
-    css.backgroundColor = hsla(color);
+    css.backgroundColor = color;
   }
   if (gradient !== undefined) {
     const angle = gradient.angle || 10;
     const colors = gradient.color || [];
-    css.background = `linear-gradient(${angle}deg, ${colors
-      .map(hsla)
-      .join(', ')})`;
+    css.background = `linear-gradient(${angle}deg, ${colors.join(', ')})`;
   }
   if (alpha !== undefined) {
     if (alpha > 1 || alpha < 0) {
@@ -213,7 +209,7 @@ export const shapeDigester: IDigester<IShapeDigester> = theme => ({
         formatUnits(data.down),
         formatUnits(data.blur),
         formatUnits(data.grow),
-        hsla(data.color),
+        data.color || 'rgba(0, 0, 0, 0.15)',
       ]
         .join(' ')
         .trim();
@@ -269,7 +265,7 @@ export const shapeDigester: IDigester<IShapeDigester> = theme => ({
       css.borderStyle = 'solid';
       css.borderWidth = formatUnits(1);
     } else {
-      css.borderColor = hsla(borders.color);
+      css.borderColor = borders.color;
       css.borderStyle = borders.style || 'solid';
       const { sides } = borders;
       if (typeof sides === 'number' || typeof sides === 'string' || !sides) {

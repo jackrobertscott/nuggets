@@ -3,14 +3,12 @@ import * as deep from 'deepmerge';
 import { IEventsExecuter } from '../../utils/types';
 import { createNuggie, INuggieProps } from '../../utils/dom';
 import { createCSSFromStyles } from '../../utils/styles';
-import { IThemeOptions } from '../../utils/theme';
 
 export type IFrameProps = INuggieProps & {
   merge?: IFrameProps;
   children?: ReactNode;
   value?: string | number;
   change?: IEventsExecuter<string | number>;
-  theme?: IThemeOptions;
   placeholder?: string | number;
   editable?: boolean;
   multiline?: number;
@@ -28,7 +26,6 @@ export const Frame: FunctionComponent<IFrameProps> = ({
     children,
     value,
     change,
-    theme,
     placeholder,
     editable = false,
     multiline,
@@ -60,7 +57,7 @@ export const Frame: FunctionComponent<IFrameProps> = ({
   };
   const setup = {
     precss,
-    emote: createCSSFromStyles(styles, theme),
+    emote: createCSSFromStyles(styles),
     ...options,
   };
   if (editable) {

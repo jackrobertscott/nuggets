@@ -13,7 +13,7 @@ export interface ITransformDigester {
   translate?: IUnit | ITransform3dOptions;
 }
 
-export const transformDigester: IDigester<ITransformDigester> = theme => ({
+export const transformDigester: IDigester<ITransformDigester> = ({
   rotate,
   scale,
   translate,

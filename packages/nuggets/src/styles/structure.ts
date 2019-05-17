@@ -10,7 +10,7 @@ export interface IStructureDigester {
   align?: 'start' | 'end' | 'center' | 'stretch';
 }
 
-export const structureDigester: IDigester<IStructureDigester> = theme => ({
+export const structureDigester: IDigester<IStructureDigester> = ({
   direction,
   grow,
   wrap,
