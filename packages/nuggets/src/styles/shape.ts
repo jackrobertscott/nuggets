@@ -52,11 +52,16 @@ export interface ISpaceOptions {
   left?: IUnit;
 }
 
+export interface IOverflowOptions {
+  down: string;
+  across: string;
+}
+
 export interface IShapeDigester {
   zindex?: number;
   transition?: IUnit;
   cursor?: string;
-  overflow?: string;
+  overflow?: string | IOverflowOptions;
   events?: string;
   absolute?: IUnit | ISpaceOptions;
   color?: string;
@@ -104,7 +109,12 @@ export const shapeDigester: IDigester<IShapeDigester> = ({
     css.cursor = cursor;
   }
   if (overflow !== undefined) {
-    css.overflow = overflow;
+    if (typeof overflow === 'string') {
+      css.overflow = overflow;
+    } else {
+      css.overflowY = overflow.down;
+      css.overflowX = overflow.across;
+    }
   }
   if (events !== undefined) {
     css.pointerEvents = events;
@@ -138,7 +148,9 @@ export const shapeDigester: IDigester<IShapeDigester> = ({
     css.borderRadius = '50%';
   }
   if (collapse !== undefined) {
-    css.width = 'fit-content';
+    if (collapse) {
+      css.width = 'fit-content';
+    }
   }
   if (width !== undefined) {
     if (typeof width === 'number' || typeof width === 'string') {
