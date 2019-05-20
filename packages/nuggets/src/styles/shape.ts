@@ -53,8 +53,8 @@ export interface ISpaceOptions {
 }
 
 export interface IOverflowOptions {
-  down: string;
-  across: string;
+  down?: string;
+  across?: string;
 }
 
 export interface IShapeDigester {
