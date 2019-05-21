@@ -1,5 +1,6 @@
 import { ICSS, IDigester, IUnit } from '../utils/types';
 import { formatUnits } from '../utils/helpers';
+import { keyframes } from '../utils/emotion';
 
 export interface ITransform3dOptions {
   x?: IUnit;
@@ -7,16 +8,37 @@ export interface ITransform3dOptions {
   z?: IUnit;
 }
 
+export interface IAnimationOptions {
+  steps: string;
+  duration?: IUnit;
+  delay?: IUnit;
+  timing?:
+    | 'ease'
+    | 'ease-in'
+    | 'ease-out'
+    | 'ease-in-out'
+    | 'linear'
+    | 'step-start'
+    | 'step-end'
+    | string;
+  iterations?: IUnit;
+  direction?: 'normal' | 'reverse' | 'alternate' | 'alternate-reverse';
+  state?: 'paused' | 'running';
+  mode?: 'none' | 'forwards' | 'backwards' | 'both';
+}
+
 export interface ITransformDigester {
   rotate?: IUnit | ITransform3dOptions;
   scale?: number | ITransform3dOptions;
   translate?: IUnit | ITransform3dOptions;
+  animation?: IAnimationOptions;
 }
 
 export const transformDigester: IDigester<ITransformDigester> = ({
   rotate,
   scale,
   translate,
+  animation,
 }) => {
   const css: ICSS = {};
   const transforms: string[] = [];
@@ -34,6 +56,42 @@ export const transformDigester: IDigester<ITransformDigester> = ({
       .filter(exists => exists)
       .join(' ')
       .trim();
+  }
+  if (animation !== undefined) {
+    const {
+      steps,
+      duration,
+      delay,
+      timing,
+      iterations,
+      direction,
+      state,
+      mode,
+    } = animation;
+    if (steps) {
+      css.animationName = keyframes`${steps}`;
+    }
+    if (duration !== undefined) {
+      css.animationDuration = formatUnits(duration, 'ms');
+    }
+    if (delay !== undefined) {
+      css.animationDelay = formatUnits(delay, 'ms');
+    }
+    if (timing !== undefined) {
+      css.animationTimingFunction = timing;
+    }
+    if (iterations !== undefined) {
+      css.animationIterationCount = formatUnits(iterations, '');
+    }
+    if (direction !== undefined) {
+      css.animationDirection = direction;
+    }
+    if (state !== undefined) {
+      css.animationPlayState = state;
+    }
+    if (mode !== undefined) {
+      css.animationFillMode = mode;
+    }
   }
   return css;
 };
