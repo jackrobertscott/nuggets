@@ -73,6 +73,7 @@ export interface IShapeDigester {
   width?: IUnit | ISizeOptions;
   height?: IUnit | ISizeOptions;
   padding?: IUnit | ISpaceOptions;
+  absorb?: IUnit | ISpaceOptions;
   shadows?: IShadeOptions | IShadeOptions[];
   corners?: IUnit | ICornersOptions;
   borders?: string | IBordersOptions;
@@ -94,6 +95,7 @@ export const shapeDigester: IDigester<IShapeDigester> = ({
   width,
   height,
   padding,
+  absorb,
   shadows,
   corners,
   borders,
@@ -208,6 +210,33 @@ export const shapeDigester: IDigester<IShapeDigester> = ({
       }
       if (left !== undefined) {
         css.paddingLeft = formatUnits(left);
+      }
+    }
+  }
+  if (absorb !== undefined) {
+    if (typeof absorb === 'number' || typeof absorb === 'string') {
+      css.margin = `-${formatUnits(absorb)}`;
+    } else {
+      const { top, right, bottom, left, sides, verts } = absorb;
+      if (verts !== undefined) {
+        css.marginTop = `-${formatUnits(verts)}`;
+        css.marginBottom = `-${formatUnits(verts)}`;
+      }
+      if (sides !== undefined) {
+        css.marginRight = `-${formatUnits(sides)}`;
+        css.marginLeft = `-${formatUnits(sides)}`;
+      }
+      if (top !== undefined) {
+        css.marginTop = `-${formatUnits(top)}`;
+      }
+      if (right !== undefined) {
+        css.marginRight = `-${formatUnits(right)}`;
+      }
+      if (bottom !== undefined) {
+        css.marginBottom = `-${formatUnits(bottom)}`;
+      }
+      if (left !== undefined) {
+        css.marginLeft = `-${formatUnits(left)}`;
       }
     }
   }
