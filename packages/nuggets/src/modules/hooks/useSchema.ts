@@ -81,19 +81,23 @@ export const useSchema = ({
   const mutate = (next?: ISchemaValue) => {
     override({ ...state, ...(next || {}) });
   };
-  const blur = (name: string, status?: boolean) => {
-    if (name) {
-      updateDirty({ ...dirty, [name]: status || true });
-    }
-  };
   const reduce = (all: any, key: string) => ({
     ...all,
     [key]: {
       value: state[key],
       error: error[key],
       dirty: globalDirty || dirty[key] || !!state[key],
-      change: (data: any) => mutate({ [key]: data }),
-      blur: (status?: boolean) => blur(key, status),
+      change: (data: any) => {
+        return mutate({
+          [key]: data,
+        });
+      },
+      blur: (status?: boolean) => {
+        return updateDirty({
+          ...dirty,
+          [key]: status || true,
+        });
+      },
     },
   });
   return {
