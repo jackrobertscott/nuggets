@@ -29,7 +29,7 @@ export interface IuseSchemaProps {
       error?: Error;
       dirty: boolean;
       change: (data: any) => void;
-      touch: (status?: boolean) => void;
+      blur: (status?: boolean) => void;
     };
   };
   value: ISchemaValue;
@@ -38,7 +38,7 @@ export interface IuseSchemaProps {
   invalid: boolean;
   change: (value: ISchemaValue) => any;
   override: (value?: ISchemaValue) => void;
-  touch: (override?: boolean) => void;
+  blur: (override?: boolean) => void;
 }
 
 export const useSchema = ({
@@ -93,7 +93,7 @@ export const useSchema = ({
       error: error[key],
       dirty: globalDirty || dirty[key] || !!state[key],
       change: (data: any) => mutate({ [key]: data }),
-      touch: (status?: boolean) => blur(key, status),
+      blur: (status?: boolean) => blur(key, status),
     },
   });
   return {
@@ -104,6 +104,6 @@ export const useSchema = ({
     invalid: !!Object.keys(error).filter(key => error[key]).length,
     change: mutate,
     override,
-    touch: (status?: boolean) => updateGlobalDirty(status || true),
+    blur: (status?: boolean) => updateGlobalDirty(status || true),
   };
 };
