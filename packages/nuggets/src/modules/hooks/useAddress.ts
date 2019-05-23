@@ -13,7 +13,7 @@ export type IuseAddressProps = ILocation & {
   shift: (entries: number) => any;
   backward: () => any;
   forward: () => any;
-  match: (options: { path: string } & IDigestOptions) => boolean;
+  match: (options: string | ({ path: string } & IDigestOptions)) => boolean;
   parse: (search: string) => { [param: string]: unknown };
   stringify: (data: { [param: string]: unknown }) => string;
 };
@@ -37,14 +37,12 @@ export const useAddress = ({
   const parse = (search: string) => queryString.parse(search);
   const stringify = (data: { [param: string]: unknown }) =>
     queryString.stringify(data);
-  const match = ({
-    path,
-    ...digestOptions
-  }: { path: string } & IDigestOptions) => {
+  const match = (route: string | ({ path: string } & IDigestOptions)) => {
+    const path = typeof route === 'string' ? route : route.path;
     return matchPath({
       currentPath: state.pathname,
       routePath: path,
-      options: digestOptions,
+      options: typeof route === 'string' ? {} : route,
     });
   };
   return {
