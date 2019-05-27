@@ -52,9 +52,9 @@ export const structureDigester: IDigester<IStructureDigester> = ({
         ? 'Top'
         : 'Bottom';
     css['& > *'] = {
-      [`margin${side}`]: formatUnits(divide),
+      [`margin${side}`]: `${formatUnits(divide)} !important`,
       [':last-child']: {
-        [`margin${side}`]: 0,
+        [`margin${side}`]: `${0} !important`,
       },
     };
     if (wrap) {
