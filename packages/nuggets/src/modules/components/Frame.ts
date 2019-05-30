@@ -1,84 +1,81 @@
-import { useState, useEffect, FunctionComponent, ReactNode } from 'react';
-import { IEventsExecuter } from '../../utils/types';
-import { createNuggie, INuggieProps } from '../../utils/dom';
-import { createCSSFromStyles } from '../../utils/styles';
+import * as deep from 'deepmerge';
+import { createElement, FunctionComponent, ReactNode } from 'react';
+import { createPortal } from 'react-dom';
+import { ensure } from '../../utils/helpers';
+import { emotion, prefix, cleanClassname } from '../../utils/emotion';
+import { ICSS, IRandom } from '../../utils/types';
+import { IEvents, createEvents } from '../../utils/events';
+import { IBackground, backgroundDigester } from '../../groups/background';
+import { IBorders, bordersDigester } from '../../groups/borders';
+import { IShadows, shadowsDigester } from '../../groups/shadows';
 
-export type IFrameProps = INuggieProps & {
-  merge?: IFrameProps;
+export interface IFrameProps {
   children?: ReactNode;
-  value?: string | number;
-  change?: IEventsExecuter<string | number>;
-  placeholder?: string | number;
-  editable?: boolean;
-  multiline?: number;
-  type?: string;
-};
+  reference?: any;
+  tag?: string;
+  id?: string;
+  classname?: string;
+  events?: IEvents;
+  style?: ICSS;
+  attrs?: IRandom;
+  clean?: boolean;
+  background: IBackground;
+  borders: IBorders;
+  shadows: IShadows;
+}
 
 export const Frame: FunctionComponent<IFrameProps> = ({
-  node,
-  events = {},
-  styles = {},
   children,
-  value,
-  change,
-  placeholder,
-  editable = false,
-  multiline,
-  type,
-  ...options
+  reference,
+  tag = 'div',
+  id,
+  events = {},
+  style = {},
+  attrs = {},
+  clean = true,
+  background,
+  borders,
+  shadows,
 }) => {
-  const starts: string | number = value
-    ? value
-    : typeof children === 'number' || typeof children === 'string'
-    ? children
-    : '';
-  const [state, update] = useState<string>(String(starts));
-  useEffect(() => mutate(starts), [starts]);
-  const mutate = (next?: string | number) => {
-    const data = String(next || '');
-    update(data);
-    if (change) {
-      change(data, {});
-    }
+  const props = {
+    ...ensure(createEvents(events)),
+    ...ensure(attrs),
   };
+  if (id) {
+    props.id = id;
+  }
+  if (reference) {
+    props.ref = reference;
+  }
   const precss = {
-    width: 'auto',
-    resize: 'none',
-    display: 'flex',
-    position: 'relative',
-    flexShrink: 1,
     '&::-webkit-scrollbar': {
       display: 'none',
     },
   };
-  const setup = {
+  const states = {};
+  const compiled = [
+    backgroundDigester(states)(background),
+    bordersDigester(states)(borders),
+    shadowsDigester(states)(shadows),
+  ];
+  const css = deep.all([
     precss,
-    emote: createCSSFromStyles(styles),
-    ...options,
-  };
-  if (editable) {
-    if (multiline) {
-      return createNuggie({
-        ...setup,
-        node: node || 'textarea',
-        extras: { value: state, placeholder, rows: multiline },
-        events: { change: mutate, ...events },
-      });
-    } else {
-      return createNuggie({
-        ...setup,
-        node: node || 'input',
-        extras: { value: state, placeholder, type },
-        events: { change: mutate, ...events },
-        precss: { ...precss, boxSizing: 'content-box' },
-      });
-    }
-  }
-  return createNuggie({
-    ...setup,
-    node: node || 'div',
-    children: state || children,
-    events,
+    ...compiled.map(data => data.css),
+    style,
+  ]) as ICSS;
+  const classes = [
+    clean && cleanClassname,
+    emotion.css(css),
+    prefix && `${tag}-${prefix}`,
+    props.className,
+  ]
+    .filter(exists => exists)
+    .join(' ')
+    .trim();
+  return createElement(tag, {
+    ...props,
+    children,
+    className: classes,
   });
 };
 

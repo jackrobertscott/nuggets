@@ -70,11 +70,11 @@ export const standardize = `
   counter-reset: none;
   cursor: inherit;
   direction: ltr;
-  display: block;
+  display: flex;
   empty-cells: show;
   flex-basis: auto;
   flex-grow: 0;
-  flex-shrink: 0;
+  flex-shrink: 1;
   flex-direction: column;
   float: none;
   font: normal;
@@ -121,7 +121,8 @@ export const standardize = `
   perspective: none;
   perspective-origin: 50% 50%;
   pointer-events: auto;
-  position: static;
+  position: relative;
+  resize: none;
   right: auto;
   tab-size: 8;
   table-layout: auto;

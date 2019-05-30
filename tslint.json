@@ -10,9 +10,11 @@
   "rules": {
     "ordered-imports": false,
     "object-literal-sort-keys": false,
+    "interface-over-type-literal": false,
     "no-implicit-dependencies": [true, "dev"],
     "no-empty-interface": false,
     "no-console": false,
+    "no-object-literal-type-assertion": false,
     "jsx-no-multiline-js": false,
     "jsx-no-lambda": false
   },

@@ -1,15 +1,16 @@
-import { IEventsExecuter } from './types';
 import { capitalize } from './helpers';
 
+export interface IListeners {
+  [name: string]: (event: any) => any;
+}
+
+export type IExecuter = (value: any, event?: any) => any;
+
 export interface IEvents {
-  [on: string]: (event: any) => any;
+  [eventType: string]: IExecuter | null | undefined;
 }
 
-export interface IEventsOptions {
-  [eventType: string]: IEventsExecuter<any> | null | undefined;
-}
-
-export type IcreateEvents = (events?: IEventsOptions) => IEvents;
+export type IcreateEvents = (events?: IEvents) => IListeners;
 
 export const createEvents: IcreateEvents = (events = {}) => {
   return Object.keys(events).reduce((handlers, name) => {

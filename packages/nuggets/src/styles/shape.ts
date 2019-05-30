@@ -1,14 +1,6 @@
 import { ICSS, IDigester, IUnit, IDiagonals } from '../utils/types';
 import { formatUnits } from '../utils/helpers';
 
-export interface IShadeOptions {
-  color?: string;
-  blur?: IUnit;
-  grow?: IUnit;
-  down?: IUnit;
-  across?: IUnit;
-}
-
 export interface ISideOptions {
   top?: IUnit;
   bottom?: IUnit;
@@ -31,11 +23,6 @@ export interface IBordersOptions {
 }
 
 export type ICornersOptions = { [sides in IDiagonals]?: IUnit };
-
-export interface IGradientOptions {
-  angle?: number;
-  color?: string[];
-}
 
 export interface ISizeOptions {
   use?: IUnit;
@@ -64,8 +51,6 @@ export interface IShapeDigester {
   overflow?: string | IOverflowOptions;
   events?: string;
   absolute?: IUnit | ISpaceOptions;
-  color?: string;
-  gradient?: IGradientOptions;
   alpha?: number;
   size?: IUnit;
   circle?: boolean;
@@ -86,8 +71,6 @@ export const shapeDigester: IDigester<IShapeDigester> = ({
   overflow,
   events,
   absolute,
-  color,
-  gradient,
   alpha,
   size,
   circle,
@@ -124,14 +107,6 @@ export const shapeDigester: IDigester<IShapeDigester> = ({
   /**
    * Colors.
    */
-  if (color !== undefined) {
-    css.backgroundColor = color;
-  }
-  if (gradient !== undefined) {
-    const angle = gradient.angle || 10;
-    const colors = gradient.color || [];
-    css.background = `linear-gradient(${angle}deg, ${colors.join(', ')})`;
-  }
   if (alpha !== undefined) {
     if (alpha > 1 || alpha < 0) {
       const message = `The "shape.alpha" property must be between 0 and 1 inclusive, but got "${alpha}".`;
@@ -243,22 +218,7 @@ export const shapeDigester: IDigester<IShapeDigester> = ({
   /**
    * Edges.
    */
-  if (shadows !== undefined) {
-    const createShadow = (data: IShadeOptions) => {
-      return [
-        formatUnits(data.across),
-        formatUnits(data.down),
-        formatUnits(data.blur),
-        formatUnits(data.grow),
-        data.color || 'rgba(0, 0, 0, 0.15)',
-      ]
-        .join(' ')
-        .trim();
-    };
-    css.boxShadow = Array.isArray(shadows)
-      ? shadows.map(createShadow).join(', ')
-      : createShadow(shadows);
-  }
+
   if (corners !== undefined) {
     if (typeof corners === 'number' || typeof corners === 'string') {
       css.borderRadius = formatUnits(corners);
@@ -300,41 +260,7 @@ export const shapeDigester: IDigester<IShapeDigester> = ({
         });
     }
   }
-  if (borders !== undefined) {
-    if (typeof borders === 'string') {
-      css.borderColor = borders;
-      css.borderStyle = 'solid';
-      css.borderWidth = formatUnits(1);
-    } else {
-      css.borderColor = borders.color;
-      css.borderStyle = borders.style || 'solid';
-      const { sides } = borders;
-      if (typeof sides === 'number' || typeof sides === 'string' || !sides) {
-        css.borderWidth = formatUnits(sides || 1);
-      } else {
-        css.borderWidth = formatUnits(0);
-        Object.keys(sides)
-          .filter(exists => exists)
-          .forEach(side => {
-            const sideSize = formatUnits((sides as any)[side]);
-            switch (side) {
-              case 'top':
-                css.borderTopWidth = sideSize;
-                break;
-              case 'right':
-                css.borderRightWidth = sideSize;
-                break;
-              case 'bottom':
-                css.borderBottomWidth = sideSize;
-                break;
-              case 'left':
-                css.borderLeftWidth = sideSize;
-                break;
-            }
-          });
-      }
-    }
-  }
+
   /**
    * Position.
    */

@@ -2,7 +2,6 @@
  * Components.
  */
 export * from './modules/components/Frame';
-export * from './modules/components/Layer';
 
 /**
  * Helpers.
