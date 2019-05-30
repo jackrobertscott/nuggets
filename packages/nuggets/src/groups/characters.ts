@@ -32,13 +32,13 @@ export const charactersDigester: IDigester<ICharactersProps> = value => {
     css.color = value;
   }
   if (typeof value === 'object') {
-    if (value.size !== undefined) {
+    if (typeof value.size === 'string' || typeof value.size === 'number') {
       css.fontSize = formatUnits(value.size);
     }
-    if (value.color !== undefined) {
+    if (typeof value.color === 'string') {
       css.color = value.color;
     }
-    if (value.align !== undefined) {
+    if (typeof value.align === 'string') {
       css.textAlign = value.align;
     }
     if (value.family !== undefined) {
@@ -47,35 +47,38 @@ export const charactersDigester: IDigester<ICharactersProps> = value => {
     if (value.italic !== undefined) {
       css.fontStyle = 'italic';
     }
-    if (value.line !== undefined) {
+    if (typeof value.line === 'string' || typeof value.line === 'number') {
       css.lineHeight = formatUnits(value.line, 'em');
     }
-    if (value.spacing !== undefined) {
+    if (
+      typeof value.spacing === 'string' ||
+      typeof value.spacing === 'number'
+    ) {
       css.letterSpacing = formatUnits(value.spacing, 'em');
     }
-    if (value.decoration !== undefined) {
-      if (typeof value.decoration === 'string') {
-        css.textDecoration = value.decoration;
-      } else {
-        const { lines, style, color: decolor } = value.decoration;
-        const delines = Array.isArray(lines) ? lines : [lines];
-        css.textDecoration = `${[...delines, style, decolor].join(' ')}`;
-      }
+    if (typeof value.decoration === 'string') {
+      css.textDecoration = value.decoration;
     }
-    if (value.thickness !== undefined) {
-      if (typeof value.thickness === 'number') {
-        const min = 100;
-        const max = 900;
-        if (value.thickness < min || value.thickness > max) {
-          const message = `Thickness must be between ${min} and ${max} inclusive but got "${
-            value.thickness
-          }".`;
-          throw new Error(message);
-        }
+    if (typeof value.decoration === 'object') {
+      const { lines, style, color: decolor } = value.decoration;
+      const delines = Array.isArray(lines) ? lines : [lines];
+      css.textDecoration = `${[...delines, style, decolor].join(' ')}`;
+    }
+    if (typeof value.thickness === 'number') {
+      const min = 100;
+      const max = 900;
+      if (value.thickness < min || value.thickness > max) {
+        const message = `Thickness must be between ${min} and ${max} inclusive but got "${
+          value.thickness
+        }".`;
+        throw new Error(message);
       }
       css.fontWeight = value.thickness;
     }
-    if (value.whitespace !== undefined) {
+    if (typeof value.thickness === 'string') {
+      css.fontWeight = value.thickness;
+    }
+    if (typeof value.whitespace === 'string') {
       css.whiteSpace = value.whitespace;
     }
   }

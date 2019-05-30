@@ -26,28 +26,34 @@ export type IAnimateProps = IAnimate;
 export const animateDigester: IDigester<IAnimateProps> = value => {
   const css = {} as ICSS;
   if (typeof value === 'object') {
-    if (value.steps) {
+    if (typeof value.steps === 'string') {
       css.animationName = keyframes`${value.steps}`;
     }
-    if (value.duration !== undefined) {
+    if (
+      typeof value.duration === 'string' ||
+      typeof value.duration === 'number'
+    ) {
       css.animationDuration = formatUnits(value.duration, 'ms');
     }
-    if (value.delay !== undefined) {
+    if (typeof value.delay === 'string' || typeof value.delay === 'number') {
       css.animationDelay = formatUnits(value.delay, 'ms');
     }
-    if (value.timing !== undefined) {
+    if (typeof value.duration === 'string') {
       css.animationTimingFunction = value.timing;
     }
-    if (value.iterations !== undefined) {
+    if (
+      typeof value.iterations === 'string' ||
+      typeof value.iterations === 'number'
+    ) {
       css.animationIterationCount = formatUnits(value.iterations, '');
     }
-    if (value.direction !== undefined) {
+    if (typeof value.direction === 'string') {
       css.animationDirection = value.direction;
     }
-    if (value.state !== undefined) {
+    if (typeof value.state === 'string') {
       css.animationPlayState = value.state;
     }
-    if (value.mode !== undefined) {
+    if (typeof value.mode === 'string') {
       css.animationFillMode = value.mode;
     }
   }

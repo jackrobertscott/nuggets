@@ -15,6 +15,10 @@ export type ITransform = {
 
 export type ITransformProps = ITransform;
 
+/**
+ * Need to fix the type checks in this file.
+ */
+
 export const transformDigester: IDigester<ITransformProps> = value => {
   const css = {} as ICSS;
   if (typeof value === 'object') {
