@@ -15,3 +15,5 @@ export type IDiagonals = 'topRight' | 'topLeft' | 'bottomRight' | 'bottomLeft';
 export type ISidesAndDiagonals = ISides | IDiagonals;
 
 export type IUnit = number | string;
+
+export type IDigester<T> = (value?: T) => ICSS;

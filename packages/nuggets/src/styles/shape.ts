@@ -22,8 +22,6 @@ export interface IBordersOptions {
     | 'outset';
 }
 
-export type ICornersOptions = { [sides in IDiagonals]?: IUnit };
-
 export interface ISizeOptions {
   use?: IUnit;
   min?: IUnit;
@@ -218,48 +216,6 @@ export const shapeDigester: IDigester<IShapeDigester> = ({
   /**
    * Edges.
    */
-
-  if (corners !== undefined) {
-    if (typeof corners === 'number' || typeof corners === 'string') {
-      css.borderRadius = formatUnits(corners);
-    } else {
-      Object.keys(corners)
-        .filter(exists => exists)
-        .forEach(side => {
-          const radiusSize = formatUnits((corners as any)[side]);
-          switch (side) {
-            case 'top':
-              css.borderTopRightRadius = radiusSize;
-              css.borderTopLeftRadius = radiusSize;
-              break;
-            case 'right':
-              css.borderTopRightRadius = radiusSize;
-              css.borderBottomRightRadius = radiusSize;
-              break;
-            case 'bottom':
-              css.borderBottomRightRadius = radiusSize;
-              css.borderBottomLeftRadius = radiusSize;
-              break;
-            case 'left':
-              css.borderTopLeftRadius = radiusSize;
-              css.borderBottomLeftRadius = radiusSize;
-              break;
-            case 'topRight':
-              css.borderTopRightRadius = radiusSize;
-              break;
-            case 'topLeft':
-              css.borderTopLeftRadius = radiusSize;
-              break;
-            case 'bottomRight':
-              css.borderBottomRightRadius = radiusSize;
-              break;
-            case 'bottomLeft':
-              css.borderBottomLeftRadius = radiusSize;
-              break;
-          }
-        });
-    }
-  }
 
   /**
    * Position.
