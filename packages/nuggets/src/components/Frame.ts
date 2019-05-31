@@ -1,10 +1,10 @@
 import * as deep from 'deepmerge';
 import { createElement, FunctionComponent, ReactNode, useRef } from 'react';
 import { createPortal } from 'react-dom';
+import { useElement } from '../hooks/useElement';
 import { ensure } from '../utils/helpers';
 import { emotion, prefix, cleanClassname } from '../utils/emotion';
-import { ICSS, IRandom, IStatesProp, IDigester } from '../utils/types';
-import { IEvents, createEvents } from '../utils/events';
+import { ICSS, IRandom, IStatesProp, IDigester, IEvents } from '../utils/types';
 import { IBackground, backgroundDigester } from '../groups/background';
 import { IBorders, bordersDigester } from '../groups/borders';
 import { IShadows, shadowsDigester } from '../groups/shadows';
@@ -69,7 +69,7 @@ export const Frame: FunctionComponent<IFrameProps> = ({
   /**
    * Compile the properties.
    */
-  const states = { hover: false };
+  const states = useElement({ element: ref.current, events });
   const uncompiled: {
     [name: string]: [any | IStatesProp<any>, IDigester<any>];
   } = {
@@ -104,7 +104,6 @@ export const Frame: FunctionComponent<IFrameProps> = ({
    */
   let node = tag || 'div';
   const props = {
-    ...ensure(createEvents(events)),
     ...ensure(attrs),
   };
   const precss: ICSS = {

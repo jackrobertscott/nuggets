@@ -1,3 +1,7 @@
+export interface IEvents {
+  [eventType: string]: IExecuter | null | undefined;
+}
+
 export type IRandom = {
   [name: string]: any;
 };
@@ -21,6 +25,8 @@ export type IDigester<T> = (value?: T) => ICSS;
 export type IStates = { hover: boolean };
 
 export type IStatesProp<T> = T | ((state: IStates) => T);
+
+export type IExecuter = (value: any, event?: any) => any;
 
 export type ISpace = {
   all?: IUnit;
