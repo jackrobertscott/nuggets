@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import * as queryString from 'query-string';
-import history, { ILocation } from '../../utils/history';
-import { matchPath, IDigestOptions } from '../../utils/path';
+import history, { ILocation } from '../utils/history';
+import { matchPath, IDigestOptions } from '../utils/path';
 
 export interface IuseAddressOptions {}
 

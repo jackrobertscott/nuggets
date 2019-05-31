@@ -1,26 +1,25 @@
 /**
  * Components.
  */
-export * from './modules/components/Frame';
+export * from './components/Frame';
 
 /**
  * Helpers.
  */
-export * from './modules/helpers/createConnection';
-export * from './modules/helpers/createDispatcher';
-export * from './modules/helpers/createStore';
+export * from './helpers/createConnection';
+export * from './helpers/createDispatcher';
+export * from './helpers/createStore';
 
 /**
  * Hooks.
  */
-export * from './modules/hooks/useAddress';
-export * from './modules/hooks/useArray';
-export * from './modules/hooks/useConnection';
-export * from './modules/hooks/useDatetime';
-export * from './modules/hooks/useMedia';
-export * from './modules/hooks/useNumber';
-export * from './modules/hooks/useSchema';
-export * from './modules/hooks/useStore';
-export * from './modules/hooks/useString';
-export * from './modules/hooks/useStyles';
-export * from './modules/hooks/useToggle';
+export * from './hooks/useAddress';
+export * from './hooks/useArray';
+export * from './hooks/useConnection';
+export * from './hooks/useDatetime';
+export * from './hooks/useMedia';
+export * from './hooks/useNumber';
+export * from './hooks/useSchema';
+export * from './hooks/useStore';
+export * from './hooks/useString';
+export * from './hooks/useToggle';

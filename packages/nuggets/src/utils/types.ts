@@ -1,10 +1,10 @@
-export interface IRandom {
+export type IRandom = {
   [name: string]: any;
-}
+};
 
-export interface ICSS {
+export type ICSS = {
   [name: string]: string | number | ICSS | undefined;
-}
+};
 
 export type ISides = 'top' | 'right' | 'bottom' | 'left';
 
@@ -17,3 +17,17 @@ export type ISidesAndDiagonals = ISides | IDiagonals;
 export type IUnit = number | string;
 
 export type IDigester<T> = (value?: T) => ICSS;
+
+export type IStates = { hover: boolean };
+
+export type IStatesProp<T> = T | ((state: IStates) => T);
+
+export type ISpace = {
+  all?: IUnit;
+  sides?: IUnit;
+  verts?: IUnit;
+  top?: IUnit;
+  bottom?: IUnit;
+  right?: IUnit;
+  left?: IUnit;
+};

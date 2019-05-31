@@ -12,6 +12,9 @@ export interface IDecoration {
 }
 
 export type ICharacters = {
+  value?: string | number;
+  editable?: boolean;
+  multiline?: number;
   size?: IUnit;
   color?: string;
   align?: 'left' | 'center' | 'right' | 'justify';

@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { throttle as pause } from '../../utils/helpers';
+import { throttle as pause } from '../utils/helpers';
 
 export interface IuseMediaOptions {
   throttle?: number;

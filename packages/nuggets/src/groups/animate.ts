@@ -3,7 +3,7 @@ import { keyframes } from '../utils/emotion';
 import { formatUnits } from '../utils/helpers';
 
 export type IAnimate = {
-  steps: string;
+  steps?: string;
   duration?: IUnit;
   delay?: IUnit;
   timing?:
