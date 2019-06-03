@@ -6,18 +6,18 @@ export * from './components/Frame';
 /**
  * Groups.
  */
-export * from './groups/animate';
-export * from './groups/background';
-export * from './groups/borders';
-export * from './groups/characters';
-export * from './groups/corners';
-export * from './groups/placeholder';
-export * from './groups/position';
-export * from './groups/settings';
-export * from './groups/shadows';
-export * from './groups/shape';
-export * from './groups/structure';
-export * from './groups/transform';
+export * from './styles/animate';
+export * from './styles/background';
+export * from './styles/borders';
+export * from './styles/characters';
+export * from './styles/corners';
+export * from './styles/placeholder';
+export * from './styles/position';
+export * from './styles/settings';
+export * from './styles/shadows';
+export * from './styles/shape';
+export * from './styles/structure';
+export * from './styles/transform';
 
 /**
  * Helpers.
