@@ -4,7 +4,7 @@
 export * from './components/Frame';
 
 /**
- * Groups.
+ * Styles.
  */
 export * from './styles/animate';
 export * from './styles/background';
@@ -18,6 +18,12 @@ export * from './styles/shadows';
 export * from './styles/shape';
 export * from './styles/structure';
 export * from './styles/transform';
+
+/**
+ * Utils.
+ */
+export * from './utils/styles';
+export * from './utils/events';
 
 /**
  * Helpers.

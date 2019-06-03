@@ -24,7 +24,7 @@ export type IDigester<T> = (value?: T) => ICSS;
 
 export type IObserve = { hover: boolean };
 
-export type IStatesProp<T> = T | ((state: IObserve) => T);
+export type IObserveProp<T> = T | ((state: IObserve) => T);
 
 export type IExecuter = (value: any, event?: any) => any;
 

@@ -1,127 +1,65 @@
 import * as deep from 'deepmerge';
-import { createElement, FunctionComponent, ReactNode, useRef } from 'react';
+import {
+  createElement,
+  FunctionComponent,
+  ReactNode,
+  useRef,
+  useState,
+  useEffect,
+} from 'react';
 import { createPortal } from 'react-dom';
-import { ensure, capitalize } from '../utils/helpers';
 import { emotion, prefix, cleanClassname } from '../utils/emotion';
-import { ICSS, IRandom, IStatesProp, IDigester, IEvents } from '../utils/types';
-import { IBackgroundProps, backgroundDigester } from '../styles/background';
-import { IBordersProps, bordersDigester } from '../styles/borders';
-import { IShadowsProps, shadowsDigester } from '../styles/shadows';
-import { IAnimateProps, animateDigester } from '../styles/animate';
-import { ICharactersProps, charactersDigester } from '../styles/characters';
-import { ICornersProps, cornersDigester } from '../styles/corners';
-import { IPlaceholderProps, placeholderDigester } from '../styles/placeholder';
-import { IPositionProps, positionDigester } from '../styles/position';
-import { ISettingsProps, settingsDigester } from '../styles/settings';
-import { IShapeProps, shapeDigester } from '../styles/shape';
-import { IStructureProps, structureDigester } from '../styles/structure';
-import { ITransformProps, transformDigester } from '../styles/transform';
+import { ICSS, IRandom, IObserveProp, IEvents } from '../utils/types';
 import { useObserve } from '../hooks/useObserve';
+import { IStyles, stylesDigester } from '../utils/styles';
+import { eventsDigester } from '../utils/events';
 
 export interface IFrameProps {
   children?: ReactNode;
   reference?: any;
+  portal?: string | HTMLElement;
+  value?: string | number;
+  placeholder?: string | number;
+  editable?: boolean;
+  multiline?: number;
   tag?: string;
   id?: string;
   classname?: string;
   events?: IEvents;
-  style?: ICSS;
+  styles?: IObserveProp<IStyles>;
+  css?: ICSS;
   attrs?: IRandom;
   clean?: boolean;
-  animate?: IStatesProp<IAnimateProps>;
-  background?: IStatesProp<IBackgroundProps>;
-  borders?: IStatesProp<IBordersProps>;
-  characters?: IStatesProp<ICharactersProps>;
-  corners?: IStatesProp<ICornersProps>;
-  placeholder?: IStatesProp<IPlaceholderProps>;
-  position?: IStatesProp<IPositionProps>;
-  settings?: IStatesProp<ISettingsProps>;
-  shadows?: IStatesProp<IShadowsProps>;
-  shape?: IStatesProp<IShapeProps>;
-  structure?: IStatesProp<IStructureProps>;
-  transform?: IStatesProp<ITransformProps>;
 }
 
 export const Frame: FunctionComponent<IFrameProps> = ({
   children,
   reference,
+  portal,
+  value,
+  placeholder,
+  editable = false,
+  multiline,
   tag = 'div',
   id,
   events = {},
-  style = {},
+  styles = {},
+  css = {},
   attrs = {},
   clean = true,
-  animate,
-  background,
-  borders,
-  characters,
-  corners,
-  placeholder,
-  position,
-  settings,
-  shadows,
-  shape,
-  structure,
-  transform,
 }) => {
   const fallback = useRef();
-  const ref = reference || fallback;
+  const compiledReference = reference || fallback;
+  const [state, changeState] = useState(value);
+  useEffect(() => changeState(value), [value]);
   /**
    * Compile the properties.
    */
-  const observations = useObserve({ reference: ref });
-  const uncompiled: {
-    [name: string]: [any | IStatesProp<any>, IDigester<any>];
-  } = {
-    animate: [animate, animateDigester],
-    background: [background, backgroundDigester],
-    borders: [borders, bordersDigester],
-    characters: [characters, charactersDigester],
-    corners: [corners, cornersDigester],
-    placeholder: [placeholder, placeholderDigester],
-    position: [position, positionDigester],
-    settings: [settings, settingsDigester],
-    shadows: [shadows, shadowsDigester],
-    shape: [shape, shapeDigester],
-    structure: [structure, structureDigester],
-    transform: [transform, transformDigester],
-  };
-  const compiled: { [name: string]: [any, IDigester<any>] } = Object.keys(
-    uncompiled
-  ).reduce((all, key) => {
-    const [action, compiler] = uncompiled[key];
-    const creation =
-      typeof action === 'function' ? action(observations) : action;
-    if (creation) {
-      return {
-        ...all,
-        [key]: [creation, compiler],
-      };
-    }
-    return all;
-  }, {});
-  /**
-   * Create the events.
-   */
-  const compiledEvents = Object.keys(events).reduce((all, key) => {
-    const event = events[key] as any;
-    const value = event && event.target && event.target.value;
-    const action = events && events[key];
-    if (typeof action === 'function') {
-      return {
-        ...all,
-        [`on${capitalize(key)}`]: action(value, event),
-      };
-    }
-    return all;
-  }, {});
-  /**
-   * Create the props for the element.
-   */
   let node = tag || 'div';
-  const props = {
-    ...ensure(compiledEvents),
-    ...ensure(attrs),
+  const digestedEvents = eventsDigester(events);
+  const props: any = {
+    ...digestedEvents,
+    ...attrs,
   };
   const precss: ICSS = {
     '&::-webkit-scrollbar': {
@@ -131,54 +69,38 @@ export const Frame: FunctionComponent<IFrameProps> = ({
   if (id) {
     props.id = id;
   }
-  if (ref) {
-    props.ref = ref;
+  if (compiledReference) {
+    props.ref = compiledReference;
   }
   if (children) {
-    props.children = children;
+    props.children = state || children;
   }
-  if (compiled.characters) {
-    const data = compiled.characters[0];
-    if (typeof data === 'object') {
-      if (typeof data.value === 'string' || typeof data.value === 'number') {
-        props.value = data.value;
-        props.onChange = () => {}; // intended to be overridden
-      }
-      if (data.editable) {
-        if (typeof data.multiline === 'number') {
-          node = 'textarea';
-          props.rows = data.multiline;
-          props.children = undefined;
-        } else {
-          node = 'input';
-          precss.boxSizing = 'content-box';
-          props.children = undefined;
-        }
-      }
+  if (editable) {
+    if (typeof multiline === 'number') {
+      node = 'textarea';
+      props.rows = multiline;
+      props.children = undefined;
+    } else {
+      node = 'input';
+      precss.boxSizing = 'content-box';
+      props.children = undefined;
     }
   }
-  if (compiled.placeholder) {
-    const data = compiled.placeholder[0];
-    if (data === 'string' || data === 'number') {
-      props.placeholder = compiled.placeholder[0];
-    }
-    if (data === 'object') {
-      if (data.value === 'string' || data.value === 'number') {
-        props.placeholder = compiled.placeholder[0].value;
-      }
-    }
+  if (value) {
+    props.value = value;
+    props.onChange = () => {}; // intended to be overridden
   }
-  /**
-   * Compile the styles from the properties.
-   */
-  const compiledStyles = Object.keys(compiled).map(key => {
-    const [data, compiler] = compiled[key];
-    return compiler(data);
-  }) as ICSS[];
-  const css = deep.all([precss, ...compiledStyles, style]) as ICSS;
+  if (placeholder) {
+    props.placeholder = placeholder;
+  }
+  const observations = useObserve(compiledReference);
+  const compiledStyles =
+    typeof styles === 'function' ? styles(observations) : styles;
+  const digestedStyles = stylesDigester(compiledStyles);
+  const deepCss = deep.all([precss, digestedStyles, css]) as ICSS;
   props.className = [
     clean && cleanClassname,
-    emotion.css(css),
+    emotion.css(deepCss),
     prefix && `${tag}-${prefix}`,
     attrs && attrs.className,
   ]
@@ -186,20 +108,17 @@ export const Frame: FunctionComponent<IFrameProps> = ({
     .join(' ')
     .trim();
   /**
-   * Create the element and return - or connect to a portal.
+   * Create the element then return it as an element or
+   * connect it to a portal.
    */
   const element = createElement(node, props);
-  if (compiled.position) {
-    const data = compiled.position[0];
-    if (typeof data === 'object') {
-      if (data.portal) {
-        const portal = data.portal;
-        const anchor =
-          typeof portal === 'string'
-            ? document.getElementById(portal || 'root')
-            : portal;
-        return createPortal(element, anchor);
-      }
+  if (portal) {
+    const anchor =
+      typeof portal === 'string'
+        ? document.getElementById(portal || 'root')
+        : portal;
+    if (anchor) {
+      return createPortal(element, anchor);
     }
   }
   return element;

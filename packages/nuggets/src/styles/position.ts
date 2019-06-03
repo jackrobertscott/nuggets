@@ -2,7 +2,6 @@ import { ICSS, IDigester, ISpace, IUnit } from '../utils/types';
 import { formatUnits } from '../utils/helpers';
 
 export type IPosition = {
-  portal?: string | HTMLElement;
   exact?: IUnit | ISpace;
 };
 

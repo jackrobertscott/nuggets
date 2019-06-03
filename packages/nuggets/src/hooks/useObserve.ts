@@ -3,19 +3,19 @@ import { IObserve } from '../utils/types';
 import { createListener } from '../utils/listeners';
 
 export interface IuseObserveOptions {
-  reference: RefObject<any>;
+  current?: HTMLElement;
 }
 
 export type IuseObserveProps = IObserve;
 
 export const useObserve = ({
-  reference,
+  current,
 }: IuseObserveOptions): IuseObserveProps => {
   const [hover, changeHover] = useState<boolean>(false);
   useEffect(
     () => {
-      if (reference.current) {
-        const element = reference.current;
+      if (current) {
+        const element = current;
         const eventsListeners: Array<() => any> = [
           createListener('mouseenter', element, () => changeHover(true)),
           createListener('mouseleave', element, () => changeHover(false)),
@@ -23,7 +23,7 @@ export const useObserve = ({
         return () => eventsListeners.forEach(unlisten => unlisten());
       }
     },
-    [reference.current]
+    [current]
   );
   return {
     hover,
