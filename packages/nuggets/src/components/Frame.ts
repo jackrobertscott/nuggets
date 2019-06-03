@@ -1,8 +1,7 @@
 import * as deep from 'deepmerge';
 import { createElement, FunctionComponent, ReactNode, useRef } from 'react';
 import { createPortal } from 'react-dom';
-import { useElement } from '../hooks/useElement';
-import { ensure } from '../utils/helpers';
+import { ensure, capitalize } from '../utils/helpers';
 import { emotion, prefix, cleanClassname } from '../utils/emotion';
 import { ICSS, IRandom, IStatesProp, IDigester, IEvents } from '../utils/types';
 import { IBackgroundProps, backgroundDigester } from '../groups/background';
@@ -17,6 +16,7 @@ import { ISettingsProps, settingsDigester } from '../groups/settings';
 import { IShapeProps, shapeDigester } from '../groups/shape';
 import { IStructureProps, structureDigester } from '../groups/structure';
 import { ITransformProps, transformDigester } from '../groups/transform';
+import { useObserve } from '../hooks/useObserve';
 
 export interface IFrameProps {
   children?: ReactNode;
@@ -64,12 +64,12 @@ export const Frame: FunctionComponent<IFrameProps> = ({
   structure,
   transform,
 }) => {
-  const fallback = useRef(undefined);
+  const fallback = useRef();
   const ref = reference || fallback;
   /**
    * Compile the properties.
    */
-  const states = useElement({ element: ref.current, events });
+  const observations = useObserve({ reference: ref });
   const uncompiled: {
     [name: string]: [any | IStatesProp<any>, IDigester<any>];
   } = {
@@ -90,7 +90,8 @@ export const Frame: FunctionComponent<IFrameProps> = ({
     uncompiled
   ).reduce((all, key) => {
     const [action, compiler] = uncompiled[key];
-    const creation = typeof action === 'function' ? action(states) : action;
+    const creation =
+      typeof action === 'function' ? action(observations) : action;
     if (creation) {
       return {
         ...all,
@@ -100,10 +101,26 @@ export const Frame: FunctionComponent<IFrameProps> = ({
     return all;
   }, {});
   /**
+   * Create the events.
+   */
+  const compiledEvents = Object.keys(events).reduce((all, key) => {
+    const event = events[key] as any;
+    const value = event && event.target && event.target.value;
+    const action = events && events[key];
+    if (typeof action === 'function') {
+      return {
+        ...all,
+        [`on${capitalize(key)}`]: action(value, event),
+      };
+    }
+    return all;
+  }, {});
+  /**
    * Create the props for the element.
    */
   let node = tag || 'div';
   const props = {
+    ...ensure(compiledEvents),
     ...ensure(attrs),
   };
   const precss: ICSS = {
@@ -125,15 +142,17 @@ export const Frame: FunctionComponent<IFrameProps> = ({
     if (typeof data === 'object') {
       if (typeof data.value === 'string' || typeof data.value === 'number') {
         props.value = data.value;
-        props.children = data.value;
+        props.onChange = () => {}; // intended to be overridden
       }
       if (data.editable) {
         if (typeof data.multiline === 'number') {
           node = 'textarea';
           props.rows = data.multiline;
+          props.children = undefined;
         } else {
           node = 'input';
           precss.boxSizing = 'content-box';
+          props.children = undefined;
         }
       }
     }

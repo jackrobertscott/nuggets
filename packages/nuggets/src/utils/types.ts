@@ -22,9 +22,9 @@ export type IUnit = number | string;
 
 export type IDigester<T> = (value?: T) => ICSS;
 
-export type IStates = { hover: boolean };
+export type IObserve = { hover: boolean };
 
-export type IStatesProp<T> = T | ((state: IStates) => T);
+export type IStatesProp<T> = T | ((state: IObserve) => T);
 
 export type IExecuter = (value: any, event?: any) => any;
 
