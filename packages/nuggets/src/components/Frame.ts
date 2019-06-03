@@ -5,18 +5,18 @@ import { useElement } from '../hooks/useElement';
 import { ensure } from '../utils/helpers';
 import { emotion, prefix, cleanClassname } from '../utils/emotion';
 import { ICSS, IRandom, IStatesProp, IDigester, IEvents } from '../utils/types';
-import { IBackground, backgroundDigester } from '../groups/background';
-import { IBorders, bordersDigester } from '../groups/borders';
-import { IShadows, shadowsDigester } from '../groups/shadows';
-import { IAnimate, animateDigester } from '../groups/animate';
-import { ICharacters, charactersDigester } from '../groups/characters';
-import { ICorners, cornersDigester } from '../groups/corners';
-import { IPlaceholder, placeholderDigester } from '../groups/placeholder';
-import { IPosition, positionDigester } from '../groups/position';
-import { ISettings, settingsDigester } from '../groups/settings';
-import { IShape, shapeDigester } from '../groups/shape';
-import { IStructure, structureDigester } from '../groups/structure';
-import { ITransform, transformDigester } from '../groups/transform';
+import { IBackgroundProps, backgroundDigester } from '../groups/background';
+import { IBordersProps, bordersDigester } from '../groups/borders';
+import { IShadowsProps, shadowsDigester } from '../groups/shadows';
+import { IAnimateProps, animateDigester } from '../groups/animate';
+import { ICharactersProps, charactersDigester } from '../groups/characters';
+import { ICornersProps, cornersDigester } from '../groups/corners';
+import { IPlaceholderProps, placeholderDigester } from '../groups/placeholder';
+import { IPositionProps, positionDigester } from '../groups/position';
+import { ISettingsProps, settingsDigester } from '../groups/settings';
+import { IShapeProps, shapeDigester } from '../groups/shape';
+import { IStructureProps, structureDigester } from '../groups/structure';
+import { ITransformProps, transformDigester } from '../groups/transform';
 
 export interface IFrameProps {
   children?: ReactNode;
@@ -28,18 +28,18 @@ export interface IFrameProps {
   style?: ICSS;
   attrs?: IRandom;
   clean?: boolean;
-  animate?: IStatesProp<IAnimate>;
-  background?: IStatesProp<IBackground>;
-  borders?: IStatesProp<IBorders>;
-  characters?: IStatesProp<ICharacters>;
-  corners?: IStatesProp<ICorners>;
-  placeholder?: IStatesProp<IPlaceholder>;
-  position?: IStatesProp<IPosition>;
-  settings?: IStatesProp<ISettings>;
-  shadows?: IStatesProp<IShadows>;
-  shape?: IStatesProp<IShape>;
-  structure?: IStatesProp<IStructure>;
-  transform?: IStatesProp<ITransform>;
+  animate?: IStatesProp<IAnimateProps>;
+  background?: IStatesProp<IBackgroundProps>;
+  borders?: IStatesProp<IBordersProps>;
+  characters?: IStatesProp<ICharactersProps>;
+  corners?: IStatesProp<ICornersProps>;
+  placeholder?: IStatesProp<IPlaceholderProps>;
+  position?: IStatesProp<IPositionProps>;
+  settings?: IStatesProp<ISettingsProps>;
+  shadows?: IStatesProp<IShadowsProps>;
+  shape?: IStatesProp<IShapeProps>;
+  structure?: IStatesProp<IStructureProps>;
+  transform?: IStatesProp<ITransformProps>;
 }
 
 export const Frame: FunctionComponent<IFrameProps> = ({
@@ -120,33 +120,33 @@ export const Frame: FunctionComponent<IFrameProps> = ({
   if (children) {
     props.children = children;
   }
-  if (typeof compiled.characters[0] === 'object') {
-    const chars = compiled.characters[0];
-    if (chars.value) {
-      props.value = chars.value;
-    }
-    if (chars.editable) {
-      if (typeof chars.multiline === 'number') {
-        node = 'textarea';
-        props.rows = chars.multiline;
-      } else {
-        node = 'input';
-        precss.boxSizing = 'content-box';
+  if (compiled.characters) {
+    const data = compiled.characters[0];
+    if (typeof data === 'object') {
+      if (typeof data.value === 'string' || typeof data.value === 'number') {
+        props.value = data.value;
+        props.children = data.value;
+      }
+      if (data.editable) {
+        if (typeof data.multiline === 'number') {
+          node = 'textarea';
+          props.rows = data.multiline;
+        } else {
+          node = 'input';
+          precss.boxSizing = 'content-box';
+        }
       }
     }
   }
-  if (
-    typeof compiled.placeholder[0] === 'string' ||
-    typeof compiled.placeholder[0] === 'number'
-  ) {
-    props.placeholder = compiled.placeholder[0];
-  }
-  if (typeof compiled.placeholder[0] === 'object') {
-    if (
-      typeof compiled.placeholder[0].value === 'string' ||
-      typeof compiled.placeholder[0].value === 'number'
-    ) {
-      props.placeholder = compiled.placeholder[0].value;
+  if (compiled.placeholder) {
+    const data = compiled.placeholder[0];
+    if (data === 'string' || data === 'number') {
+      props.placeholder = compiled.placeholder[0];
+    }
+    if (data === 'object') {
+      if (data.value === 'string' || data.value === 'number') {
+        props.placeholder = compiled.placeholder[0].value;
+      }
     }
   }
   /**
@@ -170,14 +170,17 @@ export const Frame: FunctionComponent<IFrameProps> = ({
    * Create the element and return - or connect to a portal.
    */
   const element = createElement(node, props);
-  if (typeof compiled.position[0] === 'object') {
-    if (compiled.position[0].portal) {
-      const portal = compiled.position[0].portal;
-      const anchor =
-        typeof portal === 'string'
-          ? document.getElementById(portal || 'root')
-          : portal;
-      return createPortal(element, anchor);
+  if (compiled.position) {
+    const data = compiled.position[0];
+    if (typeof data === 'object') {
+      if (data.portal) {
+        const portal = data.portal;
+        const anchor =
+          typeof portal === 'string'
+            ? document.getElementById(portal || 'root')
+            : portal;
+        return createPortal(element, anchor);
+      }
     }
   }
   return element;
