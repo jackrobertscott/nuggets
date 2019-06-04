@@ -7,6 +7,7 @@ export type ICore = {
   cursor?: string;
   events?: string;
   alpha?: number;
+  order?: number;
 };
 
 export type ICoreProps = ICore;
@@ -37,6 +38,9 @@ export const coreDigester: IDigester<ICoreProps> = value => {
         throw new Error(message);
       }
       css.opacity = value.alpha;
+    }
+    if (typeof value.order === 'number') {
+      css.order = value.order;
     }
   }
   return css;
