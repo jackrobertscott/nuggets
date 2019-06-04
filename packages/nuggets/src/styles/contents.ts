@@ -1,11 +1,17 @@
 import { ICSS, IDigester, IUnit, IDirections } from '../utils/types';
 import { formatUnits } from '../utils/helpers';
 
+export interface IContentsOverflow {
+  down?: string;
+  across?: string;
+}
+
 export interface IContents {
   direction?: IDirections;
-  grow?: boolean;
+  overflow?: string | IContentsOverflow;
   wrap?: boolean;
   divide?: IUnit;
+  align?: 'start' | 'end' | 'center' | 'stretch' | string;
   arrange?:
     | 'start'
     | 'end'
@@ -14,7 +20,6 @@ export interface IContents {
     | 'between'
     | 'even'
     | string;
-  align?: 'start' | 'end' | 'center' | 'stretch' | string;
 }
 
 export type IContentsProps = IContents;
@@ -39,8 +44,12 @@ export const contentsDigester: IDigester<IContentsProps> = value => {
           break;
       }
     }
-    if (typeof value.grow === 'boolean') {
-      css.flexGrow = value.grow ? 1 : 0;
+    if (typeof value.overflow === 'string') {
+      css.overflow = value.overflow;
+    }
+    if (typeof value.overflow === 'object') {
+      css.overflowY = value.overflow.down;
+      css.overflowX = value.overflow.across;
     }
     if (typeof value.wrap === 'boolean') {
       css.flexWrap = value.wrap ? 'wrap' : 'nowrap';
@@ -69,6 +78,23 @@ export const contentsDigester: IDigester<IContentsProps> = value => {
         css[`margin${wrapSide}`] = `-${formatUnits(value.divide)} !important`;
       }
     }
+    if (typeof value.align === 'string') {
+      switch (value.align) {
+        default:
+        case 'start':
+          css.alignItems = 'flex-start';
+          break;
+        case 'end':
+          css.alignItems = 'flex-end';
+          break;
+        case 'center':
+          css.alignItems = 'center';
+          break;
+        case 'stretch':
+          css.alignItems = 'stretch';
+          break;
+      }
+    }
     if (typeof value.arrange === 'string') {
       switch (value.arrange) {
         default:
@@ -89,23 +115,6 @@ export const contentsDigester: IDigester<IContentsProps> = value => {
           break;
         case 'stretch':
           css.justifyContent = 'stretch';
-          break;
-      }
-    }
-    if (typeof value.align === 'string') {
-      switch (value.align) {
-        default:
-        case 'start':
-          css.alignItems = 'flex-start';
-          break;
-        case 'end':
-          css.alignItems = 'flex-end';
-          break;
-        case 'center':
-          css.alignItems = 'center';
-          break;
-        case 'stretch':
-          css.alignItems = 'stretch';
           break;
       }
     }

@@ -15,7 +15,7 @@ import { useObserve } from '../hooks/useObserve';
 import { IStyles, stylesDigester } from '../utils/styles';
 import { eventsDigester } from '../utils/events';
 
-export interface IFrameProps {
+export interface INodeProps {
   children?: ReactNode;
   reference?: RefObject<any>;
   portal?: string | HTMLElement;
@@ -33,7 +33,7 @@ export interface IFrameProps {
   clean?: boolean;
 }
 
-export const Frame: FunctionComponent<IFrameProps> = ({
+export const Node: FunctionComponent<INodeProps> = ({
   children,
   reference,
   portal,
@@ -122,4 +122,4 @@ export const Frame: FunctionComponent<IFrameProps> = ({
   return element;
 };
 
-Frame.displayName = 'Frame';
+Node.displayName = 'Node';

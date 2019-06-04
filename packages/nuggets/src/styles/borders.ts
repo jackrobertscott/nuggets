@@ -23,7 +23,7 @@ export type IBorders = {
     | string;
 };
 
-export type IBordersProps = string | IBorders;
+export type IBordersProps = string | number | IBorders;
 
 export const bordersDigester: IDigester<IBordersProps> = value => {
   const css = {} as ICSS;
@@ -31,6 +31,11 @@ export const bordersDigester: IDigester<IBordersProps> = value => {
     css.borderColor = value;
     css.borderStyle = 'solid';
     css.borderWidth = formatUnits(1);
+  }
+  if (typeof value === 'number') {
+    css.borderColor = '#000';
+    css.borderStyle = 'solid';
+    css.borderWidth = formatUnits(value);
   }
   if (typeof value === 'object') {
     css.borderColor = value.color;
@@ -42,7 +47,9 @@ export const bordersDigester: IDigester<IBordersProps> = value => {
     if (typeof value.sides === 'object') {
       css.borderWidth = formatUnits(0);
       Object.keys(value.sides)
-        .filter(exists => exists)
+        .filter(exists => {
+          return typeof exists === 'number' || typeof exists === 'string';
+        })
         .forEach(side => {
           const sideSize = formatUnits((value.sides as any)[side]);
           switch (side) {

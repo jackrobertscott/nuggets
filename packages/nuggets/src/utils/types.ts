@@ -29,7 +29,7 @@ export type IObserveProp<T> = T | ((state: IObserve) => T);
 export type IExecuter = (value: any, event?: any) => any;
 
 export type ISpace = {
-  all?: IUnit;
+  size?: IUnit;
   sides?: IUnit;
   verts?: IUnit;
   top?: IUnit;

@@ -1,7 +1,7 @@
 import { formatUnits } from '../utils/helpers';
-import { ICSS, IUnit, IDigester, IDiagonals } from '../utils/types';
+import { ICSS, IUnit, IDigester, IDiagonals, ISides } from '../utils/types';
 
-export type ICorners = { [sides in IDiagonals]?: IUnit };
+export type ICorners = { [sides in 'size' | ISides | IDiagonals]?: IUnit };
 
 export type ICornersProps = IUnit | ICorners;
 
@@ -12,10 +12,15 @@ export const cornersDigester: IDigester<ICornersProps> = value => {
   }
   if (typeof value === 'object') {
     Object.keys(value)
-      .filter(exists => exists)
+      .filter(exists => {
+        return typeof exists === 'number' || typeof exists === 'string';
+      })
       .forEach(side => {
         const radiusSize = formatUnits((value as any)[side]);
         switch (side) {
+          case 'size':
+            css.borderRadius = radiusSize;
+            break;
           case 'top':
             css.borderTopRightRadius = radiusSize;
             css.borderTopLeftRadius = radiusSize;

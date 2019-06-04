@@ -28,12 +28,15 @@ export type ICharacters = {
   whitespace?: string;
 };
 
-export type ICharactersProps = string | ICharacters;
+export type ICharactersProps = string | number | ICharacters;
 
 export const charactersDigester: IDigester<ICharactersProps> = value => {
   const css = {} as ICSS;
   if (typeof value === 'string') {
     css.color = value;
+  }
+  if (typeof value === 'number') {
+    css.fontSize = formatUnits(value);
   }
   if (typeof value === 'object') {
     if (typeof value.size === 'string' || typeof value.size === 'number') {
