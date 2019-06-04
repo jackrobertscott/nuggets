@@ -6,6 +6,7 @@ import {
   useRef,
   useState,
   useEffect,
+  RefObject,
 } from 'react';
 import { createPortal } from 'react-dom';
 import { emotion, prefix, cleanClassname } from '../utils/emotion';
@@ -16,7 +17,7 @@ import { eventsDigester } from '../utils/events';
 
 export interface IFrameProps {
   children?: ReactNode;
-  reference?: any;
+  reference?: RefObject<any>;
   portal?: string | HTMLElement;
   value?: string | number;
   placeholder?: string | number;
@@ -49,15 +50,16 @@ export const Frame: FunctionComponent<IFrameProps> = ({
   clean = true,
 }) => {
   const fallback = useRef();
-  const compiledReference = reference || fallback;
+  const compiledReference: RefObject<any> = reference || fallback;
   const [state, changeState] = useState(value);
   useEffect(() => changeState(value), [value]);
   /**
    * Compile the properties.
    */
   let node = tag || 'div';
-  const digestedEvents = eventsDigester(events);
+  const digestedEvents: any = eventsDigester(events);
   const props: any = {
+    ref: compiledReference,
     ...digestedEvents,
     ...attrs,
   };
@@ -69,12 +71,6 @@ export const Frame: FunctionComponent<IFrameProps> = ({
   if (id) {
     props.id = id;
   }
-  if (compiledReference) {
-    props.ref = compiledReference;
-  }
-  if (children) {
-    props.children = state || children;
-  }
   if (editable) {
     if (typeof multiline === 'number') {
       node = 'textarea';
@@ -85,15 +81,17 @@ export const Frame: FunctionComponent<IFrameProps> = ({
       precss.boxSizing = 'content-box';
       props.children = undefined;
     }
+  } else {
+    props.children = state || children;
   }
   if (value) {
     props.value = value;
-    props.onChange = () => {}; // intended to be overridden
+    props.onChange = digestedEvents.onChange || (() => {}); // intended to be overridden
   }
   if (placeholder) {
     props.placeholder = placeholder;
   }
-  const observations = useObserve(compiledReference);
+  const observations = useObserve({ reference: compiledReference });
   const compiledStyles =
     typeof styles === 'function' ? styles(observations) : styles;
   const digestedStyles = stylesDigester(compiledStyles);

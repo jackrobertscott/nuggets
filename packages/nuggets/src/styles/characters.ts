@@ -3,12 +3,13 @@ import { formatUnits } from '../utils/helpers';
 
 export interface IDecoration {
   color?: string;
-  style?: 'solid' | 'double' | 'dotted' | 'dashed' | 'wavy';
+  style?: 'solid' | 'double' | 'dotted' | 'dashed' | 'wavy' | string;
   lines:
     | 'underline'
     | 'overline'
     | 'line-through'
-    | Array<'underline' | 'overline' | 'line-through'>;
+    | string
+    | Array<'underline' | 'overline' | 'line-through' | string>;
 }
 
 export type ICharacters = {
@@ -17,7 +18,7 @@ export type ICharacters = {
   multiline?: number;
   size?: IUnit;
   color?: string;
-  align?: 'left' | 'center' | 'right' | 'justify';
+  align?: 'left' | 'center' | 'right' | 'justify' | string;
   family?: string;
   line?: IUnit;
   italic?: boolean;

@@ -3,29 +3,37 @@ import { IObserve } from '../utils/types';
 import { createListener } from '../utils/listeners';
 
 export interface IuseObserveOptions {
-  current?: HTMLElement;
+  reference: RefObject<HTMLElement>;
 }
 
 export type IuseObserveProps = IObserve;
 
 export const useObserve = ({
-  current,
+  reference,
 }: IuseObserveOptions): IuseObserveProps => {
   const [hover, changeHover] = useState<boolean>(false);
+  const [focus, changeFocus] = useState<boolean>(false);
+  const [active, changeActive] = useState<boolean>(false);
   useEffect(
     () => {
-      if (current) {
-        const element = current;
+      if (reference.current) {
+        const element = reference.current;
         const eventsListeners: Array<() => any> = [
           createListener('mouseenter', element, () => changeHover(true)),
           createListener('mouseleave', element, () => changeHover(false)),
+          createListener('focus', element, () => changeFocus(true)),
+          createListener('blur', element, () => changeFocus(false)),
+          createListener('mousedown', element, () => changeActive(true)),
+          createListener('mouseup', document, () => changeActive(false)),
         ];
         return () => eventsListeners.forEach(unlisten => unlisten());
       }
     },
-    [current]
+    [reference.current]
   );
   return {
     hover,
+    focus,
+    active,
   };
 };

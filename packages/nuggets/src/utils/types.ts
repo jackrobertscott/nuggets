@@ -22,7 +22,7 @@ export type IUnit = number | string;
 
 export type IDigester<T> = (value?: T) => ICSS;
 
-export type IObserve = { hover: boolean };
+export type IObserve = { hover: boolean; focus: boolean; active: boolean };
 
 export type IObserveProp<T> = T | ((state: IObserve) => T);
 

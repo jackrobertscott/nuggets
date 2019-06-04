@@ -1,18 +1,25 @@
 import { ICSS, IDigester, IUnit, IDirections } from '../utils/types';
 import { formatUnits } from '../utils/helpers';
 
-export interface IStructure {
+export interface IContents {
   direction?: IDirections;
   grow?: boolean;
   wrap?: boolean;
   divide?: IUnit;
-  arrange?: 'start' | 'end' | 'center' | 'stretch' | 'between' | 'even';
-  align?: 'start' | 'end' | 'center' | 'stretch';
+  arrange?:
+    | 'start'
+    | 'end'
+    | 'center'
+    | 'stretch'
+    | 'between'
+    | 'even'
+    | string;
+  align?: 'start' | 'end' | 'center' | 'stretch' | string;
 }
 
-export type IStructureProps = IStructure;
+export type IContentsProps = IContents;
 
-export const structureDigester: IDigester<IStructureProps> = value => {
+export const contentsDigester: IDigester<IContentsProps> = value => {
   const css: ICSS = {};
   if (typeof value === 'object') {
     if (typeof value.direction === 'string') {

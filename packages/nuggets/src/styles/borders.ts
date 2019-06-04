@@ -19,7 +19,8 @@ export type IBorders = {
     | 'groove'
     | 'ridge'
     | 'inset'
-    | 'outset';
+    | 'outset'
+    | string;
 };
 
 export type IBordersProps = string | IBorders;

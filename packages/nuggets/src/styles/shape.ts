@@ -14,7 +14,6 @@ export type IShape = {
   width?: IUnit | IShapeSize;
   height?: IUnit | IShapeSize;
   padding?: IUnit | ISpace;
-  absorb?: IUnit | ISpace;
 };
 
 export type IShapeProps = IShape;
@@ -96,35 +95,6 @@ export const shapeDigester: IDigester<IShapeProps> = value => {
       }
       if (typeof left === 'string' || typeof left === 'number') {
         css.paddingLeft = formatUnits(left);
-      }
-    }
-    if (typeof value.absorb === 'number' || typeof value.absorb === 'string') {
-      css.margin = `-${formatUnits(value.absorb)}`;
-    }
-    if (typeof value.absorb === 'object') {
-      const { all, sides, verts, top, right, bottom, left } = value.absorb;
-      if (typeof all === 'string' || typeof all === 'number') {
-        css.margin = `-${formatUnits(all)}`;
-      }
-      if (typeof verts === 'string' || typeof verts === 'number') {
-        css.marginTop = `-${formatUnits(verts)}`;
-        css.marginBottom = `-${formatUnits(verts)}`;
-      }
-      if (typeof sides === 'string' || typeof sides === 'number') {
-        css.marginRight = `-${formatUnits(sides)}`;
-        css.marginLeft = `-${formatUnits(sides)}`;
-      }
-      if (typeof top === 'string' || typeof top === 'number') {
-        css.marginTop = `-${formatUnits(top)}`;
-      }
-      if (typeof right === 'string' || typeof right === 'number') {
-        css.marginRight = `-${formatUnits(right)}`;
-      }
-      if (typeof bottom === 'string' || typeof bottom === 'number') {
-        css.marginBottom = `-${formatUnits(bottom)}`;
-      }
-      if (typeof left === 'string' || typeof left === 'number') {
-        css.marginLeft = `-${formatUnits(left)}`;
       }
     }
   }

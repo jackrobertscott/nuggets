@@ -8,7 +8,7 @@ import { IPlaceholderProps, placeholderDigester } from '../styles/placeholder';
 import { IPositionProps, positionDigester } from '../styles/position';
 import { ISettingsProps, settingsDigester } from '../styles/settings';
 import { IShapeProps, shapeDigester } from '../styles/shape';
-import { IStructureProps, structureDigester } from '../styles/structure';
+import { IContentsProps, contentsDigester } from '../styles/contents';
 import { ITransformProps, transformDigester } from '../styles/transform';
 import { IDigester } from './types';
 
@@ -23,7 +23,7 @@ export type IStyles = {
   settings?: ISettingsProps;
   shadows?: IShadowsProps;
   shape?: IShapeProps;
-  structure?: IStructureProps;
+  contents?: IContentsProps;
   transform?: ITransformProps;
 };
 
@@ -40,7 +40,7 @@ export const stylesDigester: IDigester<IStyles> = value => {
       ...settingsDigester(value.settings),
       ...shadowsDigester(value.shadows),
       ...shapeDigester(value.shape),
-      ...structureDigester(value.structure),
+      ...contentsDigester(value.contents),
       ...transformDigester(value.transform),
     };
   }

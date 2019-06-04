@@ -16,9 +16,9 @@ export type IAnimate = {
     | 'step-end'
     | string;
   iterations?: IUnit;
-  direction?: 'normal' | 'reverse' | 'alternate' | 'alternate-reverse';
-  state?: 'paused' | 'running';
-  mode?: 'none' | 'forwards' | 'backwards' | 'both';
+  direction?: 'normal' | 'reverse' | 'alternate' | 'alternate-reverse' | string;
+  state?: 'paused' | 'running' | string;
+  mode?: 'none' | 'forwards' | 'backwards' | 'both' | string;
 };
 
 export type IAnimateProps = IAnimate;
