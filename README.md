@@ -466,7 +466,7 @@ export default ({ value, change }) => {
         click: active ? off : on,
       }}
       styles={{
-        frame: {
+        shape: {
           color: active ? 'green' : 'blue',
         },
       }}

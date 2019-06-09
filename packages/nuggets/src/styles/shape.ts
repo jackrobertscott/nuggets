@@ -1,13 +1,13 @@
 import { ICSS, IDigester, IUnit } from '../utils/types';
 import { formatUnits } from '../utils/helpers';
 
-export interface IFrameSize {
+export interface IShapeSize {
   use?: IUnit;
   min?: IUnit;
   max?: IUnit;
 }
 
-export type IFrame = {
+export type IShape = {
   color?: string | string[];
   angle?: number;
   size?: IUnit;
@@ -15,13 +15,13 @@ export type IFrame = {
   collapse?: boolean;
   shrink?: boolean | number;
   circle?: boolean;
-  width?: IUnit | IFrameSize;
-  height?: IUnit | IFrameSize;
+  width?: IUnit | IShapeSize;
+  height?: IUnit | IShapeSize;
 };
 
-export type IFrameProps = string | number | IFrame;
+export type IShapeProps = string | number | IShape;
 
-export const frameDigester: IDigester<IFrameProps> = value => {
+export const shapeDigester: IDigester<IShapeProps> = value => {
   const css = {} as ICSS;
   if (typeof value === 'string') {
     css.backgroundColor = value;
