@@ -7,7 +7,7 @@ import { IPlaceholderProps, placeholderDigester } from '../styles/placeholder';
 import { IPositionProps, positionDigester } from '../styles/position';
 import { ICoreProps, coreDigester } from '../styles/core';
 import { IShapeProps, shapeDigester } from '../styles/shape';
-import { IContentsProps, contentsDigester } from '../styles/contents';
+import { IStructureProps, structureDigester } from '../styles/structure';
 import { ITransformProps, transformDigester } from '../styles/transform';
 import { IDigester } from './types';
 import { IAbsorbProps, absorbDigester } from '../styles/absorb';
@@ -18,13 +18,13 @@ export type IStyles = ICoreProps & {
   animate?: IAnimateProps;
   borders?: IBordersProps;
   characters?: ICharactersProps;
-  contents?: IContentsProps;
   corners?: ICornersProps;
   padding?: IPaddingProps;
   placeholder?: IPlaceholderProps;
   position?: IPositionProps;
   shadows?: IShadowsProps;
   shape?: IShapeProps;
+  structure?: IStructureProps;
   transform?: ITransformProps;
 };
 
@@ -35,7 +35,7 @@ export const stylesDigester: IDigester<IStyles> = value => {
       animate,
       borders,
       characters,
-      contents,
+      structure,
       corners,
       padding,
       placeholder,
@@ -51,7 +51,7 @@ export const stylesDigester: IDigester<IStyles> = value => {
       ...animateDigester(animate),
       ...bordersDigester(borders),
       ...charactersDigester(characters),
-      ...contentsDigester(contents),
+      ...structureDigester(structure),
       ...cornersDigester(corners),
       ...paddingDigester(padding),
       ...placeholderDigester(placeholder),

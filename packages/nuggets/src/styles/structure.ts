@@ -1,14 +1,14 @@
 import { ICSS, IDigester, IUnit, IDirections } from '../utils/types';
 import { formatUnits } from '../utils/helpers';
 
-export interface IContentsOverflow {
+export interface IStructureOverflow {
   down?: string;
   across?: string;
 }
 
-export interface IContents {
+export interface IStructure {
   direction?: IDirections;
-  overflow?: string | IContentsOverflow;
+  overflow?: string | IStructureOverflow;
   wrap?: boolean;
   divide?: IUnit;
   align?: 'start' | 'end' | 'center' | 'stretch' | string;
@@ -22,9 +22,9 @@ export interface IContents {
     | string;
 }
 
-export type IContentsProps = IContents;
+export type IStructureProps = IStructure;
 
-export const contentsDigester: IDigester<IContentsProps> = value => {
+export const structureDigester: IDigester<IStructureProps> = value => {
   const css: ICSS = {};
   if (typeof value === 'object') {
     if (typeof value.direction === 'string') {
