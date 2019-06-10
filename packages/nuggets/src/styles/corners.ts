@@ -12,7 +12,7 @@ export type ICorners = IOptions<
   { [sides in 'size' | ISides | IDiagonals]?: IUnit }
 >;
 
-export type ICornersProps = IOptions<IUnit | ICorners>;
+export type ICornersProps = boolean | IOptions<IUnit | ICorners>;
 
 export const cornersDigester: IDigester<ICornersProps> = value => {
   const css = {} as ICSS;

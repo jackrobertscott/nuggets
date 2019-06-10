@@ -16,7 +16,7 @@ export type IStructure = IOptions<{
     | string;
 }>;
 
-export type IStructureProps = IOptions<IStructure>;
+export type IStructureProps = boolean | IOptions<IStructure>;
 
 export const structureDigester: IDigester<IStructureProps> = value => {
   const css: ICSS = {};

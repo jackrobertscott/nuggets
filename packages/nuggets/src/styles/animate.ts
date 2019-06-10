@@ -21,7 +21,7 @@ export type IAnimate = IOptions<{
   mode?: 'none' | 'forwards' | 'backwards' | 'both' | string;
 }>;
 
-export type IAnimateProps = IOptions<IAnimate>;
+export type IAnimateProps = boolean | IOptions<IAnimate>;
 
 export const animateDigester: IDigester<IAnimateProps> = value => {
   const css = {} as ICSS;

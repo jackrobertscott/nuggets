@@ -23,7 +23,7 @@ export type IBorders = IOptions<{
     | string;
 }>;
 
-export type IBordersProps = IOptions<string | number | IBorders>;
+export type IBordersProps = boolean | string | number | IOptions<IBorders>;
 
 export const bordersDigester: IDigester<IBordersProps> = value => {
   const css = {} as ICSS;

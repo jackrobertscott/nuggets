@@ -13,11 +13,7 @@ export type ITransform = IOptions<{
   translate?: IUnit | I3D;
 }>;
 
-export type ITransformProps = IOptions<ITransform>;
-
-/**
- * Need to fix the type checks in this file.
- */
+export type ITransformProps = boolean | IOptions<ITransform>;
 
 export const transformDigester: IDigester<ITransformProps> = value => {
   const css = {} as ICSS;

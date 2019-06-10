@@ -10,7 +10,7 @@ export type IShadows = IOptions<{
   inside?: boolean;
 }>;
 
-export type IShadowsProps = IOptions<string | IShadows | IShadows[]>;
+export type IShadowsProps = boolean | string | IOptions<IShadows | IShadows[]>;
 
 export const shadowsDigester: IDigester<IShadowsProps> = value => {
   const css = {} as ICSS;
@@ -18,28 +18,35 @@ export const shadowsDigester: IDigester<IShadowsProps> = value => {
     css.boxShadow = value;
   }
   if (typeof value === 'object') {
-    if (Array.isArray(value)) {
-      const createShadow = (data: IShadows) => {
-        return [
-          data.inside ? 'inset' : '',
-          data.across,
-          data.down,
-          data.size,
-          data.scale,
-          data.color,
-        ]
-          .map(String)
-          .map(i => formatUnits(i))
-          .join(' ')
-          .trim();
-      };
-      css.boxShadow = Array.isArray(value)
-        ? value
-            .map(i => (typeof i === 'object' ? createShadow(i) : undefined))
-            .filter(String)
-            .join(', ')
-        : createShadow(value);
-    }
+    const createShadow = (data: IShadows) => {
+      const shadow = [
+        data.inside ? 'inset' : '',
+        typeof data.across === 'string' || typeof data.across === 'number'
+          ? formatUnits(data.across)
+          : 0,
+        typeof data.down === 'string' || typeof data.down === 'number'
+          ? formatUnits(data.down)
+          : 0,
+        typeof data.size === 'string' || typeof data.size === 'number'
+          ? formatUnits(data.size)
+          : 0,
+        typeof data.scale === 'string' || typeof data.scale === 'number'
+          ? formatUnits(data.scale)
+          : 0,
+        data.color,
+      ]
+        .map(String)
+        .map(i => i)
+        .join(' ')
+        .trim();
+      return shadow;
+    };
+    css.boxShadow = Array.isArray(value)
+      ? value
+          .map(i => (typeof i === 'object' ? createShadow(i) : undefined))
+          .filter(String)
+          .join(', ')
+      : createShadow(value);
   }
   return css;
 };

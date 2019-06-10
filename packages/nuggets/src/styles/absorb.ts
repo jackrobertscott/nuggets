@@ -3,7 +3,7 @@ import { ICSS, IUnit, IDigester, ISpace, IOptions } from '../utils/types';
 
 export type IAbsorb = IOptions<ISpace & {}>;
 
-export type IAbsorbProps = IOptions<IUnit | IAbsorb>;
+export type IAbsorbProps = boolean | IOptions<IUnit | IAbsorb>;
 
 export const absorbDigester: IDigester<IAbsorbProps> = value => {
   const css = {} as ICSS;

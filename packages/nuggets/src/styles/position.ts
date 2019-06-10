@@ -7,7 +7,7 @@ export type IPosition = IOptions<
   }
 >;
 
-export type IPositionProps = IOptions<IUnit | IPosition>;
+export type IPositionProps = boolean | IOptions<IUnit | IPosition>;
 
 export const positionDigester: IDigester<IPositionProps> = value => {
   const css = {} as ICSS;

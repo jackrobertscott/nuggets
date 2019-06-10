@@ -32,7 +32,11 @@ export type ICharacters = IOptions<{
   whitespace?: string;
 }>;
 
-export type ICharactersProps = IOptions<string | number | ICharacters>;
+export type ICharactersProps =
+  | boolean
+  | string
+  | number
+  | IOptions<ICharacters>;
 
 export const charactersDigester: IDigester<ICharactersProps> = value => {
   const css = {} as ICSS;

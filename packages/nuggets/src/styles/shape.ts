@@ -19,7 +19,7 @@ export type IShape = IOptions<{
   height?: IUnit | IShapeSize;
 }>;
 
-export type IShapeProps = IOptions<string | number | IShape>;
+export type IShapeProps = boolean | string | number | IOptions<IShape>;
 
 export const shapeDigester: IDigester<IShapeProps> = value => {
   const css = {} as ICSS;

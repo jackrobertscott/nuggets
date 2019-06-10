@@ -3,7 +3,7 @@ import { ICSS, IUnit, IDigester, ISpace, IOptions } from '../utils/types';
 
 export type IPadding = IOptions<ISpace & {}>;
 
-export type IPaddingProps = IOptions<IUnit | IPadding>;
+export type IPaddingProps = boolean | IOptions<IUnit | IPadding>;
 
 export const paddingDigester: IDigester<IPaddingProps> = value => {
   const css = {} as ICSS;
