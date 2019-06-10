@@ -23,7 +23,7 @@ export interface IuseSchemaOptions {
 }
 
 export interface IuseSchemaProps {
-  fields: {
+  properties: {
     [name: string]: {
       value: any;
       error?: Error;
@@ -35,6 +35,7 @@ export interface IuseSchemaProps {
   value: ISchemaValue;
   error: ISchemaError;
   dirty: ISchemaDirty;
+  valid: boolean;
   invalid: boolean;
   change: (value: ISchemaValue) => any;
   override: (value?: ISchemaValue) => void;
@@ -78,7 +79,7 @@ export const useSchema = ({
       });
     }
   };
-  const mutate = (next?: ISchemaValue) => {
+  const patch = (next?: ISchemaValue) => {
     override({ ...state, ...(next || {}) });
   };
   const reduce = (all: any, key: string) => ({
@@ -88,7 +89,7 @@ export const useSchema = ({
       error: error[key],
       dirty: globalDirty || dirty[key] || !!state[key],
       change: (data: any) => {
-        return mutate({
+        return patch({
           [key]: data,
         });
       },
@@ -100,13 +101,15 @@ export const useSchema = ({
       },
     },
   });
+  const valid = !!Object.keys(error).filter(key => error[key]).length;
   return {
-    fields: Object.keys(schema).reduce(reduce, {}),
+    properties: Object.keys(schema).reduce(reduce, {}),
     value: state,
     dirty,
     error,
-    invalid: !!Object.keys(error).filter(key => error[key]).length,
-    change: mutate,
+    valid,
+    invalid: !valid,
+    change: patch,
     override,
     blur: (status?: boolean) => updateGlobalDirty(status || true),
   };

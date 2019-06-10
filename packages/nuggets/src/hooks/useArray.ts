@@ -22,20 +22,20 @@ export const useArray = ({
   error,
 }: IuseArrayOptions = {}): IuseArrayProps => {
   const [state, update] = useState<any[]>(value || []);
-  useEffect(() => mutate(value), [value]);
-  const mutate = (next?: any[]) => {
+  useEffect(() => patch(value), [value]);
+  const patch = (next?: any[]) => {
     const data = next || [];
     update(data);
     if (change) {
       change(data);
     }
   };
-  const add = (item: any) => mutate([...state, item]);
+  const add = (item: any) => patch([...state, item]);
   const remove = (item: any) => {
     if (typeof item === 'function') {
-      mutate(state.filter(data => !item(data)));
+      patch(state.filter(data => !item(data)));
     } else {
-      mutate(state.filter(data => item !== data));
+      patch(state.filter(data => item !== data));
     }
   };
   const includes = (item: any) => {
@@ -53,7 +53,7 @@ export const useArray = ({
   };
   return {
     value: state,
-    change: mutate,
+    change: patch,
     add,
     remove,
     includes,

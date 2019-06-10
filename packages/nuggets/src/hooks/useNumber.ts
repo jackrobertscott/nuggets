@@ -20,8 +20,8 @@ export const useNumber = ({
   error,
 }: IuseNumberOptions = {}): IuseNumberProps => {
   const [state, update] = useState<number>(value || 0);
-  useEffect(() => mutate(value), [value]);
-  const mutate = (next?: any) => {
+  useEffect(() => patch(value), [value]);
+  const patch = (next?: any) => {
     const nice = Number(next || 0);
     const data = adjust ? adjust(nice) : nice;
     update(data);
@@ -31,7 +31,7 @@ export const useNumber = ({
   };
   return {
     value: state,
-    change: mutate,
+    change: patch,
     error,
   };
 };

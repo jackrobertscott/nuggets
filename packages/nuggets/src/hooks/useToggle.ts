@@ -21,22 +21,22 @@ export const useToggle = ({
   error,
 }: IuseToggleOptions = {}): IuseToggleProps => {
   const [state, update] = useState<boolean>(!!value || false);
-  useEffect(() => mutate(value), [value]);
-  const mutate = (next: boolean) => {
+  useEffect(() => patch(value), [value]);
+  const patch = (next: boolean) => {
     const data = !!next || false;
     update(data);
     if (change) {
       change(data);
     }
   };
-  const on = () => mutate(true);
-  const off = () => mutate(false);
+  const on = () => patch(true);
+  const off = () => patch(false);
   const toggle = (override?: boolean) => {
-    mutate(typeof override === 'boolean' ? override : !state);
+    patch(typeof override === 'boolean' ? override : !state);
   };
   return {
     value: state,
-    change: mutate,
+    change: patch,
     on,
     off,
     toggle,

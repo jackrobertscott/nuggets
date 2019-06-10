@@ -20,8 +20,8 @@ export const useString = ({
   error,
 }: IuseStringOptions = {}): IuseStringProps => {
   const [state, update] = useState<string>(value || '');
-  useEffect(() => mutate(value), [value]);
-  const mutate = (next?: any) => {
+  useEffect(() => patch(value), [value]);
+  const patch = (next?: any) => {
     const nice = String(next || '');
     const data = adjust ? adjust(nice) : nice;
     update(data);
@@ -31,7 +31,7 @@ export const useString = ({
   };
   return {
     value: state,
-    change: mutate,
+    change: patch,
     error,
   };
 };
