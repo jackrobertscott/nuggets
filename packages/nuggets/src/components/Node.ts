@@ -43,6 +43,7 @@ export const Node: FunctionComponent<INodeProps> = ({
   multiline,
   tag = 'div',
   id,
+  classname,
   events = {},
   styles = {},
   css = {},
@@ -100,6 +101,7 @@ export const Node: FunctionComponent<INodeProps> = ({
     clean && cleanClassname,
     emotion.css(deepCss),
     prefix && `${tag}-${prefix}`,
+    classname,
     attrs && attrs.className,
   ]
     .filter(exists => exists)
