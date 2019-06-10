@@ -51,9 +51,9 @@ export const structureDigester: IDigester<IStructureProps> = value => {
           ? 'Top'
           : 'Bottom';
       css['& > *'] = {
-        [`margin${side}`]: `${formatUnits(value.divide)}`,
+        [`margin${side}`]: `${formatUnits(value.divide)} !important`,
         [':last-child']: {
-          [`margin${side}`]: `${0}`,
+          [`margin${side}`]: `${0} !important`,
         },
       };
       if (value.wrap) {
@@ -62,7 +62,7 @@ export const structureDigester: IDigester<IStructureProps> = value => {
             ? 'Bottom'
             : 'Right';
         (css['& > *'] as any)[`margin${wrapSide}`] = formatUnits(value.divide);
-        css[`margin${wrapSide}`] = `-${formatUnits(value.divide)}`;
+        css[`margin${wrapSide}`] = `-${formatUnits(value.divide)} !important`;
       }
     }
     if (typeof value.align === 'string') {
