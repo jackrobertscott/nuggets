@@ -21,8 +21,8 @@ export const useObserve = ({
         const eventsListeners: Array<() => any> = [
           createListener('mouseenter', element, () => changeHover(true)),
           createListener('mouseleave', element, () => changeHover(false)),
-          createListener('focus', element, () => changeFocus(true)),
-          createListener('blur', element, () => changeFocus(false)),
+          createListener('focusin', element, () => changeFocus(true)),
+          createListener('focusout', element, () => changeFocus(false)),
           createListener('mousedown', element, () => changeActive(true)),
           createListener('mouseup', document, () => changeActive(false)),
         ];
