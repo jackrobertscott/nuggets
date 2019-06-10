@@ -1,6 +1,11 @@
 import { ICSS, IDigester, IUnit } from '../utils/types';
 import { formatUnits } from '../utils/helpers';
 
+export interface ICoreOverflow {
+  down?: string;
+  across?: string;
+}
+
 export type ICore = {
   zindex?: number;
   transition?: IUnit;
@@ -8,6 +13,7 @@ export type ICore = {
   events?: string;
   alpha?: number;
   order?: number;
+  overflow?: string | ICoreOverflow;
 };
 
 export type ICoreProps = ICore;
@@ -41,6 +47,13 @@ export const coreDigester: IDigester<ICoreProps> = value => {
     }
     if (typeof value.order === 'number') {
       css.order = value.order;
+    }
+    if (typeof value.overflow === 'string') {
+      css.overflow = value.overflow;
+    }
+    if (typeof value.overflow === 'object') {
+      css.overflowY = value.overflow.down;
+      css.overflowX = value.overflow.across;
     }
   }
   return css;

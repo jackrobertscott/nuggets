@@ -1,14 +1,8 @@
 import { ICSS, IDigester, IUnit, IDirections } from '../utils/types';
 import { formatUnits } from '../utils/helpers';
 
-export interface IStructureOverflow {
-  down?: string;
-  across?: string;
-}
-
 export interface IStructure {
   direction?: IDirections;
-  overflow?: string | IStructureOverflow;
   wrap?: boolean;
   divide?: IUnit;
   align?: 'start' | 'end' | 'center' | 'stretch' | string;
@@ -43,13 +37,6 @@ export const structureDigester: IDigester<IStructureProps> = value => {
           css.flexDirection = 'row-reverse';
           break;
       }
-    }
-    if (typeof value.overflow === 'string') {
-      css.overflow = value.overflow;
-    }
-    if (typeof value.overflow === 'object') {
-      css.overflowY = value.overflow.down;
-      css.overflowX = value.overflow.across;
     }
     if (typeof value.wrap === 'boolean') {
       css.flexWrap = value.wrap ? 'wrap' : 'nowrap';
