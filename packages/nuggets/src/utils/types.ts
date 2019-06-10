@@ -10,6 +10,8 @@ export type ICSS = {
   [name: string]: string | number | ICSS | undefined;
 };
 
+export type IOptions<T> = { [P in keyof T]: T[P] | boolean };
+
 export type ISides = 'top' | 'right' | 'bottom' | 'left';
 
 export type IDirections = 'down' | 'right' | 'up' | 'left';

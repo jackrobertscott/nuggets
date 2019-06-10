@@ -1,7 +1,7 @@
-import { ICSS, IDigester, IUnit } from '../utils/types';
+import { ICSS, IDigester, IUnit, IOptions } from '../utils/types';
 import { formatUnits } from '../utils/helpers';
 
-export interface IDecoration {
+export type ICharactersDecoration = IOptions<{
   color?: string;
   style?: 'solid' | 'double' | 'dotted' | 'dashed' | 'wavy' | string;
   lines:
@@ -10,9 +10,9 @@ export interface IDecoration {
     | 'line-through'
     | string
     | Array<'underline' | 'overline' | 'line-through' | string>;
-}
+}>;
 
-export type ICharacters = {
+export type ICharacters = IOptions<{
   value?: string | number;
   editable?: boolean;
   multiline?: number;
@@ -23,12 +23,16 @@ export type ICharacters = {
   line?: IUnit;
   italic?: boolean;
   spacing?: IUnit;
-  decoration?: string | IDecoration;
+  decoration?:
+    | 'underline'
+    | 'overline'
+    | 'line-through'
+    | IOptions<ICharactersDecoration>;
   thickness?: number | string;
   whitespace?: string;
-};
+}>;
 
-export type ICharactersProps = string | number | ICharacters;
+export type ICharactersProps = IOptions<string | number | ICharacters>;
 
 export const charactersDigester: IDigester<ICharactersProps> = value => {
   const css = {} as ICSS;
@@ -48,10 +52,10 @@ export const charactersDigester: IDigester<ICharactersProps> = value => {
     if (typeof value.align === 'string') {
       css.textAlign = value.align;
     }
-    if (value.family !== undefined) {
+    if (typeof value.family === 'string') {
       css.fontFamily = value.family;
     }
-    if (value.italic !== undefined) {
+    if (typeof value.italic === 'string') {
       css.fontStyle = 'italic';
     }
     if (typeof value.line === 'string' || typeof value.line === 'number') {

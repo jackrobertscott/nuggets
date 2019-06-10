@@ -1,9 +1,9 @@
 import { formatUnits } from '../utils/helpers';
-import { ICSS, IUnit, IDigester, ISpace } from '../utils/types';
+import { ICSS, IUnit, IDigester, ISpace, IOptions } from '../utils/types';
 
-export type IAbsorb = ISpace & {};
+export type IAbsorb = IOptions<ISpace & {}>;
 
-export type IAbsorbProps = IUnit | IAbsorb;
+export type IAbsorbProps = IOptions<IUnit | IAbsorb>;
 
 export const absorbDigester: IDigester<IAbsorbProps> = value => {
   const css = {} as ICSS;

@@ -1,9 +1,18 @@
 import { formatUnits } from '../utils/helpers';
-import { ICSS, IUnit, IDigester, IDiagonals, ISides } from '../utils/types';
+import {
+  ICSS,
+  IUnit,
+  IDigester,
+  IDiagonals,
+  ISides,
+  IOptions,
+} from '../utils/types';
 
-export type ICorners = { [sides in 'size' | ISides | IDiagonals]?: IUnit };
+export type ICorners = IOptions<
+  { [sides in 'size' | ISides | IDiagonals]?: IUnit }
+>;
 
-export type ICornersProps = IUnit | ICorners;
+export type ICornersProps = IOptions<IUnit | ICorners>;
 
 export const cornersDigester: IDigester<ICornersProps> = value => {
   const css = {} as ICSS;

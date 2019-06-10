@@ -1,13 +1,13 @@
-import { ICSS, IDigester, IUnit } from '../utils/types';
+import { ICSS, IDigester, IUnit, IOptions } from '../utils/types';
 import { formatUnits } from '../utils/helpers';
 
-export interface IShapeSize {
+export type IShapeSize = IOptions<{
   use?: IUnit;
   min?: IUnit;
   max?: IUnit;
-}
+}>;
 
-export type IShape = {
+export type IShape = IOptions<{
   color?: string | string[];
   angle?: number;
   size?: IUnit;
@@ -17,9 +17,9 @@ export type IShape = {
   circle?: boolean;
   width?: IUnit | IShapeSize;
   height?: IUnit | IShapeSize;
-};
+}>;
 
-export type IShapeProps = string | number | IShape;
+export type IShapeProps = IOptions<string | number | IShape>;
 
 export const shapeDigester: IDigester<IShapeProps> = value => {
   const css = {} as ICSS;
@@ -68,13 +68,13 @@ export const shapeDigester: IDigester<IShapeProps> = value => {
     }
     if (typeof value.width === 'object') {
       const { min, max, use } = value.width;
-      if (min) {
+      if (typeof min === 'string' || typeof min === 'number') {
         css.minWidth = formatUnits(min);
       }
-      if (max) {
+      if (typeof max === 'string' || typeof max === 'number') {
         css.maxWidth = formatUnits(max);
       }
-      if (use) {
+      if (typeof use === 'string' || typeof use === 'number') {
         css.width = formatUnits(use);
       }
     }
@@ -83,13 +83,13 @@ export const shapeDigester: IDigester<IShapeProps> = value => {
     }
     if (typeof value.height === 'object') {
       const { min, max, use } = value.height;
-      if (min) {
+      if (typeof min === 'string' || typeof min === 'number') {
         css.minHeight = formatUnits(min);
       }
-      if (max) {
+      if (typeof max === 'string' || typeof max === 'number') {
         css.maxHeight = formatUnits(max);
       }
-      if (use) {
+      if (typeof use === 'string' || typeof use === 'number') {
         css.height = formatUnits(use);
       }
     }

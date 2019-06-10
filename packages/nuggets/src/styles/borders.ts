@@ -1,14 +1,14 @@
 import { formatUnits } from '../utils/helpers';
-import { ICSS, IUnit, IDigester } from '../utils/types';
+import { ICSS, IUnit, IDigester, IOptions } from '../utils/types';
 
-export interface IBordersSides {
+export type IBordersSides = IOptions<{
   top?: IUnit;
   bottom?: IUnit;
   right?: IUnit;
   left?: IUnit;
-}
+}>;
 
-export type IBorders = {
+export type IBorders = IOptions<{
   color?: string;
   sides?: IUnit | IBordersSides;
   style?:
@@ -21,9 +21,9 @@ export type IBorders = {
     | 'inset'
     | 'outset'
     | string;
-};
+}>;
 
-export type IBordersProps = string | number | IBorders;
+export type IBordersProps = IOptions<string | number | IBorders>;
 
 export const bordersDigester: IDigester<IBordersProps> = value => {
   const css = {} as ICSS;
@@ -38,8 +38,8 @@ export const bordersDigester: IDigester<IBordersProps> = value => {
     css.borderWidth = formatUnits(value);
   }
   if (typeof value === 'object') {
-    css.borderColor = value.color;
-    css.borderStyle = value.style || 'solid';
+    css.borderColor = typeof value.color === 'string' ? value.color : '#000';
+    css.borderStyle = typeof value.style === 'string' ? value.style : 'solid';
     css.borderWidth = formatUnits(1);
     if (typeof value.sides === 'number' || typeof value.sides === 'string') {
       css.borderWidth = formatUnits(value.sides);

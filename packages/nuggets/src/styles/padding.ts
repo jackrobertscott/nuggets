@@ -1,9 +1,9 @@
 import { formatUnits } from '../utils/helpers';
-import { ICSS, IUnit, IDigester, ISpace } from '../utils/types';
+import { ICSS, IUnit, IDigester, ISpace, IOptions } from '../utils/types';
 
-export type IPadding = ISpace & {};
+export type IPadding = IOptions<ISpace & {}>;
 
-export type IPaddingProps = IUnit | IPadding;
+export type IPaddingProps = IOptions<IUnit | IPadding>;
 
 export const paddingDigester: IDigester<IPaddingProps> = value => {
   const css = {} as ICSS;

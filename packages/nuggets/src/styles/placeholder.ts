@@ -1,11 +1,11 @@
-import { ICSS, IDigester } from '../utils/types';
+import { ICSS, IDigester, IOptions } from '../utils/types';
 
-export type IPlaceholder = {
+export type IPlaceholder = IOptions<{
   value?: number | string;
   color?: string;
-};
+}>;
 
-export type IPlaceholderProps = number | string | IPlaceholder;
+export type IPlaceholderProps = IOptions<number | string | IPlaceholder>;
 
 export const placeholderDigester: IDigester<IPlaceholderProps> = value => {
   const css = {} as ICSS;

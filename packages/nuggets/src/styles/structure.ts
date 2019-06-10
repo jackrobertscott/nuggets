@@ -1,7 +1,7 @@
-import { ICSS, IDigester, IUnit, IDirections } from '../utils/types';
+import { ICSS, IDigester, IUnit, IDirections, IOptions } from '../utils/types';
 import { formatUnits } from '../utils/helpers';
 
-export interface IStructure {
+export type IStructure = IOptions<{
   direction?: IDirections;
   wrap?: boolean;
   divide?: IUnit;
@@ -14,9 +14,9 @@ export interface IStructure {
     | 'between'
     | 'even'
     | string;
-}
+}>;
 
-export type IStructureProps = IStructure;
+export type IStructureProps = IOptions<IStructure>;
 
 export const structureDigester: IDigester<IStructureProps> = value => {
   const css: ICSS = {};

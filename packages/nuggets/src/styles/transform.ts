@@ -1,19 +1,19 @@
-import { ICSS, IDigester, IUnit } from '../utils/types';
+import { ICSS, IDigester, IUnit, IOptions } from '../utils/types';
 import { formatUnits } from '../utils/helpers';
 
-export type I3D = {
+export type I3D = IOptions<{
   x?: IUnit;
   y?: IUnit;
   z?: IUnit;
-};
+}>;
 
-export type ITransform = {
+export type ITransform = IOptions<{
   rotate?: IUnit | I3D;
   scale?: number | I3D;
   translate?: IUnit | I3D;
-};
+}>;
 
-export type ITransformProps = ITransform;
+export type ITransformProps = IOptions<ITransform>;
 
 /**
  * Need to fix the type checks in this file.
@@ -23,14 +23,14 @@ export const transformDigester: IDigester<ITransformProps> = value => {
   const css = {} as ICSS;
   if (typeof value === 'object') {
     const transforms: string[] = [];
-    if (typeof value === 'object') {
-      transforms.push(createRotateTransform(value.rotate));
+    if (value.rotate) {
+      transforms.push(createRotateTransform(value.rotate as any));
     }
-    if (value.scale !== undefined) {
-      transforms.push(createScaleTransform(value.scale));
+    if (value.scale) {
+      transforms.push(createScaleTransform(value.scale as any));
     }
-    if (value.translate !== undefined) {
-      transforms.push(createTranslateTransform(value.translate));
+    if (value.translate) {
+      transforms.push(createTranslateTransform(value.translate as any));
     }
     if (transforms.length) {
       css.transform = transforms
@@ -58,9 +58,12 @@ const createRotateTransform = (rotate?: IUnit | I3D): string => {
     const { x, y, z } = rotate as I3D;
     transforms = [
       transforms,
-      createTransform('rotateX', formatUnits(x, 'deg')),
-      createTransform('rotateY', formatUnits(y, 'deg')),
-      createTransform('rotateZ', formatUnits(z, 'deg')),
+      (typeof x === 'string' || typeof x === 'number') &&
+        createTransform('rotateX', formatUnits(x, 'deg')),
+      (typeof y === 'string' || typeof y === 'number') &&
+        createTransform('rotateY', formatUnits(y, 'deg')),
+      (typeof z === 'string' || typeof z === 'number') &&
+        createTransform('rotateZ', formatUnits(z, 'deg')),
     ]
       .filter(String)
       .join(' ')
@@ -91,12 +94,17 @@ const createTranslateTransform = (translate?: IUnit | I3D): string => {
   }
   if (typeof translate === 'object') {
     const { x, y, z } = translate as I3D;
-    if (z === undefined) {
-      transforms = `translate(${formatUnits(x)}, ${formatUnits(y)})`;
-    } else {
-      transforms = `translate3d(${formatUnits(x)}, ${formatUnits(
-        y
-      )}, ${formatUnits(z)})`;
+    if (
+      (typeof x === 'string' || typeof x === 'number') &&
+      (typeof y === 'string' || typeof y === 'number')
+    ) {
+      if (typeof z === 'string' || typeof z === 'number') {
+        transforms = `translate3d(${formatUnits(x)}, ${formatUnits(
+          y
+        )}, ${formatUnits(z)})`;
+      } else {
+        transforms = `translate(${formatUnits(x)}, ${formatUnits(y)})`;
+      }
     }
   }
   return transforms;

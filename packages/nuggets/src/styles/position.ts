@@ -1,11 +1,13 @@
-import { ICSS, IDigester, ISpace, IUnit } from '../utils/types';
+import { ICSS, IDigester, ISpace, IUnit, IOptions } from '../utils/types';
 import { formatUnits } from '../utils/helpers';
 
-export type IPosition = ISpace & {
-  effect: 'static' | 'relative' | 'absolute' | 'sticky' | 'fixed';
-};
+export type IPosition = IOptions<
+  ISpace & {
+    effect: 'static' | 'relative' | 'absolute' | 'sticky' | 'fixed';
+  }
+>;
 
-export type IPositionProps = IUnit | IPosition;
+export type IPositionProps = IOptions<IUnit | IPosition>;
 
 export const positionDigester: IDigester<IPositionProps> = value => {
   const css = {} as ICSS;

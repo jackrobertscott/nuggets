@@ -1,8 +1,8 @@
-import { ICSS, IDigester, IUnit } from '../utils/types';
+import { ICSS, IDigester, IUnit, IOptions } from '../utils/types';
 import { keyframes } from '../utils/emotion';
 import { formatUnits } from '../utils/helpers';
 
-export type IAnimate = {
+export type IAnimate = IOptions<{
   steps?: string;
   duration?: IUnit;
   delay?: IUnit;
@@ -19,9 +19,9 @@ export type IAnimate = {
   direction?: 'normal' | 'reverse' | 'alternate' | 'alternate-reverse' | string;
   state?: 'paused' | 'running' | string;
   mode?: 'none' | 'forwards' | 'backwards' | 'both' | string;
-};
+}>;
 
-export type IAnimateProps = IAnimate;
+export type IAnimateProps = IOptions<IAnimate>;
 
 export const animateDigester: IDigester<IAnimateProps> = value => {
   const css = {} as ICSS;
@@ -38,7 +38,7 @@ export const animateDigester: IDigester<IAnimateProps> = value => {
     if (typeof value.delay === 'string' || typeof value.delay === 'number') {
       css.animationDelay = formatUnits(value.delay, 'ms');
     }
-    if (typeof value.duration === 'string') {
+    if (typeof value.timing === 'string') {
       css.animationTimingFunction = value.timing;
     }
     if (
