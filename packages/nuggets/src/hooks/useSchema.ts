@@ -22,15 +22,17 @@ export interface IuseSchemaOptions {
   change?: (value: ISchemaValue) => any;
 }
 
+export interface IuseSchemaProperties {
+  value: any;
+  error?: Error;
+  dirty: boolean;
+  change: (data: any) => void;
+  blur: (status?: boolean) => void;
+}
+
 export interface IuseSchemaProps {
   properties: {
-    [name: string]: {
-      value: any;
-      error?: Error;
-      dirty: boolean;
-      change: (data: any) => void;
-      blur: (status?: boolean) => void;
-    };
+    [name: string]: IuseSchemaProperties;
   };
   value: ISchemaValue;
   error: ISchemaError;
