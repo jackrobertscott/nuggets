@@ -3,7 +3,7 @@ import { formatUnits } from '../utils/helpers';
 
 export type IPosition = IOptions<
   ISpace & {
-    effect: 'static' | 'relative' | 'absolute' | 'sticky' | 'fixed';
+    effect?: 'static' | 'relative' | 'absolute' | 'sticky' | 'fixed';
   }
 >;
 

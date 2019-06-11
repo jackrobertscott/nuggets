@@ -21,7 +21,7 @@ export type ICoreProps = IOptions<ICore>;
 export const coreDigester: IDigester<ICoreProps> = value => {
   const css = {} as ICSS;
   if (typeof value === 'object') {
-    if (typeof value.zindex === 'string') {
+    if (typeof value.zindex === 'number') {
       css.zIndex = value.zindex;
     }
     if (

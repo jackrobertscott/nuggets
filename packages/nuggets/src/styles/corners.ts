@@ -8,9 +8,9 @@ import {
   IOptions,
 } from '../utils/types';
 
-export type ICorners = IOptions<
-  { [sides in 'size' | ISides | IDiagonals]?: IUnit }
->;
+export type ICornersSides = { [sides in 'size' | ISides | IDiagonals]?: IUnit };
+
+export type ICorners = IOptions<ICornersSides>;
 
 export type ICornersProps = boolean | IOptions<IUnit | ICorners>;
 

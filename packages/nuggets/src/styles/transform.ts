@@ -61,7 +61,7 @@ const createRotateTransform = (rotate?: IUnit | I3D): string => {
       (typeof z === 'string' || typeof z === 'number') &&
         createTransform('rotateZ', formatUnits(z, 'deg')),
     ]
-      .filter(String)
+      .filter(exists => exists)
       .join(' ')
       .trim();
   }
@@ -90,17 +90,20 @@ const createTranslateTransform = (translate?: IUnit | I3D): string => {
   }
   if (typeof translate === 'object') {
     const { x, y, z } = translate as I3D;
-    if (
-      (typeof x === 'string' || typeof x === 'number') &&
-      (typeof y === 'string' || typeof y === 'number')
-    ) {
-      if (typeof z === 'string' || typeof z === 'number') {
-        transforms = `translate3d(${formatUnits(x)}, ${formatUnits(
-          y
-        )}, ${formatUnits(z)})`;
+    if (typeof x === 'string' || typeof x === 'number') {
+      if (typeof y === 'string' || typeof y === 'number') {
+        if (typeof z === 'string' || typeof z === 'number') {
+          transforms = `translate3d(${formatUnits(x || 0)}, ${formatUnits(
+            y
+          )}, ${formatUnits(z)})`;
+        } else {
+          transforms = `translate(${formatUnits(x)}, ${formatUnits(y)})`;
+        }
       } else {
-        transforms = `translate(${formatUnits(x)}, ${formatUnits(y)})`;
+        transforms = `translateX(${formatUnits(x)})`;
       }
+    } else if (typeof y === 'string' || typeof y === 'number') {
+      transforms = `translateY(${formatUnits(y)})`;
     }
   }
   return transforms;
