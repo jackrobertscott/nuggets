@@ -69,10 +69,10 @@ export const Node: FunctionComponent<INodeProps> = ({
       display: 'none',
     },
   };
-  if (id) {
+  if (typeof id === 'string') {
     props.id = id;
   }
-  if (editable) {
+  if (typeof editable === 'boolean' && editable) {
     if (typeof multiline === 'number') {
       node = 'textarea';
       props.rows = multiline;
@@ -85,11 +85,11 @@ export const Node: FunctionComponent<INodeProps> = ({
   } else {
     props.children = state || children;
   }
-  if (value) {
+  if (typeof value === 'string') {
     props.value = value;
     props.onChange = digestedEvents.onChange || (() => {}); // intended to be overridden
   }
-  if (placeholder) {
+  if (typeof placeholder === 'string') {
     props.placeholder = placeholder;
   }
   const observations = useObserve({ reference: compiledReference });

@@ -26,6 +26,7 @@ export interface IuseSchemaProperties {
   value: any;
   error?: Error;
   dirty: boolean;
+  advance: boolean;
   change: (data: any) => void;
   blur: (status?: boolean) => void;
 }
@@ -37,6 +38,7 @@ export interface IuseSchemaProps {
   value: ISchemaValue;
   error: ISchemaError;
   dirty: ISchemaDirty;
+  advance: boolean;
   valid: boolean;
   invalid: boolean;
   change: (value: ISchemaValue) => any;
@@ -52,7 +54,7 @@ export const useSchema = ({
   const [state, update] = useState<ISchemaValue>(initial || {});
   const [error, updateError] = useState<ISchemaError>({});
   const [dirty, updateDirty] = useState<ISchemaDirty>({});
-  const [globalDirty, updateGlobalDirty] = useState<boolean>(false);
+  const [advance, updateGlobal] = useState<boolean>(false);
   const override = (next?: ISchemaValue) => {
     const data = next || {};
     update(data);
@@ -89,7 +91,8 @@ export const useSchema = ({
     [key]: {
       value: state[key],
       error: error[key],
-      dirty: globalDirty || dirty[key] || !!state[key],
+      dirty: advance || dirty[key] || !!state[key],
+      advance,
       change: (data: any) => {
         return patch({
           [key]: data,
@@ -108,11 +111,12 @@ export const useSchema = ({
     properties: Object.keys(schema).reduce(reduce, {}),
     value: state,
     dirty,
+    advance,
     error,
     valid,
     invalid: !valid,
     change: patch,
     override,
-    blur: (status?: boolean) => updateGlobalDirty(status || true),
+    blur: (status?: boolean) => updateGlobal(status || true),
   };
 };

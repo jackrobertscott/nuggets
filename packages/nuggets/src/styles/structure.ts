@@ -5,6 +5,7 @@ export type IStructure = IOptions<{
   direction?: IDirections;
   wrap?: boolean;
   divide?: IUnit;
+  important?: boolean;
   align?: 'start' | 'end' | 'center' | 'stretch' | string;
   arrange?:
     | 'start'
@@ -42,6 +43,7 @@ export const structureDigester: IDigester<IStructureProps> = value => {
       css.flexWrap = value.wrap ? 'wrap' : 'nowrap';
     }
     if (typeof value.divide === 'string' || typeof value.divide === 'number') {
+      const ensure = value.important ? ' !important' : '';
       const side =
         value.direction === 'left'
           ? 'Left'
@@ -51,9 +53,9 @@ export const structureDigester: IDigester<IStructureProps> = value => {
           ? 'Top'
           : 'Bottom';
       css['& > *'] = {
-        [`margin${side}`]: `${formatUnits(value.divide)} !important`,
+        [`margin${side}`]: `${formatUnits(value.divide)}${ensure}`,
         [':last-child']: {
-          [`margin${side}`]: `${0} !important`,
+          [`margin${side}`]: `${0}${ensure}`,
         },
       };
       if (value.wrap) {
@@ -62,7 +64,7 @@ export const structureDigester: IDigester<IStructureProps> = value => {
             ? 'Bottom'
             : 'Right';
         (css['& > *'] as any)[`margin${wrapSide}`] = formatUnits(value.divide);
-        css[`margin${wrapSide}`] = `-${formatUnits(value.divide)} !important`;
+        css[`margin${wrapSide}`] = `-${formatUnits(value.divide)}${ensure}`;
       }
     }
     if (typeof value.align === 'string') {
