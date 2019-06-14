@@ -106,7 +106,7 @@ export const useSchema = ({
       },
     },
   });
-  const valid = !!Object.keys(error).filter(key => error[key]).length;
+  const valid = !Object.keys(error).filter(key => error[key]).length;
   return {
     properties: Object.keys(schema).reduce(reduce, {}),
     value: state,
