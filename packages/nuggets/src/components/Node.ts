@@ -18,7 +18,7 @@ import { eventsDigester } from '../utils/events';
 export interface INodeProps {
   children?: ReactNode;
   reference?: RefObject<any>;
-  portal?: string | HTMLElement;
+  portal?: string | HTMLElement | null;
   value?: string | number;
   placeholder?: string | number;
   editable?: boolean;
