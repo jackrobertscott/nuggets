@@ -26,7 +26,7 @@ export interface INodeProps {
   tag?: string;
   id?: string;
   classname?: string;
-  events?: IEvents;
+  events?: IObserveProp<IEvents>;
   styles?: IObserveProp<IStyles>;
   css?: ICSS;
   attrs?: IRandom;
@@ -57,17 +57,23 @@ export const Node: FunctionComponent<INodeProps> = ({
   /**
    * Compile the properties.
    */
+  const observations = useObserve({ reference: compiledReference });
+  const compiledEvents =
+    typeof events === 'function' ? events(observations) : events;
+  const compiledStyles =
+    typeof styles === 'function' ? styles(observations) : styles;
+  const digestedEvents: any = eventsDigester(compiledEvents);
+  const digestedStyles: any = stylesDigester(compiledStyles);
   let node = tag || 'div';
-  const digestedEvents: any = eventsDigester(events);
-  const props: any = {
-    ref: compiledReference,
-    ...digestedEvents,
-    ...attrs,
-  };
   const precss: ICSS = {
     '&::-webkit-scrollbar': {
       display: 'none',
     },
+  };
+  const props: any = {
+    ref: compiledReference,
+    ...digestedEvents,
+    ...attrs,
   };
   if (typeof id === 'string') {
     props.id = id;
@@ -92,10 +98,6 @@ export const Node: FunctionComponent<INodeProps> = ({
   if (typeof placeholder === 'string') {
     props.placeholder = placeholder;
   }
-  const observations = useObserve({ reference: compiledReference });
-  const compiledStyles =
-    typeof styles === 'function' ? styles(observations) : styles;
-  const digestedStyles = stylesDigester(compiledStyles);
   const deepCss = deep.all([precss, digestedStyles, css]) as ICSS;
   props.className = [
     clean && cleanClassname,
