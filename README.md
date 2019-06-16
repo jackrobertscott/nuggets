@@ -9,7 +9,7 @@ A collection of essential components which compose modern web experiences.
 Nuggets is designed to be minimal so you can focus on your design rather than deciding which element tag should be used. It also takes all the advantages that JavaScript has to offer so that you can build more intricate styles.
 
 ```tsx
-import { Node, Text, useMedia } from 'nuggets';
+import { Node, useMedia } from 'nuggets';
 
 export default ({
   contents = 'Hello world!',
@@ -18,29 +18,16 @@ export default ({
 }) => {
   const { width } = useMedia();
   return (
-    <Node>
-      <Node
-        events={{ click: clickButton }}
-        styles={{
-          color: width > 500 ? 'green' : 'lime',
-          borders: {
-            color: mainColor,
-            hover: { color: 'red' },
-          }
-        }}
-      >
-        <Text
-          value={contents}
-          styles={{ color: 'black' }}
-        />
-      </Node>
-      <Node
-        styles={{
-          size: 100,
-          color: 'blue',
-        }}
-      />
-    </Node>
+    <Node
+      events={{ click: clickButton }}
+      styles={{
+        color: width > 500 ? 'green' : 'lime',
+        borders: {
+          color: mainColor,
+          hover: { color: 'red' },
+        }
+      }}
+    />
   );
 };
 ```
