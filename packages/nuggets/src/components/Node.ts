@@ -28,6 +28,7 @@ export interface INodeProps {
   classname?: string;
   events?: IObserveProp<IEvents>;
   styles?: IObserveProp<IStyles>;
+  data?: IRandom;
   css?: ICSS;
   attrs?: IRandom;
   clean?: boolean;
@@ -47,6 +48,7 @@ export const Node: FunctionComponent<INodeProps> = ({
   events = {},
   styles = {},
   css = {},
+  data = {},
   attrs = {},
   clean = true,
 }) => {
@@ -70,10 +72,14 @@ export const Node: FunctionComponent<INodeProps> = ({
       display: 'none',
     },
   };
+  const dataItems = Object.keys(data).reduce((all, next) => {
+    return { ...all, [`data-${next}`]: data[next] };
+  }, {});
   const props: any = {
     ref: compiledReference,
     ...digestedEvents,
     ...attrs,
+    ...dataItems,
   };
   if (typeof id === 'string') {
     props.id = id;
