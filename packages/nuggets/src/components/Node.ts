@@ -29,6 +29,7 @@ export interface INodeProps {
   events?: IObserveProp<IEvents>;
   styles?: IObserveProp<IStyles>;
   data?: IRandom;
+  aria?: IRandom;
   css?: ICSS;
   attrs?: IRandom;
   clean?: boolean;
@@ -49,6 +50,7 @@ export const Node: FunctionComponent<INodeProps> = ({
   styles = {},
   css = {},
   data = {},
+  aria = {},
   attrs = {},
   clean = true,
 }) => {
@@ -66,20 +68,24 @@ export const Node: FunctionComponent<INodeProps> = ({
     typeof styles === 'function' ? styles(observations) : styles;
   const digestedEvents: any = eventsDigester(compiledEvents);
   const digestedStyles: any = stylesDigester(compiledStyles);
+  const digestedData = Object.keys(data).reduce((all, next) => {
+    return { ...all, [`data-${next}`]: data[next] };
+  }, {});
+  const digestedAria = Object.keys(aria).reduce((all, next) => {
+    return { ...all, [`aria-${next}`]: aria[next] };
+  }, {});
   let node = tag || 'div';
   const precss: ICSS = {
     '&::-webkit-scrollbar': {
       display: 'none',
     },
   };
-  const dataItems = Object.keys(data).reduce((all, next) => {
-    return { ...all, [`data-${next}`]: data[next] };
-  }, {});
   const props: any = {
     ref: compiledReference,
     ...digestedEvents,
+    ...digestedData,
+    ...digestedAria,
     ...attrs,
-    ...dataItems,
   };
   if (typeof id === 'string') {
     props.id = id;
