@@ -1,722 +1,145 @@
 # nuggets
 
-> 📯 New default types.
+> 📯 Goodbye HTML & CSS. Hello Nuggets.
 
-A collection of essential components which compose modern web experiences.
-
-## Overview
-
-Nuggets is designed to be minimal so you can focus on your design rather than deciding which element tag should be used. It also takes all the advantages that JavaScript has to offer so that you can build more intricate styles.
-
-```tsx
-import { Node, useMedia } from 'nuggets';
-
-export default ({
-  contents = 'Hello world!',
-  mainColor = 'blue',
-  clickButton = () => console.log('clicked!'),
-}) => {
-  const { width } = useMedia();
-  return (
-    <Node
-      events={{ click: clickButton }}
-      styles={{
-        color: width > 500 ? 'green' : 'lime',
-        borders: {
-          color: mainColor,
-          hover: { color: 'red' },
-        }
-      }}
-    />
-  );
-};
-```
-
-Think less, build more.
-
-## Install
-
-Using [npm](https://www.npmjs.com/package/nuggets):
+Nuggets is a replacement for HTML & CSS. Written with React & TypeScript, Nuggets was designed to be the easiest way to build a UI. Import it easily into any npm (and yarn) based web app.
 
 ```shell
-npm i --save nuggets react@next react-dom@next
+npm i --save nuggets
 ```
-
-Using [yarn](https://yarnpkg.com/en/):
-
-```shell
-yarn add nuggets react@next react-dom@next
-```
-
-Then import the helper classes where needed.
-
-```tsx
-import { Layer, Node, useMedia, useAddress } from 'nuggets';
-```
-
-## Components
-
-### `<Layer />`
-
-The layer element prepares the browser window for a new level components. It covers the entire screen and is perfect for using with modals. The `<Layer />` component is similar to a "layer" used in design tools.
-
-```tsx
-import { Layer } from 'nuggets';
-import { Modal } from './mycomponents';
-
-export default () => (
-  <Layer attach={document.getElementById('root')}>
-    <Modal message="Hello nuggets!" />
-  </Layer>
-);
-```
-
-#### Properties
-
-This component needs to attach to an element in the DOM. This is similar to how you would attach your React app to an element such as `<div id="root"></div>`. You can attach the layer to a DOM element with either a node or an id:
-
-- `node?`: a HTML element i.e. `document.getElementById('root')`.
-- `id?`: a string which contains the id of the an element i.e. `root`.
-
-### `<Node />`
-
-This provides a component which is used to create shapes.
-
-```tsx
-import { Node } from 'nuggets';
-
-export default ({ children, color = 'white' }) => (
-  <Node
-    events={{
-      click: () => console.log('clicked!'),
-    }}
-    styles={{
-      color,
-      height: 100,
-      width: 300,
-      direction: 'down',
-      space: 30,
-      borders: {
-        color: 'yellow',
-        sides: {
-          right: 3,
-        },
-      },
-      shadows: {
-        color: 'black',
-        blur: 10,
-        down: 3,
-      },
-      rotate: {
-        x: 30,
-        y: 90,
-      }
-    }}
-  >
-    {children}
-  </Node>
-);
-```
-
-#### Properties
-
-- `events?`: this property should contain all HTML element events.
-
-The event names do not require the word "on" to prepend them i.e. "onClick" should be written as "click" and "onMouseLeave" becomes "mouseLeave".
-
-**Note:** the event callback will receive the value of the event as the first parameter and the event as the second parameter i.e. `click(value, event) {}`.
-
-- `styles?`: this is used to style the element.
-
-Nuggets styles do not match up directly to CSS. Instead, we use the power of JavaScript object to make it a little easier to write complicated styles.
-
-**Note:** another thing you will notice is that "margin" is not a property; this is because margins are an anti-pattern and prevent the reuse of components. Instead, all spacing is determined by an elements parent which is far more composable.
-
-```ts
-color?: string;
-alpha?: number;
-gradient?: IGradientOptions;
-shadows?: IShadeOptions;
-corners?: IUnit | ICornersOptions;
-borders?: IBordersOptions;
-direction?: IDirections;
-force?: 'start' | 'end' | 'center' | 'stretch' | 'between' | 'even';
-align?: 'start' | 'end' | 'center' | 'stretch';
-space?: IUnit | ISpaceOptions;
-absolute?: IUnit | ISpaceOptions;
-zindex?: number;
-divide?: IUnit;
-circle?: boolean;
-size?: IUnit;
-width?: IUnit | ISizeOptions;
-height?: IUnit | ISizeOptions;
-grow?: boolean;
-collapse?: boolean;
-transition?: IUnit;
-cursor?: string;
-overflow?: string;
-rotate?: IUnit | ITransform3dOptions;
-scale?: number | ITransform3dOptions;
-translate?: IUnit | ITransform3dOptions;
-```
-
-### `<Text />`
-
-This component is used to render and record text.
-
-```tsx
-import { Out } from 'nuggets';
-
-export default ({ color = 'black', change }) => (
-  <Text
-    value={'Hello nuggets!'}
-    editable={true}
-    change={change}
-  />
-);
-```
-
-#### Properties
-
-This element shares the same convention for events and styles as the `<Node />` component with some differences in the styles which are available.
-
-- `events?`: this property should contain all HTML element events.
-- `styles?`: this is used to style the element.
-
-```ts
-size?: number | string;
-color?: string;
-align?: 'left' | 'center' | 'right' | 'justify';
-family?: string;
-height?: number | string;
-italic?: boolean;
-divide?: number | string;
-transition?: number | string;
-decoration?: IDecorationOptions;
-thickness?: number;
-placeholder?: IPlaceholderOptions;
-```
-
-## Hooks
-
-### `useMedia()`
-
-#### `const { ...properties } = useMedia();`
-
-This provides easy access to the width of the browser window.
-
-```tsx
-import { useMedia, Node, Out } from 'nuggets';
-
-export default () => {
-  const { width, height } = useMedia();
-  return (
-    <Node
-      styles={{
-        color: width > 600 ? 'green' : 'blue',
-        borders: {
-          color: 'black',
-          thickness: height > 500 ? 3 : 10,
-        },
-      }}
-    >
-      <Out value={'This text changes color with the size of the window.'} />
-    </Node>
-  );
-};
-```
-
-##### Properties
-
-- `width: number` the width of the window in pixels.
-- `height: number` the height of the window in pixels.
-
-### `useAddress()`
-
-#### `const { ...properties } = useAddress();`
-
-This gives you access to the current url of the page.
-
-```tsx
-import { useAddress, Node, Out } from 'nuggets';
-
-export default () => {
-  const { change, backward, forward, pathname, search } = useAddress();
-  return (
-    <Node>
-      <Node styles={{ color: 'blue' }}>
-        <Out value={`Pathname and search: ${pathname} ${search}`} />
-      </Node>
-      <Node events={{ click: () => change('/hello-nuggets') }}>
-        <Out value={'Go to hello nuggets'} />
-      </Node>
-      <Node events={{ click: backward }}>
-        <Out value={'Go back'} />
-      </Node>
-      <Node events={{ click: forward }}>
-        <Out value={'Go forward'} />
-      </Node>
-    </Node>
-  );
-};
-```
-
-The `useAddress()` hook can be used to create a routers.
-
-```tsx
-import { useAddress } from 'nuggets';
-import { Dashboard, Settings, Login, SignUp, NotFound } from './mycomponents';
-
-export default () => {
-  const { match } = useAddress();
-  const { route } = [
-    { path: '/dashboard', exact: true, route: <Dashboard /> },
-    { path: '/settings', route: <Settings /> },
-    { path: '/login', route: <Login /> },
-    { path: '/sign-up', route: <SignUp /> },
-  ].find(({ path, exact }) => match({ path, exact }));
-  return route || <NotFound />;
-};
-```
-
-##### Properties
-
-- `change(address: string)` change location to address.
-- `shift(entries: number)` move forward or backward in history.
-- `forward()` move forward in history by one.
-- `backward()` move backward in history by one.
-- `pathname: string` the location path.
-- `search: string` the query params of the location.
-- `hash: string` the hash fragment in the location.
-- `entries: number` the number of locations in the location history.
-
-### `useFrameStyles()` & `useTextStyles()`
-
-#### `const { ...properties } = useFrameStyles({ ...styles });`
-
-Compile styles into css and attach to the document. It returns the class name which can be added to components which are not in the nuggets lib.
-
-```tsx
-import { useFrameStyles } from 'nuggets';
-
-export default () => {
-  const { styles, name } = useFrameStyles({
-    height: 100,
-    color: 'green',
-  });
-  return <div className={name} />;
-};
-```
-
-##### Properties
-
-- `styles: object` an object containing css properties.
-- `name: string` the class name associated with the css properties.
-
-### `useString()`
-
-#### `const { ...properties } = useString({ ...options });`
-
-This manages a simple value such as a number or string.
-
-```tsx
-import { useString, Node, Out, In } from 'nuggets';
-import { NiceFrame } from './mycomponents';
-
-export default ({ valueChange }) => {
-  const { value, change, adjust } = useString({
-    adjust: data => data.toUpperCase(),
-    change: valueChange,
-  });
-  return (
-    <NiceFrame>
-      <In
-        value={value}
-        change={change}
-        adjust={adjust}
-      />
-      {/* validations */}
-      {value.length < 5 && <Out>Value is not long enough.</Out>}
-      {hasBadChars(value) && <Out>Value contains some bad characters.</Out>}
-    </NiceFrame>
-  );
-};
-```
-
-##### Properties
-
-Options
-
-- `value: string` use this value to update override the current value.
-- `change(value: string)` this is run when the value changes.
-- `adjust(value: string): string` perform adjustments on the value before updating.
-
-Properties
-
-- `value: string` the current string value.
-- `change(value: string)` set a new string value.
-
-### `useNumber()`
-
-#### `const { ...properties } = useNumber({ ...options });`
-
-This manages a simple value such as a number or string.
-
-```tsx
-import { useNumber, Node, Out, In } from 'nuggets';
-import { NiceFrame } from './mycomponents';
-
-export default ({ valueChange }) => {
-  const { value, change } = useNumber({
-    adjust: data => data % 100,
-    change: valueChange,
-  });
-  return (
-    <NiceFrame>
-      <In
-        value={value}
-        change={change}
-      />
-      {/* validations */}
-      {value.length < 5 && <Out>Value is not long enough.</Out>}
-      {hasBadChars(value) && <Out>Value contains some bad characters.</Out>}
-    </NiceFrame>
-  );
-};
-```
-
-##### Options
-
-- `value: number` use this value to update override the current value.
-- `change(value: number)` this is run when the value changes.
-- `adjust(value: number): number` perform adjustments on the value before updating.
-
-##### Properties
-
-- `value: number` the current number value.
-- `change(value: number)` set a new number value.
-
-### `useComplex()`
-
-#### `const { ...properties } = useComplex({ ...options });`
-
-This manages a object with sub properties - similar to a form.
-
-```tsx
-import { useComplex } from 'nuggets';
-import { CustomButton, FieldText, FieldEmail, FieldPassword } from './mycomponents';
-
-export default ({ person, valueChange, savePerson }) => {
-  const { operate, value } = useComplex({
-    value: person,
-    change: valueChange,
-  });
-  return (
-    <Node>
-      <FieldText change={data => operate('password').change(data)} />
-      <FieldEmail change={operate('email').change} />
-      <FieldPassword {...operate('password')} />
-      <CustomButton events={{ click: () => savePerson(value) }}>
-        Save
-      </CustomButton>
-    </Node>
-  );
-};
-```
-
-##### Options
-
-- `value: object` use this value to update override the current value.
-- `change(value: object)` this is run when the value changes.
-
-##### Properties
-
-- `value: object` the current number value.
-- `operate(property: string)` get operators for changing a sub property.
-- `change(value: object)` patch the entire object.
-- `override(value: object)` set the entire object.
-
-### `useToggle()`
-
-#### `const { ...properties } = useToggle({ ...options });`
-
-This provides a set of state and state changers for managing a toggled value.
-
-```tsx
-import { useToggle, Node } from 'nuggets';
-
-export default ({ value, change }) => {
-  const { active, off, on } = useToggle({ value, change });
-  return (
-    <Node
-      events={{
-        click: active ? off : on,
-      }}
-      styles={{
-        shape: {
-          color: active ? 'green' : 'blue',
-        },
-      }}
-    />
-  );
-};
-```
-
-There is also a simple `toggle` property which makes it a little easier.
-
-```tsx
-import { useToggle, Node } from 'nuggets';
-
-export default ({ value, change }) => {
-  const { toggle, active } = useToggle({ value, change });
-  return (
-    <Node
-      events={{ click: toggle }}
-      styles={{ color: active ? 'green' : 'blue' }}
-    />
-  );
-};
-```
-
-##### Options
-
-- `value: boolean` use this value to update override the current value.
-- `change(value: boolean)` this is run when the value changes.
-
-##### Properties
-
-- `active: boolean` the current toggle state.
-- `on()` set the state to `true`.
-- `off()` set the state to `false`.
-- `toggle()` toggle the current active state.
-
-### `useDatetime()`
-
-#### `const { ...properties } = useDatetime({ ...options });`
-
-Manage a datetime by setting sub-properties.
-
-```tsx
-import { useDatetime, Node, In } from 'nuggets';
-
-export default ({ value, change }) => {
-  const { date, month, year, hour, minute, second, millisecond } = useDatetime({ value, change });
-  return (
-    <Node>
-      <In
-        value={date.value}
-        change={date.change}
-      />
-      <In
-        value={month.value}
-        change={month.change}
-      />
-      <In {...year} />
-      <In {...hour} />
-      <In {...minute} />
-      <In {...second} />
-      <In {...millisecond} />
-    </Node>
-  );
-};
-```
-
-##### Options
-
-- `value: Date` use this value to update override the current value.
-- `change(value: Date)` this is run when the value changes.
-
-##### Properties
-
-- `const { value, change } = date | month | year | ...etc;`
-  - `date`
-  - `month`
-  - `year`
-  - `hour`
-  - `minute`
-  - `second`
-  - `millisecond`
-
-### `useArray()`
-
-#### `const { ...properties } = useArray({ ...options });`
-
-Manage an array of values.
-
-```tsx
-import { useArray, Node, Out } from 'nuggets';
-
-export default ({ value, change, listOfPeople = [] }) => {
-  const { includes, add, remove } = useArray({ value, change });
-  return listOfPeople.map(({ id, name }) => (
-    <Node
-      key={id}
-      events={{ click: () => includes(id) ? add(id) : remove(id) }}
-      styles={{ color: includes(id) ? 'green' : 'blue' }}
-    >
-      <Out value={name} />
-    </Node>
-  );
-};
-```
-
-There is also a simple `toggle` attribute which makes the above code a little easier.
-
-```tsx
-import { useArray, Node, Out } from 'nuggets';
-
-export default ({ value, change, listOfPeople = [] }) => {
-  const { includes, toggle } = useArray({ value, change });
-  return listOfPeople.map(({ id, name }) => (
-    <Node
-      key={id}
-      events={{ click: () => toggle(id) }}
-      styles={{ color: includes(id) ? 'green' : 'blue' }}
-    >
-      <Out value={name} />
-    </Node>
-  );
-};
-```
-
-##### Options
-
-- `value: any[]` use this value to update override the current value.
-- `change(value: any[])` this is run when the value changes.
-
-##### Properties
-
-- `includes(value: any): boolean` detects whether an item is in the array.
-- `add(value: any)` add the item to the array.
-- `remove(value: any)` remove the value from the array.
-- `toggle(value: any)` toggle (add or remove) the value in the array.
-
-### `createStore()` & `useStore()`
-
-#### `const { ...properties } = useStore({ ...options });`
-
-Share data across multiple components.
-
-```tsx
-import { createStore } from 'nuggets';
-
-export interface IAuthStore {
-  userId: string;
-}
-
-export const authStore = createStore<IAuthStore>({
-  defaults: {
-    userId: null,
-  },
-});
-```
-
-```tsx
-import { useStore, Node, Out } from 'nuggets';
-import { authStore } from './stores';
-
-export default () => {
-  const { value, change } = useStore({ store: authStore });
-  return (
-    <Node>
-      <Out value={`Auth id: ${value.userId}`} />
-      <Node events={{ click: () => change({ userId: null }) }}>
-        <Out value={'Reset your auth.'} />
-      </Node>
-    </Node>
-  );
-};
-```
-
-##### Options
-
-- `store` a store - created using `createStore`.
-
-##### Properties
-
-- `value: object` the value of the store.
-- `change(value: object)` patch the store with new values.
-
-### `createConnection()` & `useConnection()`
-
-#### `const { ...properties } = useConnection({ ...options });`
-
-Easily connect to and manage external data sources.
-
-```tsx
-import { createConnection } from 'nuggets';
-import apollo from '../utils/apollo';
-
-export interface IQueryConnection {
-  query: string;
-  variables: {
-    [name: string]: string | number | boolean | undefined;
-  }
-}
-
-export const queryConnection = createConnection<IQueryConnection>({
-  handler: ({ query, variables }) => {
-    return apollo.query({ query, variables })
-      .then(({ data }) => data);
-  }
-});
-```
-
-```tsx
-import gql from 'graphql-tag';
-import { useConnection, Node, Out } from 'nuggets';
-import { queryConnection } from './connections';
-
-interface IGetUser {
-  user: {
-    id: string;
-    name: string;
-  };
-}
-
-const GetUser = queryConnection({
-  defaults: {
-    query: gql`
-      query GetUser($id: String!) {
-        user(id: $id) {
-          id
-          name
-        }
-      }
-    `,
-  }
-});
-
-export default ({ id }) => {
-  const { value, error, execute, refresh } = useConnection<IGetUser>({
-    connection: GetUser,
-  });
-  useEffect(() => execute({ variables: { id } }));
-  return (
-    <Node>
-      <Node styles={{ color: 'blue' }}>
-        <Out value={`User name and id: ${value.user.name} ${value.user.id}`} />
-      </Node>
-      <ErrorHandler error={error} />
-      <SimpleButton click={refresh} />
-    </Node>
-  );
-};
-```
-
-##### Options
-
-- `connection` a connection - created using `createConnection`.
-- `defaults: object` the default values passed to the connection.
-
-##### Properties
-
-- `value: object` the latest value provided by the connection.
-- `error: object` an error caught by the connection.
-- `loading: boolean` whether the app connection is currently loading.
-- `execute(variables: object)` call the connection handler.
-- `refresh()` call the connection handler with the same values as the last call.
 
 ## Authors
 
-- Jack Scott [@jacrobsco](https://twitter.com/jacrobsco) - I tweet about my coding and startups.
+I built nuggets because I realised that regular HTML & CSS had a number of problems. These problems included slow development speeds and a low robustness of code. As such I attempted to build a library which "minimised decisions" as the main goal. Typing is fast. Decisions are slow.
+
+The reason why we choose TypeScript was because good code editors can provide **method previews** with TypeScript variables. That way you'll always know what options are available as your begin to type. We also chose to use React because it provides some excellent data structures such as the hook. This powerful tool enables us to build both beautiful and reactive layouts very easily.
+
+Hope you enjoy it as much as I am.
+
+- Jack [@jacrobsco](https://twitter.com/jacrobsco) founder of [Window Gadgets](https://windowgadgets.io).
+
+## Example
+
+This is an example of a nuggets file.
+
+```jsx
+import * as React from 'react';
+import { Node, useToggle, useSchema } from 'nuggets';
+
+/**
+ * ❤️🔥😻❤️🔥😻❤️🔥😻❤️🔥😻❤️🔥😻❤️🔥😻❤️🔥😻❤️🔥😻
+ * A new way to style components and handle events
+ *
+ * ❤️ Only one element... the <Node />!
+ * 🔥 Styles are merged with DOM structure to encourage component based styling over than class based styling.
+ * 😻 Flexible styles which can take multiple data types.
+ */
+const StylesAndEventsComponent = ({ children }) => {
+  const buttonToggle = useToggle();
+  return (
+    <Node
+      events={({ index }) => ({
+        click: () => console.log(`This is child: ${index})`);
+        mouseEnter: () => toggle.on(),
+        mouseLeave: () => toggle.off(),
+      })}
+      styles={({ hover }) => ({
+        shape: {
+          color: toggle.value ? 'red' : 'green', // 😻
+          height: 500,
+          grow: true,
+        },
+        characters: {
+          size: 20,
+          family: 'monospace',
+          color: 'hsl(0, 0%, 20%)',
+        },
+        structure: { // arrangement of children
+          direction: 'right',
+          wrap: false,
+          divide: 30,
+          important: true, // enforce the divide style
+          arrange: 'start',
+          align: 'center',
+        },
+        absorb: { // same as a negative margin in CSS
+          top: 40,
+          sides: 40,
+        },
+        padding: hover ? 50 : {
+          sides: 30,
+          verts: 100,
+        },
+        shadows: {
+          color: 'hsl(200, 80%, 90)', // HSL is the awesome
+          size: 30,
+          scale: 10,
+          down: 3,
+          across: 3,
+          inside: false, // inside shadow
+        },
+        borders: {
+          top: 3,
+          sides: 10,
+          color: 'green',
+          style: 'dashed',
+        },
+      })}
+    >
+      {children}
+    </Node>
+  );
+};
+
+/**
+ * 👊🎉😎👊🎉😎👊🎉😎👊🎉😎👊🎉😎👊🎉😎👊🎉😎👊🎉
+ * Use properties instead of different HTML tags
+ *
+ * 👊 Easy to use portals.
+ * 🎉 Change an element from editable to static with a boolean.
+ * 😎 Nodes have an internal state or value.
+ */
+const LotsOfPropetiesComponent = () => {
+  const personSchema = useSchema({
+    initial: {
+      name: 'Fred',
+    },
+    schema: {
+      name: value => {
+        return yup.string().required().validate(value);
+      },
+    },
+  });
+  const { name } = personSchema.properties;
+  return (
+    <Node
+      reference={ref}
+      portal={document.getElementById('modals')}
+      value={name.value}
+      events={{
+        change: value => name.change(value);
+      }}
+      placeholder="Your name"
+      editable={true}
+      multiline={name.value.length ? 3 : false}
+      id="same-as-html-id"
+      classname="same-as-html-class"
+      data={{ mode: 'popup' }} // data-mode="popup"
+      aria={{ label: 'Nuggets Modal' }}
+      css={{ backgroundColor: 'yellow' }}
+      attrs={{ role: 'submit' }}
+      clean={false} // clean will remove all default css styles
+    />
+  );
+};
+
+const const MadeForWindowGadgets = () => {
+  <StylesAndEventsComponent>
+    <LotsOfPropetiesComponent />
+  </StylesAndEventsComponent>
+}
+```
+
+Made with ❤️ 😅 😂 by [Jack](https://twitter.com/jacrobsco).
+
+Powering **[Window Gadgets](https://windowgadgets.io)**.
