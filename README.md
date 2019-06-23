@@ -8,9 +8,11 @@ Nuggets is a replacement for HTML & CSS. Written with React & TypeScript, Nugget
 npm i --save nuggets
 ```
 
-## Authors
+## About
 
-I built nuggets because I realised that regular HTML & CSS had a number of problems. These problems included slow development speeds and a low robustness of code. As such I attempted to build a library which "minimised decisions" as the main goal. Typing is fast. Decisions are slow.
+I built nuggets because I realised that regular HTML & CSS had a number of problems. These problems included slow development speeds and a low robustness of code. As such I attempted to build a library which "minimised decisions" as the main goal.
+
+Typing is fast. Decisions are slow.
 
 The reason why we choose TypeScript was because good code editors can provide **method previews** with TypeScript variables. That way you'll always know what options are available as your begin to type. We also chose to use React because it provides some excellent data structures such as the hook. This powerful tool enables us to build both beautiful and reactive layouts very easily.
 
@@ -18,9 +20,9 @@ Hope you enjoy it as much as I am.
 
 - Jack [@jacrobsco](https://twitter.com/jacrobsco) founder of [Window Gadgets](https://windowgadgets.io).
 
-## Example
+## Usage
 
-This is an example of a nuggets file.
+The following demonstrates some of what's possible with the `nuggets` library.
 
 ```jsx
 import * as React from 'react';
@@ -116,9 +118,7 @@ const LotsOfPropetiesComponent = () => {
       reference={ref}
       portal={document.getElementById('modals')}
       value={name.value}
-      events={{
-        change: value => name.change(value);
-      }}
+      events={{ change: value => name.change(value) }}
       placeholder="Your name"
       editable={true}
       multiline={name.value.length ? 3 : false}
