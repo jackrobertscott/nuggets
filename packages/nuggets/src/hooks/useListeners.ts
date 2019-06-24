@@ -1,9 +1,9 @@
-import { useEffect, RefObject } from 'react';
+import { useEffect, MutableRefObject } from 'react';
 import { IEvents } from '../utils/types';
 import { createListener } from '../utils/listeners';
 
 export interface IuseListenersOptions {
-  reference: RefObject<any>;
+  reference: MutableRefObject<any>;
   events?: IEvents;
 }
 

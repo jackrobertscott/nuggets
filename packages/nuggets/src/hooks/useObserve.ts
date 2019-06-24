@@ -1,9 +1,9 @@
-import { useState, useEffect, RefObject } from 'react';
+import { useState, useEffect, MutableRefObject } from 'react';
 import { IObserve } from '../utils/types';
 import { createListener } from '../utils/listeners';
 
 export interface IuseObserveOptions {
-  reference: RefObject<HTMLElement>;
+  reference: MutableRefObject<any>;
 }
 
 export type IuseObserveProps = IObserve;

@@ -6,7 +6,7 @@ import {
   useRef,
   useState,
   useEffect,
-  RefObject,
+  MutableRefObject,
 } from 'react';
 import { createPortal } from 'react-dom';
 import { emotion, prefix, cleanClassname } from '../utils/emotion';
@@ -17,7 +17,7 @@ import { eventsDigester } from '../utils/events';
 
 export interface INodeProps {
   children?: ReactNode;
-  reference?: RefObject<any>;
+  reference?: MutableRefObject<any>;
   portal?: string | HTMLElement | null;
   value?: string | number;
   placeholder?: string | number;
@@ -55,7 +55,7 @@ export const Node: FunctionComponent<INodeProps> = ({
   clean = true,
 }) => {
   const fallback = useRef();
-  const compiledReference: RefObject<any> = reference || fallback;
+  const compiledReference: MutableRefObject<any> = reference || fallback;
   const [state, changeState] = useState(value);
   useEffect(() => changeState(value), [value]);
   /**
