@@ -1,5 +1,5 @@
 export interface IEvents {
-  [eventType: string]: IExecuter | null | undefined;
+  [eventType: string]: IExecuter | null | undefined | boolean;
 }
 
 export type IRandom = {
