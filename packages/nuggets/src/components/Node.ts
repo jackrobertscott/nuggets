@@ -10,10 +10,12 @@ import {
 } from 'react';
 import { createPortal } from 'react-dom';
 import { emotion, prefix, cleanClassname } from '../utils/emotion';
-import { ICSS, IRandom, IObserveProp, IEvents } from '../utils/types';
-import { useObserve } from '../hooks/useObserve';
+import { ICSS, IRandom, IEvents } from '../utils/types';
+import { useObserve, IObserve } from '../hooks/useObserve';
 import { IStyles, stylesDigester } from '../utils/styles';
 import { eventsDigester } from '../utils/events';
+
+export type IObserver<T> = T | ((state: IObserve) => T);
 
 export interface INodeProps {
   children?: ReactNode;
@@ -26,8 +28,8 @@ export interface INodeProps {
   tag?: string;
   id?: string;
   classname?: string;
-  events?: IObserveProp<IEvents>;
-  styles?: IObserveProp<IStyles>;
+  events?: IObserver<IEvents>;
+  styles?: IObserver<IStyles>;
   data?: IRandom;
   aria?: IRandom;
   css?: ICSS;

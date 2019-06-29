@@ -38,6 +38,7 @@ export * from './helpers/createStore';
  */
 export * from './hooks/useAddress';
 export * from './hooks/useArray';
+export * from './hooks/useBoolean';
 export * from './hooks/useConnection';
 export * from './hooks/useDatetime';
 export * from './hooks/useListeners';
@@ -47,4 +48,3 @@ export * from './hooks/useObserve';
 export * from './hooks/useSchema';
 export * from './hooks/useStore';
 export * from './hooks/useString';
-export * from './hooks/useToggle';

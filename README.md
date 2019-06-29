@@ -26,7 +26,7 @@ The following demonstrates some of what's possible with the `nuggets` library.
 
 ```jsx
 import * as React from 'react';
-import { Node, useToggle, useSchema } from 'nuggets';
+import { Node, useBoolean, useSchema } from 'nuggets';
 
 /**
  * ❤️🔥😻❤️🔥😻❤️🔥😻❤️🔥😻❤️🔥😻❤️🔥😻❤️🔥😻❤️🔥😻
@@ -37,7 +37,7 @@ import { Node, useToggle, useSchema } from 'nuggets';
  * 😻 Flexible styles which can take multiple data types.
  */
 const StylesAndEventsComponent = ({ children }) => {
-  const buttonToggle = useToggle();
+  const toggle = useBoolean();
   return (
     <Node
       events={({ index }) => ({

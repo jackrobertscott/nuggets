@@ -1,6 +1,14 @@
 import { useState, useEffect, MutableRefObject } from 'react';
-import { IObserve } from '../utils/types';
 import { createListener } from '../utils/listeners';
+
+export type IObserve = {
+  hover: boolean;
+  focus: boolean;
+  active: boolean;
+  first?: boolean;
+  last?: boolean;
+  index?: number;
+};
 
 export interface IuseObserveOptions {
   reference: MutableRefObject<any>;

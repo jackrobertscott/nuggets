@@ -1,12 +1,12 @@
 import { useState, useEffect } from 'react';
 
-export interface IuseToggleOptions {
+export interface IuseBooleanOptions {
   value?: any;
   change?: (value: boolean) => any;
   error?: any;
 }
 
-export interface IuseToggleProps {
+export interface IuseBooleanProps {
   value: boolean;
   change: (value: boolean) => any;
   on: (...args: any[]) => any;
@@ -15,11 +15,11 @@ export interface IuseToggleProps {
   error: any;
 }
 
-export const useToggle = ({
+export const useBoolean = ({
   value,
   change,
   error,
-}: IuseToggleOptions = {}): IuseToggleProps => {
+}: IuseBooleanOptions = {}): IuseBooleanProps => {
   const [state, update] = useState<boolean>(!!value || false);
   useEffect(() => patch(value), [value]);
   const patch = (next: boolean) => {
