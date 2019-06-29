@@ -46,12 +46,12 @@ const StylesAndEventsComponent = ({ children }) => {
         mouseLeave: () => toggle.off(),
       })}
       styles={({ hover }) => ({
-        shape: {
+        background: {
           color: toggle.value ? 'red' : 'green', // 😻
           height: 500,
           grow: true,
         },
-        characters: {
+        letters: {
           size: 20,
           family: 'monospace',
           color: 'hsl(0, 0%, 20%)',

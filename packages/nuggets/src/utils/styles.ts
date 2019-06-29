@@ -1,30 +1,28 @@
+import { IDigester } from './types';
 import { IBordersProps, bordersDigester } from '../styles/borders';
 import { IShadowsProps, shadowsDigester } from '../styles/shadows';
 import { IAnimateProps, animateDigester } from '../styles/animate';
-import { ICharactersProps, charactersDigester } from '../styles/characters';
+import { ILettersProps, lettersDigester } from '../styles/letters';
 import { ICornersProps, cornersDigester } from '../styles/corners';
 import { IPlaceholderProps, placeholderDigester } from '../styles/placeholder';
 import { IPositionProps, positionDigester } from '../styles/position';
 import { ICoreProps, coreDigester } from '../styles/core';
-import { IShapeProps, shapeDigester } from '../styles/shape';
-import { IStructureProps, structureDigester } from '../styles/structure';
+import { IBackgroundProps, backgroundDigester } from '../styles/background';
 import { ITransformProps, transformDigester } from '../styles/transform';
-import { IDigester } from './types';
 import { IAbsorbProps, absorbDigester } from '../styles/absorb';
 import { IPaddingProps, paddingDigester } from '../styles/padding';
 
 export type IStyles = ICoreProps & {
   absorb?: IAbsorbProps;
   animate?: IAnimateProps;
+  background?: IBackgroundProps;
   borders?: IBordersProps;
-  characters?: ICharactersProps;
   corners?: ICornersProps;
+  letters?: ILettersProps;
   padding?: IPaddingProps;
   placeholder?: IPlaceholderProps;
   position?: IPositionProps;
   shadows?: IShadowsProps;
-  shape?: IShapeProps;
-  structure?: IStructureProps;
   transform?: ITransformProps;
 };
 
@@ -33,15 +31,14 @@ export const stylesDigester: IDigester<IStyles> = value => {
     const {
       absorb,
       animate,
+      background,
       borders,
-      characters,
-      structure,
       corners,
+      letters,
       padding,
       placeholder,
       position,
       shadows,
-      shape,
       transform,
       ...core
     } = value;
@@ -49,15 +46,14 @@ export const stylesDigester: IDigester<IStyles> = value => {
       ...coreDigester(core),
       ...absorbDigester(absorb),
       ...animateDigester(animate),
+      ...backgroundDigester(background),
       ...bordersDigester(borders),
-      ...charactersDigester(characters),
-      ...structureDigester(structure),
       ...cornersDigester(corners),
+      ...lettersDigester(letters),
       ...paddingDigester(padding),
       ...placeholderDigester(placeholder),
       ...positionDigester(position),
       ...shadowsDigester(shadows),
-      ...shapeDigester(shape),
       ...transformDigester(transform),
     };
   }

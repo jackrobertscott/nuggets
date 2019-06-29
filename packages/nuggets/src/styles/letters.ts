@@ -1,7 +1,7 @@
 import { ICSS, IDigester, IUnit, IOptions } from '../utils/types';
 import { formatUnits } from '../utils/helpers';
 
-export type ICharactersDecoration = IOptions<{
+export type ILettersDecoration = IOptions<{
   color?: string;
   style?: 'solid' | 'double' | 'dotted' | 'dashed' | 'wavy' | string;
   lines:
@@ -12,7 +12,7 @@ export type ICharactersDecoration = IOptions<{
     | Array<'underline' | 'overline' | 'line-through' | string>;
 }>;
 
-export type ICharacters = IOptions<{
+export type ILetters = IOptions<{
   value?: string | number;
   editable?: boolean;
   multiline?: number;
@@ -27,18 +27,14 @@ export type ICharacters = IOptions<{
     | 'underline'
     | 'overline'
     | 'line-through'
-    | IOptions<ICharactersDecoration>;
+    | IOptions<ILettersDecoration>;
   thickness?: number | string;
   whitespace?: string;
 }>;
 
-export type ICharactersProps =
-  | boolean
-  | string
-  | number
-  | IOptions<ICharacters>;
+export type ILettersProps = boolean | string | number | IOptions<ILetters>;
 
-export const charactersDigester: IDigester<ICharactersProps> = value => {
+export const lettersDigester: IDigester<ILettersProps> = value => {
   const css = {} as ICSS;
   if (typeof value === 'string') {
     css.color = value;

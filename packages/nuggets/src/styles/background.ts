@@ -1,13 +1,13 @@
 import { ICSS, IDigester, IUnit, IOptions } from '../utils/types';
 import { formatUnits } from '../utils/helpers';
 
-export type IShapeSize = IOptions<{
+export type IBackgroundSize = IOptions<{
   use?: IUnit;
   min?: IUnit;
   max?: IUnit;
 }>;
 
-export type IShape = IOptions<{
+export type IBackground = IOptions<{
   color?: string | string[];
   angle?: number;
   size?: IUnit;
@@ -15,13 +15,17 @@ export type IShape = IOptions<{
   collapse?: boolean;
   shrink?: boolean | number;
   circle?: boolean;
-  width?: IUnit | IShapeSize;
-  height?: IUnit | IShapeSize;
+  width?: IUnit | IBackgroundSize;
+  height?: IUnit | IBackgroundSize;
 }>;
 
-export type IShapeProps = boolean | string | number | IOptions<IShape>;
+export type IBackgroundProps =
+  | boolean
+  | string
+  | number
+  | IOptions<IBackground>;
 
-export const shapeDigester: IDigester<IShapeProps> = value => {
+export const backgroundDigester: IDigester<IBackgroundProps> = value => {
   const css = {} as ICSS;
   if (typeof value === 'string') {
     css.backgroundColor = value;
