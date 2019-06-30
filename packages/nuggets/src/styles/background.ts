@@ -11,9 +11,6 @@ export type IBackground = IOptions<{
   color?: string | string[];
   angle?: number;
   size?: IUnit;
-  grow?: boolean | number;
-  collapse?: boolean;
-  shrink?: boolean | number;
   circle?: boolean;
   width?: IUnit | IBackgroundSize;
   height?: IUnit | IBackgroundSize;
@@ -44,23 +41,6 @@ export const backgroundDigester: IDigester<IBackgroundProps> = value => {
     if (typeof value.size === 'number' || typeof value.size === 'string') {
       css.width = formatUnits(value.size);
       css.height = formatUnits(value.size);
-    }
-    if (typeof value.grow === 'boolean') {
-      css.flexGrow = value.grow ? 1 : 0;
-    }
-    if (typeof value.grow === 'number') {
-      css.flexGrow = value.grow;
-    }
-    if (typeof value.collapse === 'boolean') {
-      if (value.collapse) {
-        css.width = 'fit-content';
-      }
-    }
-    if (typeof value.shrink === 'boolean') {
-      css.flexShrink = value.shrink ? 1 : 0;
-    }
-    if (typeof value.shrink === 'number') {
-      css.flexShrink = value.shrink;
     }
     if (typeof value.circle === 'boolean') {
       if (value.circle) {
