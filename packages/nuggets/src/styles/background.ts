@@ -11,7 +11,6 @@ export type IBackground = IOptions<{
   color?: string | string[];
   angle?: number;
   size?: IUnit;
-  circle?: boolean;
   width?: IUnit | IBackgroundSize;
   height?: IUnit | IBackgroundSize;
 }>;
@@ -41,11 +40,6 @@ export const backgroundDigester: IDigester<IBackgroundProps> = value => {
     if (typeof value.size === 'number' || typeof value.size === 'string') {
       css.width = formatUnits(value.size);
       css.height = formatUnits(value.size);
-    }
-    if (typeof value.circle === 'boolean') {
-      if (value.circle) {
-        css.borderRadius = '50%';
-      }
     }
     if (typeof value.width === 'number' || typeof value.width === 'string') {
       css.width = formatUnits(value.width);
