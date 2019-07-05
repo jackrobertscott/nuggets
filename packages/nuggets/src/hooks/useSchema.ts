@@ -17,7 +17,7 @@ export interface ISchemaError {
 }
 
 export interface IuseSchemaOptions {
-  initial: ISchemaValue;
+  initial?: ISchemaValue;
   schema: ISchemaValidate;
   change?: (value: ISchemaValue) => any;
 }
@@ -57,9 +57,15 @@ export const useSchema = ({
   const [advance, updateGlobal] = useState<boolean>(false);
   const override = (next?: ISchemaValue) => {
     const data = next || {};
-    update(data);
+    const filter = Object.keys(schema).reduce((all, key) => {
+      if (data[key]) {
+        return { ...all, [key]: data[key] };
+      }
+      return all;
+    }, {});
+    update(filter);
     if (change) {
-      change(data);
+      change(filter);
     }
     if (schema) {
       const tasks = Object.keys(schema).map(key => {

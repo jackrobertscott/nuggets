@@ -35,7 +35,7 @@ export class Store<T extends IStoreValue> {
     }
   }
 
-  public change(data?: T): void {
+  public change(data?: Partial<T>): void {
     this.value = {
       ...this.defaults,
       ...this.value,
