@@ -19,6 +19,7 @@ export type ILetters = IOptions<{
   size?: IUnit;
   color?: string;
   align?: 'left' | 'center' | 'right' | 'justify' | string;
+  break?: 'normal' | 'break-all' | 'keep-all' | 'break-word' | string;
   family?: string;
   line?: IUnit;
   italic?: boolean;
@@ -51,6 +52,9 @@ export const lettersDigester: IDigester<ILettersProps> = value => {
     }
     if (typeof value.align === 'string') {
       css.textAlign = value.align;
+    }
+    if (typeof value.break === 'string') {
+      css.wordBreak = value.break;
     }
     if (typeof value.family === 'string') {
       css.fontFamily = value.family;
