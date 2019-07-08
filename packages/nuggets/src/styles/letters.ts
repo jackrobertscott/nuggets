@@ -14,8 +14,6 @@ export type ILettersDecoration = IOptions<{
 
 export type ILetters = IOptions<{
   value?: string | number;
-  editable?: boolean;
-  multiline?: number;
   size?: IUnit;
   color?: string;
   align?: 'left' | 'center' | 'right' | 'justify' | string;
