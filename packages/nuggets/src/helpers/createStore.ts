@@ -67,8 +67,8 @@ export class Store<T extends IStoreValue> {
     this.dispatcher.dispatch(this.value);
   }
 
-  public attach(watcher: IDispatcherWatcher<T>): () => void {
-    return this.dispatcher.watch(watcher);
+  public listen(watcher: IDispatcherWatcher<T>): () => void {
+    return this.dispatcher.listen(watcher);
   }
 
   public state(): T {

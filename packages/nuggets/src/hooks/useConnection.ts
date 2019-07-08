@@ -24,7 +24,7 @@ export const useConnection = <T extends IConnectionValue>({
   );
   const [loading, updateLoading] = useState<boolean>(false);
   useEffect(() => {
-    return connection.attach({
+    return connection.listen({
       data: data => update(data),
       error: data => updateError(data),
       loading: data => updateLoading(data),

@@ -56,16 +56,16 @@ export class Connection<
     return this.perform(this.previous);
   }
 
-  public attach(executors: IConnectionCallbacks<T>): () => void {
+  public listen(executors: IConnectionCallbacks<T>): () => void {
     const tasks: Array<() => void> = [];
     if (executors.data) {
-      tasks.push(this.dataDispatcher.watch(executors.data));
+      tasks.push(this.dataDispatcher.listen(executors.data));
     }
     if (executors.error) {
-      tasks.push(this.errorDispatcher.watch(executors.error));
+      tasks.push(this.errorDispatcher.listen(executors.error));
     }
     if (executors.loading) {
-      tasks.push(this.loadingDispatcher.watch(executors.loading));
+      tasks.push(this.loadingDispatcher.listen(executors.loading));
     }
     return () => {
       tasks.forEach(unwatch => unwatch());

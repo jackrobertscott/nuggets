@@ -7,7 +7,7 @@ export class Dispatcher<T> {
     this.watchers = new Map<number, IDispatcherWatcher<T>>();
   }
 
-  public watch(watcher: IDispatcherWatcher<T>): () => void {
+  public listen(watcher: IDispatcherWatcher<T>): () => void {
     let id: number;
     do {
       id = Math.random();

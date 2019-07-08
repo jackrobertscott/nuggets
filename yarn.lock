@@ -2084,6 +2084,11 @@ eventemitter3@^3.1.0:
   resolved "https://registry.yarnpkg.com/eventemitter3/-/eventemitter3-3.1.2.tgz#2d3d48f9c346698fce83a85d7d664e98535df6e7"
   integrity sha512-tvtQIeLVHjDkJYnzf2dgVMxfuSGJeM/7UCG17TT4EumTfNtF+0nebF/4zWOIkCreAbtNqhGEboB6BWrwqNaw4Q==
 
+events-and-things@^0.3.1:
+  version "0.3.1"
+  resolved "https://registry.yarnpkg.com/events-and-things/-/events-and-things-0.3.1.tgz#ab054024d726525e892b8a6ba3fed18f036e27a8"
+  integrity sha512-0XwrZDYGROAMfFHriRApyaKd6getEUKzy0KEhOO+SJBnBypU09dIOWdktxg69bfoIqFvlSBcnmoFWpLfaW15kw==
+
 execa@^0.7.0:
   version "0.7.0"
   resolved "https://registry.yarnpkg.com/execa/-/execa-0.7.0.tgz#944becd34cc41ee32a63a9faf27ad5a65fc59777"

@@ -14,7 +14,7 @@ export const useStore = <T extends IStoreValue>({
 }: IuseStoreOptions<T>): IuseStoreProps<T> => {
   const [state, update] = useState<T>(store.state());
   useEffect(() => {
-    return store.attach((data: T) => update(data));
+    return store.listen((data: T) => update(data));
   }, []);
   return {
     value: state,
