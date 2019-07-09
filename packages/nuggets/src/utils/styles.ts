@@ -12,19 +12,19 @@ import { ITransformProps, transformDigester } from '../styles/transform';
 import { IAbsorbProps, absorbDigester } from '../styles/absorb';
 import { IPaddingProps, paddingDigester } from '../styles/padding';
 
-export type IStyles = ICoreProps & {
-  absorb?: IAbsorbProps;
-  animate?: IAnimateProps;
-  background?: IBackgroundProps;
-  borders?: IBordersProps;
-  corners?: ICornersProps;
-  letters?: ILettersProps;
-  padding?: IPaddingProps;
-  placeholder?: IPlaceholderProps;
-  position?: IPositionProps;
-  shadows?: IShadowsProps;
-  transform?: ITransformProps;
-};
+export type IStyles = ICoreProps &
+  ITransformProps & {
+    absorb?: IAbsorbProps;
+    animate?: IAnimateProps;
+    background?: IBackgroundProps;
+    borders?: IBordersProps;
+    corners?: ICornersProps;
+    letters?: ILettersProps;
+    padding?: IPaddingProps;
+    placeholder?: IPlaceholderProps;
+    position?: IPositionProps;
+    shadows?: IShadowsProps;
+  };
 
 export const stylesDigester: IDigester<IStyles> = value => {
   if (typeof value === 'object') {
@@ -39,7 +39,9 @@ export const stylesDigester: IDigester<IStyles> = value => {
       placeholder,
       position,
       shadows,
-      transform,
+      rotate,
+      scale,
+      translate,
       ...core
     } = value;
     return {
@@ -54,7 +56,11 @@ export const stylesDigester: IDigester<IStyles> = value => {
       ...placeholderDigester(placeholder),
       ...positionDigester(position),
       ...shadowsDigester(shadows),
-      ...transformDigester(transform),
+      ...transformDigester({
+        rotate,
+        scale,
+        translate,
+      }),
     };
   }
   return {};
