@@ -51,17 +51,20 @@ export const useSchema = ({
   change,
   schema,
 }: IuseSchemaOptions): IuseSchemaProps => {
-  const [state, update] = useState<ISchemaValue>(initial || {});
+  const [state, update] = useState<ISchemaValue>(
+    initial
+      ? Object.keys(schema).reduce((all, key) => {
+        return initial[key] ? { ...all, [key]: initial[key] } : all;
+      }, {})
+      : {}
+  );
   const [error, updateError] = useState<ISchemaError>({});
   const [dirty, updateDirty] = useState<ISchemaDirty>({});
   const [advance, updateGlobal] = useState<boolean>(false);
   const override = (next?: ISchemaValue) => {
     const data = next || {};
     const filter = Object.keys(schema).reduce((all, key) => {
-      if (data[key]) {
-        return { ...all, [key]: data[key] };
-      }
-      return all;
+      return data[key] ? { ...all, [key]: data[key] } : all;
     }, {});
     update(filter);
     if (change) {

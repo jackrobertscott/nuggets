@@ -16,8 +16,9 @@ export type ICore = IOptions<{
   overflow?: string | ICoreOverflow;
   direction?: IDirections;
   grow?: boolean | number;
-  collapse?: boolean;
   shrink?: boolean | number;
+  basis?: boolean | number;
+  collapse?: boolean;
   wrap?: boolean;
   divide?: IUnit;
   important?: boolean;
@@ -98,16 +99,22 @@ export const coreDigester: IDigester<ICoreProps> = value => {
     if (typeof value.grow === 'number') {
       css.flexGrow = value.grow;
     }
-    if (typeof value.collapse === 'boolean') {
-      if (value.collapse) {
-        css.width = 'fit-content';
-      }
-    }
     if (typeof value.shrink === 'boolean') {
       css.flexShrink = value.shrink ? 1 : 0;
     }
     if (typeof value.shrink === 'number') {
       css.flexShrink = value.shrink;
+    }
+    if (typeof value.basis === 'boolean') {
+      css.flexBasis = value.basis ? 1 : 0;
+    }
+    if (typeof value.basis === 'number') {
+      css.flexBasis = value.basis;
+    }
+    if (typeof value.collapse === 'boolean') {
+      if (value.collapse) {
+        css.width = 'fit-content';
+      }
     }
     if (typeof value.wrap === 'boolean') {
       css.flexWrap = value.wrap ? 'wrap' : 'nowrap';

@@ -24,7 +24,7 @@ export interface INodeProps {
   value?: string | number;
   placeholder?: string | number;
   editable?: boolean;
-  multiline?: number;
+  multiline?: number | boolean;
   tag?: string;
   id?: string;
   classname?: string;
