@@ -24,7 +24,7 @@ export interface INodeProps {
   value?: string | number;
   placeholder?: string | number;
   editable?: boolean;
-  multiline?: number | boolean;
+  multiline?: number;
   tag?: string;
   id?: string;
   classname?: string;
@@ -105,7 +105,7 @@ export const Node: FunctionComponent<INodeProps> = ({
   } else {
     props.children = state || children;
   }
-  if (typeof value === 'string') {
+  if (typeof value === 'string' || typeof value === 'number') {
     props.value = value;
     props.onChange = digestedEvents.onChange || (() => {}); // intended to be overridden
   }
