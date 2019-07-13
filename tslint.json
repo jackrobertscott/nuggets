@@ -11,6 +11,7 @@
     "ordered-imports": false,
     "object-literal-sort-keys": false,
     "interface-over-type-literal": false,
+    "interface-name": false,
     "no-implicit-dependencies": [true, "dev"],
     "no-empty-interface": false,
     "no-console": false,
